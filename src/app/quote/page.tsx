@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, MapPin, Mail, Phone, ArrowRight, CheckCircle2, Globe } from "lucide-react";
+import { motion, Variants } from "framer-motion"; // 1. Import Variants to fix build error
+import { MapPin, Mail, Phone, ArrowRight, CheckCircle2, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// Animation Variants for Staggered Entrance
-const containerVariants = {
+// 2. Explicitly type the variants
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -19,7 +19,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
@@ -78,12 +78,12 @@ export default function QuotePage() {
         </div>
       </section>
 
-      {/* 2. INTERACTIVE FORM SECTION (Overlapping Card Layout) */}
+      {/* 2. INTERACTIVE FORM SECTION */}
       <section className="relative z-20 -mt-24 md:-mt-32 pb-24">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
             
-            {/* LEFT SIDE: Contact Info & Trust Signals */}
+            {/* LEFT SIDE: Contact Info */}
             <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -193,7 +193,11 @@ export default function QuotePage() {
                   <motion.div variants={itemVariants} className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Inquiry Category</label>
                     <div className="relative">
-                      <select className="w-full h-14 rounded-md border border-slate-100 bg-slate-50 px-4 text-slate-700 text-base focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer transition-colors">
+                      {/* Fixed: Added aria-label for accessibility */}
+                      <select 
+                        aria-label="Inquiry Category"
+                        className="w-full h-14 rounded-md border border-slate-100 bg-slate-50 px-4 text-slate-700 text-base focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer transition-colors"
+                      >
                         <option>Bulk Product Sourcing (Agriculture)</option>
                         <option>Heavy Machinery Procurement</option>
                         <option>Logistics & Supply Chain</option>
