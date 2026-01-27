@@ -1,7 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Database, Zap, SearchCheck } from "lucide-react";
+import { ShieldCheck, Zap, SearchCheck } from "lucide-react";
 
 const frameworkSteps = [
   { title: "Technical Verification", icon: <SearchCheck />, desc: "Our SQA-inspired protocols verify every SKU against international standards." },
@@ -20,7 +21,7 @@ export default function QualityFramework() {
               <span className="text-blue-600">Verification.</span>
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed font-light">
-              Just as Software Quality Assurance ensures code integrity, our "Trade-QA" 
+              Just as Software Quality Assurance ensures code integrity, our "Trade QA" 
               protocols safeguard physical assets. We eliminate variables through 
               standardized testing and real-time validation.
             </p>
