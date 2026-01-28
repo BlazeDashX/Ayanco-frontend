@@ -29,7 +29,7 @@ export default function WhyHero() {
             </span>
           </h1>
           <p className="text-slate-400 text-lg md:text-2xl leading-relaxed max-w-2xl font-light">
-            In global trade, reliability isn't just a goal it's a requirement. We apply a rigorous, 
+            In global trade, reliability isn't just a goal—it's a requirement. We apply a rigorous, 
             data-driven approach to sourcing and supply chain management that protects your bottom line.
           </p>
         </motion.div>

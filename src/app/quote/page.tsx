@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { motion, Variants } from "framer-motion"; // 1. Import Variants to fix build error
-import { MapPin, Mail, Phone, ArrowRight, CheckCircle2, Globe } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { MapPin, Mail, Phone, ArrowRight, CheckCircle2, Globe, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// 2. Explicitly type the variants
+// Animation Variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -35,15 +35,15 @@ export default function QuotePage() {
     e.preventDefault();
     setIsSubmitting(true);
     // Simulate network request
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    alert("Quote Request Received. Ticket #88291 created.");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    alert("Quote Request Received. Our trade desk will contact you shortly.");
     setIsSubmitting(false);
   }
 
   return (
     <div className="min-h-screen bg-slate-50 selection:bg-blue-200">
       
-      {/* 1. CINEMATIC HEADER SECTION */}
+      {/* 1. CINEMATIC HERO SECTION */}
       <section className="relative bg-[#05070a] pt-32 pb-48 md:pt-48 md:pb-64 overflow-hidden">
         {/* Abstract Background Mesh */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -92,12 +92,12 @@ export default function QuotePage() {
             >
               {/* Trust Badge */}
               <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100">
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <Globe size={16} className="text-blue-600" /> Regional HQ
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                  <Globe size={14} className="text-blue-600" /> Regional HQ
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="flex gap-4 group">
-                    <div className="mt-1 p-2 bg-slate-50 rounded-lg text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
+                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
                       <MapPin size={20} />
                     </div>
                     <div>
@@ -109,7 +109,7 @@ export default function QuotePage() {
                   </div>
                   
                   <div className="flex gap-4 group">
-                    <div className="mt-1 p-2 bg-slate-50 rounded-lg text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
+                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
                       <Mail size={20} />
                     </div>
                     <div>
@@ -121,7 +121,7 @@ export default function QuotePage() {
                   </div>
 
                   <div className="flex gap-4 group">
-                    <div className="mt-1 p-2 bg-slate-50 rounded-lg text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
+                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
                       <Phone size={20} />
                     </div>
                     <div>
@@ -133,16 +133,16 @@ export default function QuotePage() {
               </div>
 
               {/* Status Indicators */}
-              <div className="hidden lg:block space-y-4 pl-4 border-l-2 border-slate-200">
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+              <div className="hidden lg:block space-y-4 pl-4 border-l-2 border-slate-200/60">
+                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
                   <CheckCircle2 size={16} className="text-green-500" />
                   <span>Response time: &lt; 4 Hours</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
                   <CheckCircle2 size={16} className="text-green-500" />
                   <span>ISO 9001:2015 Certified Process</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-slate-600">
+                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
                   <CheckCircle2 size={16} className="text-green-500" />
                   <span>Encrypted Data Transmission</span>
                 </div>
@@ -157,11 +157,13 @@ export default function QuotePage() {
               animate="visible"
             >
               <div className="bg-white rounded-[32px] p-8 md:p-12 shadow-2xl shadow-blue-900/10 border border-white/20 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600" />
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600" />
                 
                 <motion.div variants={itemVariants} className="mb-10">
-                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Request Quotation</h2>
-                  <p className="text-slate-500 mt-2">Complete the specifications below. Fields marked with * are required for SQA validation.</p>
+                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
+                    Request Quotation
+                  </h2>
+                  <p className="text-slate-500 mt-2">Complete the specifications below. Fields marked with <span className="text-blue-600">*</span> are required for SQA validation.</p>
                 </motion.div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
@@ -193,7 +195,6 @@ export default function QuotePage() {
                   <motion.div variants={itemVariants} className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Inquiry Category</label>
                     <div className="relative">
-                      {/* Fixed: Added aria-label for accessibility */}
                       <select 
                         aria-label="Inquiry Category"
                         className="w-full h-14 rounded-md border border-slate-100 bg-slate-50 px-4 text-slate-700 text-base focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer transition-colors"
@@ -202,6 +203,7 @@ export default function QuotePage() {
                         <option>Heavy Machinery Procurement</option>
                         <option>Logistics & Supply Chain</option>
                         <option>Partnership Proposal</option>
+                        <option>Other Query</option>
                       </select>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
                         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>

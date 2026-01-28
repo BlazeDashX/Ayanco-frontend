@@ -15,6 +15,8 @@ export default function QualityFramework() {
     <section className="py-24 md:py-40 bg-white">
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
+          
+          {/* Left Text */}
           <div className="space-y-10">
             <h2 className="text-4xl md:text-6xl font-bold text-slate-900 tracking-tight leading-tight">
               A Framework of <br />
@@ -48,14 +50,18 @@ export default function QualityFramework() {
             </div>
           </div>
 
-          {/* Premium Tech Panel Visualization */}
+          {/* Right Tech Visualization */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             className="relative p-1 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-[40px] shadow-2xl"
           >
             <div className="bg-[#0a0f1c] rounded-[39px] p-8 md:p-12 space-y-10 overflow-hidden relative">
+              
+              {/* Glow */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full" />
+              
+              {/* Header */}
               <div className="flex justify-between items-center border-b border-white/10 pb-6">
                 <span className="text-blue-400 font-mono text-xs tracking-widest">SYSTEM_STATUS: SECURE</span>
                 <div className="flex gap-1.5">
@@ -64,6 +70,7 @@ export default function QualityFramework() {
                 </div>
               </div>
               
+              {/* Bars */}
               {[
                 { label: "Compliance Index", val: "99.8%", color: "bg-blue-500" },
                 { label: "Sourcing Precision", val: "100%", color: "bg-cyan-500" },
