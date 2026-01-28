@@ -15,11 +15,9 @@ const navLinks = [
   { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
   { name: "Why Ayanco", href: "/why-ayanco" },
-  // Removed "Request Quote" from here to avoid duplication with the main button
 ];
 
-// Replace with your actual WhatsApp number
-const WHATSAPP_URL = "https://wa.me/8801711000000"; 
+const WHATSAPP_URL = "https://wa.me/8801711000000";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -27,88 +25,100 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    handleScroll(); // Check on mount
+    const handleScroll = () => setIsScrolled(window.scrollY > 30);
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(false);
   }, [pathname]);
 
-  // Dynamic Styles
   const navbarClasses = cn(
-    "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b",
+    "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
     isScrolled
-      ? "bg-white/95 backdrop-blur-md border-slate-200 py-3 shadow-sm"
+      ? "bg-white/85 backdrop-blur-xl border-slate-200 shadow-sm py-3"
       : "bg-transparent border-transparent py-5"
   );
 
-  const textClasses = isScrolled ? "text-slate-700 hover:text-blue-900" : "text-slate-100 hover:text-white";
-  const logoClasses = isScrolled ? "text-blue-900" : "text-white";
+  const textClasses = isScrolled
+    ? "text-slate-700 hover:text-blue-900"
+    : "text-slate-100 hover:text-white";
+
+  const logoMain = isScrolled ? "text-blue-900" : "text-white";
+  const logoSub = isScrolled ? "text-slate-500" : "text-blue-200";
 
   return (
     <>
+      {/* NAVBAR */}
       <nav className={navbarClasses}>
-        <div className="container mx-auto px-6 flex items-center justify-between">
-          
-          {/* 1. LOGO */}
-          <Link href="/" className="group flex items-center gap-2">
-            <div className={cn("font-extrabold text-2xl tracking-tighter transition-colors", logoClasses)}>
-              AYANCO<span className={isScrolled ? "text-slate-500 font-light" : "text-blue-200 font-light"}>TRADE</span>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+          {/* LOGO */}
+          <Link href="/" className="flex items-center gap-2">
+            <div className={cn("font-extrabold text-2xl tracking-tight", logoMain)}>
+              AYANCO
+              <span className={cn("font-light ml-0.5", logoSub)}>TRADE</span>
             </div>
           </Link>
 
-          {/* 2. DESKTOP NAVIGATION */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-sm font-medium transition-colors relative group",
-                  textClasses,
-                  pathname === link.href && "font-bold"
-                )}
-              >
-                {link.name}
-                <span className={cn(
-                  "absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full",
-                  isScrolled ? "bg-blue-600" : "bg-white"
-                )} />
-              </Link>
-            ))}
+          {/* DESKTOP LINKS */}
+          <div className="hidden lg:flex items-center gap-10">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative text-sm font-medium transition-colors group",
+                    textClasses,
+                    active && "font-semibold"
+                  )}
+                >
+                  {link.name}
+
+                  {/* Animated underline */}
+                  <span
+                    className={cn(
+                      "absolute left-0 -bottom-1 h-[2px] bg-blue-600 transition-all duration-300",
+                      active ? "w-full" : "w-0 group-hover:w-full"
+                    )}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
-          {/* 3. DESKTOP ACTIONS */}
+          {/* DESKTOP ACTIONS */}
           <div className="hidden lg:flex items-center gap-6">
-            {/* WhatsApp Link */}
-            <a 
-              href={WHATSAPP_URL} 
-              target="_blank" 
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
               rel="noopener noreferrer"
-              className={cn("text-sm font-bold transition-colors flex items-center gap-2 hover:opacity-80", textClasses)}
+              className={cn(
+                "text-sm font-medium flex items-center gap-2 transition-colors",
+                textClasses
+              )}
             >
               <MessageCircle size={18} /> Contact Support
             </a>
-            
-            {/* CTA Button */}
-            <Button 
+
+            <Button
               asChild
-              variant={isScrolled ? "default" : "secondary"}
               className={cn(
-                "font-bold rounded-full px-6 shadow-lg transition-all hover:scale-105 active:scale-95",
-                !isScrolled && "bg-white text-blue-900 hover:bg-slate-100 border-none"
+                "rounded-full px-6 font-semibold transition-transform hover:scale-[1.04] active:scale-[0.97]",
+                isScrolled
+                  ? "bg-blue-600 hover:bg-blue-500 text-white"
+                  : "bg-white text-blue-900 hover:bg-slate-100"
               )}
             >
               <Link href="/quote">Request Quote</Link>
             </Button>
           </div>
 
-          {/* 4. MOBILE HAMBURGER */}
+          {/* MOBILE TOGGLE */}
           <button
             className={cn("lg:hidden p-2 rounded-md transition-colors", textClasses)}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -119,50 +129,66 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* 5. MOBILE MENU OVERLAY */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-white pt-24 px-6 lg:hidden flex flex-col h-screen"
-          >
-            <div className="flex flex-col gap-8 text-center">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "text-2xl font-bold transition-colors",
-                    pathname === link.href ? "text-blue-600" : "text-slate-800"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              
-              <hr className="border-slate-100 w-1/2 mx-auto" />
-              
-              <div className="flex flex-col gap-4 mt-auto pb-12">
-                <a 
-                  href={WHATSAPP_URL}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 text-slate-600 font-medium hover:text-green-600 transition-colors"
-                >
-                  <MessageCircle size={20} /> Contact Support
-                </a>
-                
-                <Button asChild size="lg" className="w-full bg-blue-900 text-white text-lg py-6 shadow-xl">
-                  <Link href="/quote">
-                    Request a Quote <ArrowRight className="ml-2" size={20} />
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Panel */}
+            <motion.div
+              initial={{ y: -30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -30, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed top-0 left-0 right-0 z-50 bg-white pt-24 px-6 lg:hidden"
+            >
+              <div className="flex flex-col gap-8 text-center">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      "text-2xl font-semibold transition-colors",
+                      pathname === link.href
+                        ? "text-blue-600"
+                        : "text-slate-800"
+                    )}
+                  >
+                    {link.name}
                   </Link>
-                </Button>
+                ))}
+
+                <div className="mt-10 flex flex-col gap-4 pb-10">
+                  <a
+                    href={WHATSAPP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 text-slate-600 hover:text-green-600 transition-colors"
+                  >
+                    <MessageCircle size={20} /> Contact Support
+                  </a>
+
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full py-6 shadow-xl"
+                  >
+                    <Link href="/quote">
+                      Request Quote <ArrowRight className="ml-2" size={20} />
+                    </Link>
+                  </Button>
+                </div>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
