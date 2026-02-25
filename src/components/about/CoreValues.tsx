@@ -4,57 +4,34 @@ import { motion } from "framer-motion";
 import { ShieldCheck, Handshake, Eye } from "lucide-react";
 
 const values = [
-  {
-    icon: Handshake,
-    title: "Integrity",
-    desc: "We act with honesty and accountability — even when it’s difficult. We protect long-term trust over short-term gain.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Reliability",
-    desc: "We deliver what we promise. From sourcing to shipping, our execution is consistent, measurable, and dependable.",
-  },
-  {
-    icon: Eye,
-    title: "Transparency",
-    desc: "Clear communication, clear documentation. We keep clients informed and reduce uncertainty at every step.",
-  },
+  { icon: Handshake, title: "Integrity", desc: "We act with honesty and accountability. We protect long-term trust over short-term gain." },
+  { icon: ShieldCheck, title: "Reliability", desc: "We deliver what we promise. Our execution is consistent, measurable, and dependable." },
+  { icon: Eye, title: "Transparency", desc: "Clear communication, clear documentation. We reduce uncertainty at every step." },
 ];
 
 export default function CoreValues() {
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section className="py-24 bg-white border-t border-zinc-200">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-end justify-between gap-6 mb-10">
-          <div className="space-y-3">
-            <p className="text-blue-600 font-bold tracking-widest text-xs uppercase">
-              Core Values
-            </p>
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
-              How we operate, every day.
-            </h2>
-          </div>
+        <div className="mb-12">
+          <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Core Values</p>
+          <h2 className="text-3xl md:text-4xl font-black text-zinc-900 tracking-tight">How we operate, every day.</h2>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-px bg-zinc-200">
           {values.map((v, i) => (
             <motion.div
               key={v.title}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.55, delay: i * 0.07 }}
-              className="rounded-3xl border border-slate-200 bg-slate-50 p-8 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 transition-all"
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.5, delay: i * 0.07 }}
+              className="bg-[#09090B] hover:bg-[#0E0E10] transition-colors p-8 md:p-10"
             >
-              <div className="p-3 rounded-2xl bg-blue-600/10 text-blue-700 w-fit">
-                <v.icon size={24} />
+              <div className="w-10 h-10 border border-white/8 bg-[#C4882A]/8 flex items-center justify-center text-[#C4882A] mb-7">
+                <v.icon size={20} />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mt-5">
-                {v.title}
-              </h3>
-              <p className="text-slate-600 leading-relaxed mt-3">
-                {v.desc}
-              </p>
+              <h3 className="text-lg font-bold text-[#FAFAF9] mb-3">{v.title}</h3>
+              <p className="text-[#78716C] leading-relaxed text-sm">{v.desc}</p>
             </motion.div>
           ))}
         </div>

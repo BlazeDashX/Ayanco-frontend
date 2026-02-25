@@ -1,249 +1,440 @@
 "use client";
 
-import { useState } from "react";
-import { motion, Variants } from "framer-motion";
-import { MapPin, Mail, Phone, ArrowRight, CheckCircle2, Globe, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, CheckCircle2, AlertCircle, User, Building2, Mail, Phone, Layers, FileText } from "lucide-react";
+import PageHero from "@/components/ui/PageHero";
+import { SITE } from "@/data/site";
 
-// Animation Variants
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.3,
-    },
-  },
+/* ─── Validation helpers ─────────────────────────────────────── */
+type Fields = {
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+  category: string;
+  specs: string;
 };
 
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 50 },
-  },
-};
+type Errors = Partial<Record<keyof Fields, string>>;
 
+function validate(fields: Fields): Errors {
+  const errors: Errors = {};
+  if (!fields.name.trim()) errors.name = "Full name is required.";
+  else if (fields.name.trim().length < 2) errors.name = "Name must be at least 2 characters.";
+
+  if (!fields.company.trim()) errors.company = "Company name is required.";
+
+  if (!fields.email.trim()) errors.email = "Work email is required.";
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) errors.email = "Enter a valid email address.";
+
+  if (fields.phone && !/^[+\d\s\-().]{7,20}$/.test(fields.phone)) {
+    errors.phone = "Enter a valid phone number.";
+  }
+
+  if (!fields.specs.trim()) errors.specs = "Please describe your product specifications.";
+  else if (fields.specs.trim().length < 20) errors.specs = "Please provide at least 20 characters of detail.";
+
+  return errors;
+}
+
+/* ─── Field wrapper with animated error ─────────────────────── */
+function FieldError({ message }: { message?: string }) {
+  return (
+    <AnimatePresence>
+      {message && (
+        <motion.p
+          key={message}
+          initial={{ opacity: 0, y: -4, height: 0 }}
+          animate={{ opacity: 1, y: 0, height: "auto" }}
+          exit={{ opacity: 0, y: -4, height: 0 }}
+          transition={{ duration: 0.18 }}
+          className="flex items-center gap-1.5 text-[11px] font-semibold text-red-500 mt-1.5 overflow-hidden"
+        >
+          <AlertCircle size={11} className="shrink-0" />
+          {message}
+        </motion.p>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function fieldClass(error?: string, touched?: boolean) {
+  const base =
+    "w-full h-12 bg-white border px-4 text-sm text-zinc-900 placeholder:text-zinc-400 outline-none transition-all duration-200 rounded-none";
+  if (error && touched) return `${base} border-red-400 focus:border-red-400 ring-1 ring-red-200`;
+  return `${base} border-zinc-200 focus:border-[#C4882A] focus:ring-1 focus:ring-[#C4882A]/30`;
+}
+
+const CATEGORIES = [
+  "Agricultural Commodities",
+  "Heavy Machinery Procurement",
+  "Logistics & Supply Chain",
+  "Compliance & Documentation",
+  "Partnership Proposal",
+  "Other / General",
+];
+
+/* ─── Page ───────────────────────────────────────────────────── */
 export default function QuotePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [refId, setRefId] = useState("");
+
+  const [fields, setFields] = useState<Fields>({
+    name: "", company: "", email: "", phone: "", category: CATEGORIES[0], specs: "",
+  });
+  const [errors, setErrors] = useState<Errors>({});
+  const [touched, setTouched] = useState<Partial<Record<keyof Fields, boolean>>>({});
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  function set(key: keyof Fields, value: string) {
+    const next = { ...fields, [key]: value };
+    setFields(next);
+    // Clear error as user types (real-time feedback)
+    if (errors[key]) {
+      const nextErrors = { ...errors };
+      delete nextErrors[key];
+      setErrors(nextErrors);
+    }
+  }
+
+  function blur(key: keyof Fields) {
+    setTouched((t) => ({ ...t, [key]: true }));
+    const err = validate({ ...fields });
+    setErrors((e) => ({ ...e, [key]: err[key] }));
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    // Mark all required fields as touched
+    setTouched({ name: true, company: true, email: true, phone: true, specs: true });
+    const errs = validate(fields);
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      // Scroll to first error
+      const firstKey = Object.keys(errs)[0];
+      formRef.current?.querySelector<HTMLElement>(`[data-field="${firstKey}"]`)?.focus();
+      return;
+    }
     setIsSubmitting(true);
-    // Simulate network request
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    alert("Quote Request Received. Our trade desk will contact you shortly.");
+    await new Promise((r) => setTimeout(r, 1600));
+    setRefId(Date.now().toString().slice(-6));
     setIsSubmitting(false);
+    setIsSubmitted(true);
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 selection:bg-blue-200">
-      
-      {/* 1. CINEMATIC HERO SECTION */}
-      <section className="relative bg-[#05070a] pt-32 pb-48 md:pt-48 md:pb-64 overflow-hidden">
-        {/* Abstract Background Mesh */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-900/40 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-cyan-900/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
-        </div>
+    <main className="bg-[#fafaf9] min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
 
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl"
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-12 bg-blue-500/50" />
-              <span className="text-blue-400 font-mono text-xs uppercase tracking-[0.3em] font-bold">
-                Global Desk
-              </span>
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tighter leading-[1.1] mb-8">
-              Initiate <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-200 to-white">
-                Trade Protocol.
-              </span>
-            </h1>
-            <p className="text-slate-400 text-lg md:text-2xl font-light max-w-2xl leading-relaxed">
-              Secure pricing for industrial machinery and agricultural essentials. 
-              Our corporate team processes inquiries with priority SQA verification.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        badge="Procurement Desk"
+        title="Request a"
+        highlight="Quote."
+        subtitle="Let us source your next big requirement. Our global trade desk will respond with verified pricing within 4 business hours."
+      />
 
-      {/* 2. INTERACTIVE FORM SECTION */}
-      <section className="relative z-20 -mt-24 md:-mt-32 pb-24">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            
-            {/* LEFT SIDE: Contact Info */}
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="lg:col-span-4 space-y-10 lg:pt-12"
+      <section className="py-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-12 gap-8 items-start">
+
+            {/* ── FORM ── */}
+            <motion.div
+              className="lg:col-span-8 order-2 lg:order-1"
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.55 }}
             >
-              {/* Trust Badge */}
-              <div className="bg-white p-6 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                  <Globe size={14} className="text-blue-600" /> Regional HQ
-                </h3>
-                <div className="space-y-6">
-                  <div className="flex gap-4 group">
-                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
-                      <MapPin size={20} />
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-900">Dhaka Corporate Office</p>
-                      <p className="text-slate-500 text-sm leading-relaxed mt-1">
-                        Ayanco Tower, Level 12<br />Banani Model Town, Dhaka-1213
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-4 group">
-                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
-                      <Mail size={20} />
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-900">Trade Inquiries</p>
-                      <a href="mailto:corporate@ayanco.com" className="text-slate-500 text-sm hover:text-blue-600 transition-colors">
-                        corporate@ayanco.com
-                      </a>
-                    </div>
-                  </div>
+              <div className="bg-white border border-zinc-200 overflow-hidden">
 
-                  <div className="flex gap-4 group">
-                    <div className="mt-1 p-2.5 h-fit bg-slate-50 rounded-xl text-slate-400 group-hover:text-blue-600 group-hover:bg-blue-50 transition-colors">
-                      <Phone size={20} />
-                    </div>
-                    <div>
-                      <p className="font-bold text-slate-900">Direct Line</p>
-                      <p className="text-slate-500 text-sm">+880 1711-000000</p>
-                    </div>
+                {/* Form header bar */}
+                <div className="h-px bg-[#C4882A]/60" />
+                <div className="px-8 md:px-12 pt-10 pb-8 border-b border-zinc-100">
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="w-6 h-px bg-[#C4882A]" />
+                    <h2 className="text-xs font-black text-zinc-900 uppercase tracking-[0.18em]">Quotation Request</h2>
                   </div>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    Provide specific details for an accurate and expedited quotation.
+                    Fields marked <span className="text-[#C4882A] font-bold">*</span> are required.
+                  </p>
                 </div>
-              </div>
 
-              {/* Status Indicators */}
-              <div className="hidden lg:block space-y-4 pl-4 border-l-2 border-slate-200/60">
-                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  <span>Response time: &lt; 4 Hours</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  <span>ISO 9001:2015 Certified Process</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                  <CheckCircle2 size={16} className="text-green-500" />
-                  <span>Encrypted Data Transmission</span>
-                </div>
+                <AnimatePresence mode="wait">
+                  {isSubmitted ? (
+                    /* ── SUCCESS STATE ── */
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.97 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.35 }}
+                      className="flex flex-col items-center text-center px-8 md:px-12 py-20 gap-8"
+                    >
+                      {/* Animated check */}
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+                        className="relative w-20 h-20"
+                      >
+                        <div className="absolute inset-0 bg-[#C4882A]/10 rounded-full animate-ping" />
+                        <div className="relative w-20 h-20 bg-[#09090B] flex items-center justify-center">
+                          <CheckCircle2 size={32} className="text-[#C4882A]" />
+                        </div>
+                      </motion.div>
+
+                      <div className="max-w-xs">
+                        <h2 className="text-3xl font-black text-zinc-900 mb-3 tracking-tight">Request Received</h2>
+                        <p className="text-zinc-500 text-sm leading-relaxed">
+                          Our trade desk will review your specifications and contact you within{" "}
+                          <span className="font-semibold text-zinc-700">{SITE.contact.responseTime}</span>.
+                        </p>
+                      </div>
+
+                      <div className="bg-zinc-50 border border-zinc-200 p-6 w-full max-w-xs flex flex-col items-center gap-1">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-zinc-400">Reference ID</p>
+                        <p className="text-zinc-900 font-mono font-black text-xl tracking-widest">ATC-{refId}</p>
+                        <p className="text-[10px] text-zinc-400 mt-1">Save this for follow-up queries</p>
+                      </div>
+
+                      <button
+                        onClick={() => { setIsSubmitted(false); setFields({ name: "", company: "", email: "", phone: "", category: CATEGORIES[0], specs: "" }); setTouched({}); setErrors({}); }}
+                        className="text-xs font-bold text-[#C4882A] hover:text-[#D4952E] uppercase tracking-[0.15em] transition-colors"
+                      >
+                        Submit another request
+                      </button>
+                    </motion.div>
+
+                  ) : (
+                    /* ── FORM FIELDS ── */
+                    <motion.div key="form" exit={{ opacity: 0 }}>
+                      <form ref={formRef} onSubmit={handleSubmit} noValidate className="px-8 md:px-12 py-10 space-y-7">
+
+                        {/* Row 1 */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                              <User size={10} className="text-zinc-400" /> Full Name <span className="text-[#C4882A]">*</span>
+                            </label>
+                            <input
+                              data-field="name"
+                              name="name"
+                              type="text"
+                              placeholder="John Doe"
+                              value={fields.name}
+                              onChange={(e) => set("name", e.target.value)}
+                              onBlur={() => blur("name")}
+                              className={fieldClass(errors.name, touched.name)}
+                            />
+                            <FieldError message={touched.name ? errors.name : undefined} />
+                          </div>
+                          <div>
+                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                              <Building2 size={10} className="text-zinc-400" /> Company <span className="text-[#C4882A]">*</span>
+                            </label>
+                            <input
+                              data-field="company"
+                              name="company"
+                              type="text"
+                              placeholder="Acme Corp."
+                              value={fields.company}
+                              onChange={(e) => set("company", e.target.value)}
+                              onBlur={() => blur("company")}
+                              className={fieldClass(errors.company, touched.company)}
+                            />
+                            <FieldError message={touched.company ? errors.company : undefined} />
+                          </div>
+                        </div>
+
+                        {/* Row 2 */}
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                              <Mail size={10} className="text-zinc-400" /> Work Email <span className="text-[#C4882A]">*</span>
+                            </label>
+                            <input
+                              data-field="email"
+                              name="email"
+                              type="email"
+                              placeholder="john@acme.com"
+                              value={fields.email}
+                              onChange={(e) => set("email", e.target.value)}
+                              onBlur={() => blur("email")}
+                              className={fieldClass(errors.email, touched.email)}
+                            />
+                            <FieldError message={touched.email ? errors.email : undefined} />
+                          </div>
+                          <div>
+                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                              <Phone size={10} className="text-zinc-400" /> Phone Number
+                            </label>
+                            <input
+                              data-field="phone"
+                              name="phone"
+                              type="tel"
+                              placeholder="+880 1711-000000"
+                              value={fields.phone}
+                              onChange={(e) => set("phone", e.target.value)}
+                              onBlur={() => blur("phone")}
+                              className={fieldClass(errors.phone, touched.phone)}
+                            />
+                            <FieldError message={touched.phone ? errors.phone : undefined} />
+                          </div>
+                        </div>
+
+                        {/* Category */}
+                        <div>
+                          <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <Layers size={10} className="text-zinc-400" /> Request Category
+                          </label>
+                          <div className="relative">
+                            <select
+                              name="category"
+                              value={fields.category}
+                              onChange={(e) => set("category", e.target.value)}
+                              className="w-full h-12 bg-white border border-zinc-200 px-4 text-zinc-900 text-sm outline-none focus:border-[#C4882A] focus:ring-1 focus:ring-[#C4882A]/30 appearance-none cursor-pointer transition-all rounded-none"
+                            >
+                              {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+                            </select>
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
+                              <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Specs */}
+                        <div>
+                          <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <FileText size={10} className="text-zinc-400" /> Product Specifications <span className="text-[#C4882A]">*</span>
+                          </label>
+                          <textarea
+                            data-field="specs"
+                            name="specs"
+                            placeholder="Please describe: product/material name, quantity, grade or specification, target destination, and required timeline."
+                            value={fields.specs}
+                            onChange={(e) => set("specs", e.target.value)}
+                            onBlur={() => blur("specs")}
+                            rows={6}
+                            className={`${fieldClass(errors.specs, touched.specs).replace("h-12", "")} resize-none min-h-[150px] py-3`}
+                          />
+                          <div className="flex items-start justify-between mt-1">
+                            <FieldError message={touched.specs ? errors.specs : undefined} />
+                            <span className={`text-[10px] ml-auto font-medium tabular-nums ${fields.specs.length < 20 && touched.specs ? "text-red-400" : "text-zinc-400"}`}>
+                              {fields.specs.length} / 20 min
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Submit */}
+                        <div className="pt-2">
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="relative w-full h-14 bg-[#09090B] hover:bg-zinc-800 disabled:bg-zinc-100 disabled:text-zinc-400 text-white font-bold text-sm transition-all flex items-center justify-center gap-3 group overflow-hidden"
+                          >
+                            {/* Shimmer on hover */}
+                            <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
+                            {isSubmitting ? (
+                              <><span className="relative">Processing Request</span><div className="relative h-4 w-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /></>
+                            ) : (
+                              <><span className="relative">Submit RFQ</span><ArrowRight size={16} className="relative group-hover:translate-x-1 transition-transform" /></>
+                            )}
+                          </button>
+                          <p className="text-[10px] text-zinc-400 text-center mt-3 leading-relaxed">
+                            By submitting, you agree to our{" "}
+                            <a href="/terms" className="underline hover:text-[#C4882A] transition-colors">Terms of Trade</a>{" "}
+                            and{" "}
+                            <a href="/privacy" className="underline hover:text-[#C4882A] transition-colors">Privacy Policy</a>.
+                          </p>
+                        </div>
+
+                      </form>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
 
-            {/* RIGHT SIDE: The Form Card */}
-            <motion.div 
-              className="lg:col-span-8"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+            {/* ── SIDEBAR ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.55 }}
+              className="lg:col-span-4 order-1 lg:order-2 space-y-4"
             >
-              <div className="bg-white rounded-[32px] p-8 md:p-12 shadow-2xl shadow-blue-900/10 border border-white/20 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600" />
-                
-                <motion.div variants={itemVariants} className="mb-10">
-                  <h2 className="text-3xl font-bold text-slate-900 tracking-tight flex items-center gap-3">
-                    Request Quotation
-                  </h2>
-                  <p className="text-slate-500 mt-2">Complete the specifications below. Fields marked with <span className="text-blue-600">*</span> are required for SQA validation.</p>
-                </motion.div>
-
-                <form onSubmit={handleSubmit} className="space-y-8">
-                  {/* Row 1: Identity */}
-                  <motion.div variants={itemVariants} className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Full Name *</label>
-                      <Input placeholder="e.g. Tanvir Ahmed" className="h-14 bg-slate-50 border-slate-100 focus:bg-white transition-all text-base" required />
+              {/* Direct contact card */}
+              <div className="bg-white border border-zinc-200 overflow-hidden">
+                <div className="h-px bg-[#C4882A]/60" />
+                <div className="p-7">
+                  <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-4">
+                    <span className="w-3 h-px bg-[#C4882A]" /> Direct Contact
+                  </span>
+                  <div className="space-y-4 text-sm mt-2">
+                    <div>
+                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Email</p>
+                      <a href={`mailto:${SITE.contact.email}`} className="text-zinc-800 font-semibold hover:text-[#C4882A] transition-colors">{SITE.contact.email}</a>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Company Name *</label>
-                      <Input placeholder="e.g. Ayanco Industries" className="h-14 bg-slate-50 border-slate-100 focus:bg-white transition-all text-base" required />
+                    <div>
+                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Phone</p>
+                      <a href={`tel:${SITE.contact.phoneRaw}`} className="text-zinc-800 font-semibold hover:text-[#C4882A] transition-colors">{SITE.contact.phone}</a>
                     </div>
-                  </motion.div>
-
-                  {/* Row 2: Contact */}
-                  <motion.div variants={itemVariants} className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Work Email *</label>
-                      <Input type="email" placeholder="name@company.com" className="h-14 bg-slate-50 border-slate-100 focus:bg-white transition-all text-base" required />
+                    <div>
+                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Corporate HQ</p>
+                      <p className="text-zinc-700 leading-relaxed">{SITE.contact.address}</p>
                     </div>
-                    <div className="space-y-2">
-                      <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Phone / WhatsApp</label>
-                      <Input type="tel" placeholder="+880..." className="h-14 bg-slate-50 border-slate-100 focus:bg-white transition-all text-base" />
+                    <div>
+                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Hours</p>
+                      <p className="text-zinc-700">{SITE.contact.officeHours}</p>
                     </div>
-                  </motion.div>
-
-                  {/* Row 3: Context */}
-                  <motion.div variants={itemVariants} className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Inquiry Category</label>
-                    <div className="relative">
-                      <select 
-                        aria-label="Inquiry Category"
-                        className="w-full h-14 rounded-md border border-slate-100 bg-slate-50 px-4 text-slate-700 text-base focus:bg-white focus:ring-2 focus:ring-blue-600 focus:outline-none appearance-none cursor-pointer transition-colors"
-                      >
-                        <option>Bulk Product Sourcing (Agriculture)</option>
-                        <option>Heavy Machinery Procurement</option>
-                        <option>Logistics & Supply Chain</option>
-                        <option>Partnership Proposal</option>
-                        <option>Other Query</option>
-                      </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Row 4: Message */}
-                  <motion.div variants={itemVariants} className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-slate-500 ml-1">Project Specifications *</label>
-                    <Textarea 
-                      placeholder="Please describe your requirements, quantity, and target delivery timeline..." 
-                      className="min-h-[160px] bg-slate-50 border-slate-100 focus:bg-white transition-all text-base p-4 resize-none" 
-                      required 
-                    />
-                  </motion.div>
-
-                  {/* Submit Button */}
-                  <motion.div variants={itemVariants} className="pt-4">
-                    <Button 
-                      disabled={isSubmitting}
-                      className="w-full h-16 text-lg font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg shadow-blue-600/20 transition-all hover:scale-[1.01] active:scale-[0.98]"
-                    >
-                      {isSubmitting ? (
-                        <span className="flex items-center gap-2">Processing <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /></span>
-                      ) : (
-                        <span className="flex items-center gap-2">Submit Quote Request <ArrowRight size={20} /></span>
-                      )}
-                    </Button>
-                    <p className="text-center text-xs text-slate-400 mt-4">
-                      By submitting this form, you agree to our <a href="#" className="underline hover:text-blue-500">Terms of Trade</a>.
-                    </p>
-                  </motion.div>
-                </form>
+                  </div>
+                </div>
               </div>
+
+              {/* Trade guarantee card */}
+              <div className="bg-[#09090B] overflow-hidden">
+                <div className="h-px bg-[#C4882A]/60" />
+                <div className="p-7">
+                  <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-5">
+                    <span className="w-3 h-px bg-[#C4882A]" /> Trade Guarantee
+                  </span>
+                  <div className="space-y-4">
+                    {[
+                      "Response within 4 business hours",
+                      "ISO 9001:2015 certified operations",
+                      "Dedicated trade desk manager",
+                      "Phytosanitary & LC documentation",
+                    ].map((item) => (
+                      <div key={item} className="flex items-start gap-3 text-sm text-zinc-400">
+                        <span className="w-4 h-4 mt-0.5 border border-[#C4882A]/30 flex items-center justify-center shrink-0">
+                          <span className="w-1.5 h-1.5 bg-[#C4882A]" />
+                        </span>
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* WhatsApp CTA */}
+              <a
+                href={SITE.contact.whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 p-5 bg-green-600 hover:bg-green-500 text-white transition-colors group"
+              >
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-green-200 mb-0.5">Faster response</p>
+                  <p className="font-bold text-sm">Chat on WhatsApp</p>
+                </div>
+                <ArrowRight size={16} className="shrink-0 group-hover:translate-x-1 transition-transform" />
+              </a>
             </motion.div>
 
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

@@ -1,168 +1,125 @@
 "use client";
 
 import Link from "next/link";
-import { Mail, Phone, MapPin, Linkedin, Globe, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import { SITE } from "@/data/site";
+
+const footerLinks = {
+  products: [
+    { label: "Food Essentials", href: "/products" },
+    { label: "Industrial Goods", href: "/products" },
+    { label: "Machinery", href: "/products" },
+    { label: "Custom Sourcing", href: "/quote" },
+  ],
+  company: [
+    { label: "About Us", href: "/about" },
+    { label: "Our Services", href: "/services" },
+    { label: "Why Ayanco", href: "/why-ayanco" },
+    { label: "FAQ", href: "/faq" },
+  ],
+  legal: [
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms of Trade", href: "/terms" },
+    { label: "Contact Us", href: "/contact" },
+  ],
+};
 
 export default function Footer() {
   return (
-    <footer className="relative bg-slate-950 text-slate-400 border-t border-slate-900 overflow-hidden">
-      {/* subtle premium glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-48 w-[520px] rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute -bottom-32 right-[-80px] h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
+    <footer className="bg-[#09090B] border-t border-white/6 text-[#A8A29E]">
+
+      {/* Top brass accent */}
+      <div className="h-px bg-[#C4882A]/60" />
+
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+
+          {/* Brand column */}
+          <div className="lg:col-span-2 space-y-6">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-7 h-7 bg-[#C4882A] flex items-center justify-center shrink-0">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <rect x="1" y="1" width="5" height="5" fill="#09090B" />
+                    <rect x="8" y="1" width="5" height="5" fill="#09090B" opacity="0.5" />
+                    <rect x="1" y="8" width="5" height="5" fill="#09090B" opacity="0.5" />
+                    <rect x="8" y="8" width="5" height="5" fill="#09090B" />
+                  </svg>
+                </div>
+                <span className="font-black text-[#FAFAF9] uppercase tracking-tight text-base">
+                  Ayanco <span className="text-[#C4882A]">Trade</span>
+                </span>
+              </div>
+              <p className="text-sm leading-relaxed max-w-xs text-[#78716C]">
+                International sourcing and supply chain management. Connecting verified global suppliers with high-growth markets since 2012.
+              </p>
+            </div>
+
+            <div className="space-y-3 text-sm">
+              <a href={`mailto:${SITE.contact.email}`} className="flex items-center gap-3 hover:text-[#FAFAF9] transition-colors">
+                <Mail size={15} className="text-[#C4882A] shrink-0" />
+                {SITE.contact.email}
+              </a>
+              <span className="flex items-center gap-3">
+                <Phone size={15} className="text-[#C4882A] shrink-0" />
+                {SITE.contact.phone}
+              </span>
+              <span className="flex items-start gap-3">
+                <MapPin size={15} className="text-[#C4882A] shrink-0 mt-0.5" />
+                {SITE.contact.address}
+              </span>
+            </div>
+
+            <Link
+              href="/quote"
+              className="inline-flex items-center gap-2 h-10 px-6 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors"
+            >
+              Request Quote <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          {/* Link columns */}
+          <div>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4882A] mb-5">Products</h4>
+            <ul className="space-y-3">
+              {footerLinks.products.map((l) => (
+                <li key={l.label}>
+                  <Link href={l.href} className="text-sm hover:text-[#FAFAF9] transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4882A] mb-5">Company</h4>
+            <ul className="space-y-3">
+              {footerLinks.company.map((l) => (
+                <li key={l.label}>
+                  <Link href={l.href} className="text-sm hover:text-[#FAFAF9] transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C4882A] mb-5">Legal</h4>
+            <ul className="space-y-3">
+              {footerLinks.legal.map((l) => (
+                <li key={l.label}>
+                  <Link href={l.href} className="text-sm hover:text-[#FAFAF9] transition-colors">{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-16 md:pt-20 pb-10">
-        {/* Top CTA Strip (FIXED) */}
-        <div className="mb-14 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 text-center md:text-left">
-            <p className="text-white font-bold text-xl md:text-2xl tracking-tight">
-              Ready to source, verify, and ship with confidence?
-            </p>
-            <p className="text-slate-400 text-sm md:text-base max-w-2xl">
-              Request a quote and our team will respond with sourcing options, pricing guidance, and lead times.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-  {/* Primary */}
-  <Link
-    href="/quote"
-    className="inline-flex items-center justify-center rounded-full bg-white text-blue-950 hover:bg-slate-200 font-semibold h-12 px-6 w-full sm:w-auto transition-transform hover:scale-[1.02] active:scale-[0.98]"
-  >
-    Request Quote <ArrowRight className="ml-2" size={18} />
-  </Link>
-
-  {/* Secondary (NO Button component, pure link) */}
-  <Link
-    href="/quote"
-    className="inline-flex items-center justify-center rounded-full border border-white/25 text-white hover:bg-white hover:text-slate-900 font-semibold h-12 px-6 w-full sm:w-auto transition-colors"
-  >
-    Contact Support
-  </Link>
-</div>
-
-        </div>
-
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
-          <div className="space-y-6">
-            <Link href="/" className="inline-flex items-center">
-              <h3 className="text-2xl font-extrabold text-white tracking-tight">
-                AYANCO<span className="text-blue-500">TRADE</span>
-              </h3>
-            </Link>
-
-            <p className="text-sm leading-relaxed text-slate-400">
-              Premier global trading corporation bridging high-growth markets with premium industrial and agricultural
-              supply chains.
-            </p>
-
-            <div className="flex gap-4">
-              <Link
-                href="#"
-                className="text-slate-400 hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md p-1"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} />
-              </Link>
-              <Link
-                href="#"
-                className="text-slate-400 hover:text-blue-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md p-1"
-                aria-label="Website"
-              >
-                <Globe size={20} />
-              </Link>
-            </div>
-          </div>
-
-          {/* Business Units */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Business Units</h4>
-            <ul className="space-y-4 text-sm font-medium">
-              {[
-                { label: "Food Essentials", href: "/products" },
-                { label: "Industrial Goods", href: "/products" },
-                { label: "Machinery", href: "/products" },
-              ].map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    className="inline-flex items-center gap-2 hover:text-white transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
-                  >
-                    <span className="group-hover:translate-x-0.5 transition-transform">{l.label}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">→</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Company</h4>
-            <ul className="space-y-4 text-sm font-medium">
-              {[
-                { label: "Our Firm", href: "/about" },
-                { label: "The Advantage", href: "/why-ayanco" },
-                { label: "Contact Us", href: "/quote" },
-              ].map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    className="inline-flex items-center gap-2 hover:text-white transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
-                  >
-                    <span className="group-hover:translate-x-0.5 transition-transform">{l.label}</span>
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-400">→</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest mb-6">Global Desk</h4>
-            <ul className="space-y-4 text-sm font-medium">
-              <li className="flex items-center gap-3">
-                <Mail size={16} className="text-blue-500" />
-                <a
-                  href="mailto:info@ayanco.com"
-                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
-                >
-                  info@ayanco.com
-                </a>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone size={16} className="text-blue-500" />
-                <a
-                  href="tel:+8801234567890"
-                  className="hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md"
-                >
-                  +880 1234-567890
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin size={16} className="text-blue-500 shrink-0 mt-0.5" />
-                <span>Dhaka, Bangladesh</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-slate-600">
-          <p>© {new Date().getFullYear()} Ayanco Trade Corp. All Rights Reserved.</p>
-          <div className="flex gap-8">
-            <Link href="#" className="hover:text-slate-400 transition-colors">
-              Privacy
-            </Link>
-            <Link href="#" className="hover:text-slate-400 transition-colors">
-              Terms
-            </Link>
-          </div>
+      {/* Bottom bar */}
+      <div className="border-t border-white/6">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#57534E]">
+          <span>© {new Date().getFullYear()} Ayanco Trade Corporation. All rights reserved.</span>
+          <span>Registered in Bangladesh · RJSC · VAT & TIN Registered</span>
         </div>
       </div>
     </footer>

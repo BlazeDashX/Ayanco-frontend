@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import React, { useRef } from "react";
@@ -13,188 +12,157 @@ import {
   type Easing,
 } from "framer-motion";
 import { ArrowRight, Globe, ShieldCheck, Truck } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
-/* ---------------- DATA ---------------- */
+import Image from "next/image";
 
 const services = [
   {
     icon: Globe,
-    title: "Sourcing",
-    tag: "Global Network",
-    desc: "We identify vetted suppliers across 15+ countries, ensuring raw material quality before it even ships.",
+    title: "Global Sourcing",
+    tag: "15+ Countries",
+    desc: "We identify vetted suppliers across 15+ countries, ensuring raw material quality before a single unit ships.",
+    num: "01",
+    img: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
   },
   {
     icon: ShieldCheck,
-    title: "Compliance",
+    title: "Trade Compliance",
     tag: "ISO Certified",
-    desc: "Every shipment undergoes rigorous QA checks, adhering to international trade standards and certifications.",
+    desc: "Every shipment undergoes rigorous QA checks adhering to international trade standards and certifications.",
+    num: "02",
+    img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
   },
   {
     icon: Truck,
-    title: "Logistics",
-    tag: "End-to-End",
+    title: "End-to-End Logistics",
+    tag: "Door to Door",
     desc: "From customs clearance to last-mile delivery, we manage the entire supply chain with real-time tracking.",
+    num: "03",
+    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
   },
 ];
-
-/* ---------------- MOTION CONFIG ---------------- */
 
 const ease: Easing = [0.22, 1, 0.36, 1];
 
 const leftBlock: Variants = {
   hidden: { opacity: 0, y: 22 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.85, ease },
-  },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } },
 };
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 28, scale: 0.98 },
+  hidden: { opacity: 0, y: 28 },
   show: (i: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.85,
-      ease,
-      delay: 0.1 + i * 0.12,
-    },
+    opacity: 1, y: 0,
+    transition: { duration: 0.7, ease, delay: 0.1 + i * 0.12 },
   }),
 };
 
-/* ---------------- TILT CARD ---------------- */
-
-function TiltCard({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+function ServiceCard({ s, i }: { s: typeof services[0]; i: number }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-
-  const rotX = useSpring(useTransform(y, [-40, 40], [6, -6]), { stiffness: 220, damping: 18 });
-  const rotY = useSpring(useTransform(x, [-40, 40], [-6, 6]), { stiffness: 220, damping: 18 });
-
-  const shine = useMotionTemplate`radial-gradient(
-    250px at ${x}px ${y}px,
-    rgba(59,130,246,0.18),
-    transparent 55%
-  )`;
+  const rotX = useSpring(useTransform(y, [-40, 40], [3, -3]), { stiffness: 200, damping: 20 });
+  const rotY = useSpring(useTransform(x, [-40, 40], [-3, 3]), { stiffness: 200, damping: 20 });
+  const shine = useMotionTemplate`radial-gradient(260px at ${x}px ${y}px, rgba(196,136,42,0.08), transparent 60%)`;
 
   return (
     <motion.div
-      style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
-      onMouseMove={(e) => {
-        const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-        x.set(e.clientX - rect.left - rect.width / 2);
-        y.set(e.clientY - rect.top - rect.height / 2);
-      }}
-      onMouseLeave={() => { x.set(0); y.set(0); }}
-      className={className}
+      key={s.title}
+      custom={i}
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.1 }}
+      className="group relative"
     >
       <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-        style={{ backgroundImage: shine }}
-      />
-      {children}
+        style={{ rotateX: rotX, rotateY: rotY, transformStyle: "preserve-3d" }}
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          x.set(e.clientX - rect.left - rect.width / 2);
+          y.set(e.clientY - rect.top - rect.height / 2);
+        }}
+        onMouseLeave={() => { x.set(0); y.set(0); }}
+        className="relative border border-zinc-200 bg-white hover:border-[#C4882A]/30 hover:shadow-xl hover:shadow-[#C4882A]/5 transition-all duration-300 overflow-hidden"
+      >
+        {/* Image top strip */}
+        <div className="h-40 relative overflow-hidden">
+          <Image
+            src={s.img}
+            alt={s.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-zinc-900/40" />
+          <div className="absolute inset-0 bg-linear-to-t from-white via-transparent" />
+          <span className="absolute top-3 right-3 text-[9px] font-bold text-white/80 border border-white/20 bg-black/30 backdrop-blur-sm px-2 py-0.5 uppercase tracking-wider">
+            {s.tag}
+          </span>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 md:p-7">
+          <div className="flex items-start gap-4">
+            <span className="text-[10px] font-bold text-[#C4882A]/60 tracking-[0.25em] pt-1 shrink-0">{s.num}</span>
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 border border-zinc-200 bg-zinc-50 text-[#C4882A] group-hover:bg-[#C4882A] group-hover:text-white group-hover:border-[#C4882A] transition-all duration-300">
+                  <s.icon size={16} />
+                </div>
+                <h3 className="text-zinc-900 font-bold text-base">{s.title}</h3>
+              </div>
+              <p className="text-zinc-500 text-sm leading-relaxed">{s.desc}</p>
+            </div>
+          </div>
+        </div>
+
+        <motion.div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: shine }} />
+      </motion.div>
     </motion.div>
   );
 }
 
-/* ---------------- MAIN COMPONENT ---------------- */
-
 export default function ServiceParallax() {
   const ref = useRef<HTMLElement | null>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-  const leftY = useTransform(scrollYProgress, [0, 1], [18, -18]);
+  const leftY = useTransform(scrollYProgress, [0, 1], [16, -16]);
   const rightY = useTransform(scrollYProgress, [0, 1], [-10, 10]);
-  const spotX = useTransform(scrollYProgress, [0, 1], ["30%", "70%"]);
-  const spotY = useTransform(scrollYProgress, [0, 1], ["30%", "60%"]);
-
-  const spotlight = useMotionTemplate`radial-gradient(
-    600px at ${spotX} ${spotY},
-    rgba(59,130,246,0.14),
-    transparent 60%
-  )`;
 
   return (
-    <section ref={ref} className="relative py-24 bg-slate-950 text-white overflow-hidden">
-      <motion.div style={{ background: spotlight }} className="pointer-events-none absolute inset-0" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900/60" />
+    <section ref={ref} className="relative py-24 md:py-32 bg-[#F5F4F0] overflow-hidden border-t border-zinc-200">
+      <div className="container mx-auto px-6 max-w-7xl relative">
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-28 items-start">
 
-      <div className="container mx-auto px-6 relative">
-        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-start">
-          
-          {/* LEFT CONTENT */}
+          {/* LEFT sticky */}
           <motion.div
             style={{ y: leftY }}
             variants={leftBlock}
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.4 }}
-            className="lg:w-1/2 space-y-8"
+            viewport={{ once: true, amount: 0.1 }}
+            className="lg:w-[38%] space-y-8 lg:sticky lg:top-32"
           >
-            <div className="space-y-6">
-              {/* FIX: Reduced Font Size for Mobile to prevent overflow */}
-              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.1]">
-                Streamlining <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
-                  Complexity.
-                </span>
-              </h2>
+            <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Core Services</p>
 
-              <p className="text-slate-400 text-base md:text-lg leading-relaxed max-w-xl">
-                We don't just move goods; we engineer supply chains. From strict compliance checks in origin countries to final-mile logistics, Ayanco safeguards your business interest.
-              </p>
-            </div>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05] text-zinc-900">
+              Engineered for{" "}
+              <span className="text-[#C4882A]">Scale.</span>
+            </h2>
 
-            <Button asChild size="lg" className="w-full md:w-auto rounded-full px-8 h-14 bg-white text-blue-950 hover:bg-blue-50 font-bold text-base transition-transform hover:scale-105">
-              <Link href="/services">
-                Explore Our Services <ArrowRight className="ml-2 w-5 h-5" />
-              </Link>
-            </Button>
+            <p className="text-zinc-500 text-base leading-relaxed max-w-sm">
+              We don&apos;t just move goods — we engineer supply chains. From origin compliance to last-mile logistics, Ayanco safeguards your business interests.
+            </p>
+
+            <Link
+              href="/services"
+              className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-white font-bold text-sm transition-colors"
+            >
+              All Services <ArrowRight size={17} />
+            </Link>
           </motion.div>
 
           {/* RIGHT CARDS */}
-          <motion.div style={{ y: rightY }} className="lg:w-1/2 w-full flex flex-col gap-5">
-            {services.map((s, i) => (
-              <motion.div
-                key={s.title}
-                custom={i}
-                variants={cardVariants}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true, amount: 0.3 }}
-                className="group relative"
-              >
-                <TiltCard className="relative p-6 md:p-8 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/15 transition-all duration-300">
-                  {/* FIX: Mobile Flex Layout Stack */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-4 relative">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-blue-500/20 text-blue-400 rounded-lg group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                        <s.icon size={24} />
-                      </div>
-                      <h3 className="text-2xl font-bold">{s.title}</h3>
-                    </div>
-                    {/* Tag aligned cleanly on mobile */}
-                    <span className="self-start sm:self-auto text-[10px] md:text-xs font-bold uppercase tracking-wider text-blue-300 bg-blue-500/10 px-3 py-1 rounded-full whitespace-nowrap">
-                      {s.tag}
-                    </span>
-                  </div>
-
-                  <p className="text-slate-400 text-sm md:text-base leading-relaxed sm:pl-[60px] relative">
-                    {s.desc}
-                  </p>
-                </TiltCard>
-              </motion.div>
-            ))}
+          <motion.div style={{ y: rightY }} className="lg:w-[62%] w-full flex flex-col gap-4">
+            {services.map((s, i) => <ServiceCard key={s.title} s={s} i={i} />)}
           </motion.div>
         </div>
       </div>

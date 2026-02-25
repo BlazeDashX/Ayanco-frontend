@@ -1,0 +1,53 @@
+[0m[0m
+[0m[4mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\app\products\page.tsx[24m[0m
+[0m  [2m39:5[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\app\products\page.tsx:39:5[0m
+[0m  37 |   // Reset page when filter changes[0m
+[0m  38 |   useEffect(() => {[0m
+[0m> 39 |     setCurrentPage(1);[0m
+[0m     |     ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  40 |   }, [activeCategory, searchQuery]);[0m
+[0m  41 |[0m
+[0m  42 |   // Scroll Handler  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[4mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\app\quote\page.tsx[24m[0m
+[0m  [2m62:85[22m  [31merror[39m  Error: Cannot call impure function during render[0m
+[0m[0m
+[0m`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).[0m
+[0m[0m
+[0mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\app\quote\page.tsx:62:85[0m
+[0m  60 |                     <div className="bg-zinc-50 border border-zinc-200 p-6 w-full max-w-xs text-center flex flex-col items-center">[0m
+[0m  61 |                       <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-1.5">Reference ID</p>[0m
+[0m> 62 |                       <p className="text-zinc-800 font-mono font-bold text-lg">ATC-{Date.now().toString().slice(-6)}</p>[0m
+[0m     |                                                                                     ^^^^^^^^^^ Cannot call impure function[0m
+[0m  63 |                     </div>[0m
+[0m  64 |                     <button onClick={() => setIsSubmitted(false)} className="text-sm font-bold text-[#C4882A] hover:text-[#D4952E] mt-4 uppercase tracking-widest transition-colors">[0m
+[0m  65 |                       Submit another  [2mreact-hooks/purity[22m[0m
+[0m[0m
+[0m[4mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\components\layout\Navbar.tsx[24m[0m
+[0m  [2m31:21[22m  [31merror[39m  Error: Calling setState synchronously within an effect can trigger cascading renders[0m
+[0m[0m
+[0mEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:[0m
+[0m* Update external systems with the latest state from React.[0m
+[0m* Subscribe for updates from some external system, calling setState in a callback function when external state changes.[0m
+[0m[0m
+[0mCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).[0m
+[0m[0m
+[0mD:\00.Projects\Industry Project\Ayanco\ayanco-frontend\src\components\layout\Navbar.tsx:31:21[0m
+[0m  29 |   }, []);[0m
+[0m  30 |[0m
+[0m> 31 |   useEffect(() => { setIsMobileMenuOpen(false); }, [pathname]);[0m
+[0m     |                     ^^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect[0m
+[0m  32 |[0m
+[0m  33 |   const isActive = (href: string) =>[0m
+[0m  34 |     href === "/" ? pathname === "/" : pathname.startsWith(href);  [2mreact-hooks/set-state-in-effect[22m[0m
+[0m[0m
+[0m[31m[1m✖ 3 problems (3 errors, 0 warnings)[22m[39m[0m
+[0m[31m[1m[22m[39m[0m

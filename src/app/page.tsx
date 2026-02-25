@@ -1,23 +1,20 @@
-import Portfolios from "@/components/home/Portfolios";
-import ServiceParallax from "@/components/home/ServiceParallax";
+import HeroSlider from "@/components/home/HeroSlider";
+import MarqueeTicker from "@/components/home/MarqueeTicker";
 import StatsStrip from "@/components/home/StatsStrip";
-import PageHero from "@/components/ui/PageHero";
+import Portfolios from "@/components/home/Portfolios";
+import ProcessSteps from "@/components/home/ProcessSteps";
+import Testimonials from "@/components/home/Testimonials";
+import ServiceParallax from "@/components/home/ServiceParallax";
 
 export default function HomePage() {
   return (
     <main>
-      <PageHero
-        badge="Premier Global Trading"
-        title="Global Reach."
-        highlight="Local Impact."
-        subtitle="Bridging the gap between premium global suppliers and industrial markets."
-        bgImage="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d"
-        primaryCta={{ label: "Explore Products", href: "/products" }}
-        secondaryCta={{ label: "Our Services", href: "/services" }}
-      />
-
+      <HeroSlider />
+      <MarqueeTicker />
       <StatsStrip />
       <Portfolios />
+      <ProcessSteps />
+      <Testimonials />
       <ServiceParallax />
     </main>
   );

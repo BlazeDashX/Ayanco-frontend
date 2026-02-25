@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Or your preferred font
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar"; // IMPORT THE NEW NAVBAR
-import Footer from "@/components/layout/Footer"; // We will build this in Step 2
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
+import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
+import MouseGlow from "@/components/ui/MouseGlow";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar /> 
+        <MouseGlow />
+        <ScrollProgressBar />
+        <Navbar />
         {children}
         <Footer />
+        <WhatsAppWidget />
       </body>
     </html>
   );

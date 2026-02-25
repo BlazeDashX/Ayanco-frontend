@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PageHeroProps {
@@ -11,17 +11,8 @@ interface PageHeroProps {
   highlight?: string;
   subtitle?: string;
   bgImage?: string;
-
-  primaryCta?: {
-    label: string;
-    href: string;
-  };
-
-  secondaryCta?: {
-    label: string;
-    href: string;
-  };
-
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
   topOffsetClassName?: string;
   minHeightClassName?: string;
 }
@@ -41,109 +32,81 @@ export default function PageHero({
   const hasSecondary = Boolean(secondaryCta?.label?.trim() && secondaryCta?.href);
 
   return (
-    <section
-      className={cn(
-        "relative w-full overflow-hidden bg-slate-950 flex items-center justify-center",
-        minHeightClassName
-      )}
-    >
+    <section className={cn("relative w-full overflow-hidden bg-[#09090B] flex items-center", minHeightClassName)}>
+      {/* Top brass accent line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-[#C4882A]/60 z-20" />
+
       {/* Background Image */}
       {bgImage && (
-        <motion.div
+        <div
           className="absolute inset-0 z-0 bg-cover bg-center"
           style={{ backgroundImage: `url('${bgImage}')` }}
-          initial={{ scale: 1.15 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
         />
       )}
 
       {/* Overlays */}
-      <div className="absolute inset-0 z-10 bg-slate-950/60" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-      
-      {/* Content */}
-      <div
-        className={cn(
-          "relative z-20 w-full max-w-7xl mx-auto px-6 text-center",
-          topOffsetClassName,
-          "pb-24 md:pb-32"
-        )}
-      >
-        <div className="max-w-4xl mx-auto space-y-8 md:space-y-10">
-          
-          {/* Badge */}
+      <div className="absolute inset-0 z-10 bg-[#09090B]/70" />
+      <div className="absolute inset-0 z-10" style={{ background: "linear-gradient(105deg, #09090B 40%, rgba(9,9,11,0.35) 100%)" }} />
+      <div className="absolute inset-0 z-10" style={{ background: "linear-gradient(to top, #09090B 0%, transparent 55%)" }} />
+
+      {/* Content — left-aligned (matches HeroSlider) */}
+      <div className={cn("relative z-20 w-full max-w-7xl mx-auto px-6", topOffsetClassName, "pb-24 md:pb-32")}>
+        <div className="max-w-2xl space-y-6">
+
           {badge && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-200 text-xs md:text-sm font-bold tracking-[0.2em] uppercase backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" />
-                {badge}
-              </span>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">{badge}</p>
             </motion.div>
           )}
 
-          {/* Title - REFINED SIZES (Smaller & More Premium) */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter leading-[1.1] text-white"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-none text-[#FAFAF9]"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
+            transition={{ duration: 0.65, delay: 0.05 }}
           >
             {title}
             {highlight && (
               <>
                 <br className="hidden md:block" />{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400">
-                  {highlight}
-                </span>
+                <span className="text-[#C4882A]">{highlight}</span>
               </>
             )}
           </motion.h1>
 
-          {/* Subtitle - REFINED SIZES */}
           {subtitle && (
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-slate-300 font-light leading-relaxed max-w-2xl mx-auto"
+              className="text-[#A8A29E] text-base md:text-lg font-light leading-relaxed max-w-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.65, delay: 0.12 }}
             >
               {subtitle}
             </motion.p>
           )}
 
-          {/* CTA Buttons */}
           {(hasPrimary || hasSecondary) && (
             <motion.div
-              className="flex flex-col sm:flex-row justify-center gap-4 pt-6 md:pt-8"
-              initial={{ opacity: 0, y: 20 }}
+              className="flex flex-wrap gap-3 pt-2"
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
+              transition={{ duration: 0.65, delay: 0.18 }}
             >
               {hasPrimary && (
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-blue-600 hover:bg-blue-500 text-white h-14 px-8 text-base md:text-lg font-bold rounded-full shadow-lg shadow-blue-600/25 transition-all hover:scale-105"
+                <Link
+                  href={primaryCta!.href}
+                  className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors"
                 >
-                  <Link href={primaryCta!.href}>{primaryCta!.label}</Link>
-                </Button>
+                  {primaryCta!.label} <ArrowRight size={15} />
+                </Link>
               )}
-
               {hasSecondary && (
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  // FIX APPLIED HERE: Added 'bg-transparent' to fix the white blob issue
-                  className="bg-transparent border-white/20 text-white hover:bg-white hover:text-slate-900 h-14 px-8 text-base md:text-lg font-bold rounded-full backdrop-blur-sm transition-all"
+                <Link
+                  href={secondaryCta!.href}
+                  className="inline-flex items-center gap-2 h-11 px-7 border border-white/12 text-[#A8A29E] hover:text-[#FAFAF9] hover:border-white/20 font-medium text-sm transition-colors"
                 >
-                  <Link href={secondaryCta!.href}>{secondaryCta!.label}</Link>
-                </Button>
+                  {secondaryCta!.label}
+                </Link>
               )}
             </motion.div>
           )}

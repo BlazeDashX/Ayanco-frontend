@@ -1,12 +1,12 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { motion, Variants } from "framer-motion";
-import { ArrowRight, Globe, Package, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Globe, MapPin, Package } from "lucide-react";
 import Link from "next/link";
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
 };
 
@@ -20,64 +20,95 @@ interface ProductProps {
 }
 
 export default function ProductCard({ product }: { product: ProductProps }) {
-  // Color coding for markets
   const isGlobal = product.market.includes("Export") || product.market.includes("Global");
-  const marketColor = isGlobal ? "text-blue-600 bg-blue-50 border-blue-100" : "text-emerald-600 bg-emerald-50 border-emerald-100";
   const MarketIcon = isGlobal ? Globe : MapPin;
+
+  const cat = product.category.toLowerCase();
+  const isFood = cat.includes("food");
+  const isMachinery = cat.includes("machinery") || cat.includes("machine");
+
+  // Colorful industrial accents for card top banner
+  const topBg = isFood
+    ? "bg-amber-100"
+    : isMachinery
+      ? "bg-blue-100"
+      : "bg-emerald-100";
+
+  const iconColor = isFood
+    ? "text-amber-500"
+    : isMachinery
+      ? "text-blue-500"
+      : "text-emerald-500";
+
+  const badgeTextColor = isFood ? "text-amber-700" : isMachinery ? "text-blue-700" : "text-emerald-700";
+
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    setMousePosition({ x, y });
+  }
 
   return (
     <motion.div variants={cardVariants} layout>
-      <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-200/50">
-        
-        {/* 1. Image Area (Abstract Placeholder) */}
-        <div className="relative h-60 overflow-hidden bg-slate-100">
-          <div className="absolute top-4 left-4 z-20">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-slate-900 shadow-sm backdrop-blur-md">
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        className="group relative flex h-full flex-col overflow-hidden border border-zinc-200 bg-white hover:border-[#C4882A]/50 hover:shadow-xl hover:shadow-[#C4882A]/10 transition-all duration-300"
+      >
+        {/* Glow Effect (Adapted for Light Mode) */}
+        <div
+          className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: `radial-gradient(400px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(196, 136, 42, 0.08), transparent 40%)`,
+          }}
+        />
+
+        {/* Image Area */}
+        <div className={`relative h-44 overflow-hidden ${topBg} z-10 border-b border-zinc-100`}>
+          <div className="absolute top-3 left-3 z-20">
+            <span className={`inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${badgeTextColor} shadow-sm rounded-sm`}>
               {product.category}
             </span>
           </div>
-
-          {/* Animated Icon Placeholder */}
-          <div className="absolute inset-0 flex items-center justify-center text-slate-300 transition-transform duration-700 group-hover:scale-110">
-            <Package size={80} strokeWidth={0.8} />
+          <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 ${iconColor} opacity-70`}>
+            <Package size={64} strokeWidth={1} />
           </div>
-
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-white/80 to-transparent z-10" />
         </div>
 
-        {/* 2. Content Body */}
-        <div className="flex flex-grow flex-col p-8">
-          {/* Market Badge (Requirement III.a) */}
-          <div className={`mb-4 inline-flex w-fit items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-bold uppercase tracking-wider ${marketColor}`}>
-            <MarketIcon size={12} />
+        {/* Content */}
+        <div className="flex grow flex-col p-6 z-10 bg-white">
+
+          {/* Market badge */}
+          <div className="mb-3 inline-flex w-fit items-center gap-1.5 border border-zinc-200 bg-zinc-50 rounded-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-600 shadow-xs">
+            <MarketIcon size={12} className="text-zinc-500" />
             {product.market}
           </div>
 
-          <h3 className="mb-3 text-2xl font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+          <h3 className="mb-3 text-lg font-bold text-zinc-900 group-hover:text-[#C4882A] transition-colors leading-tight">
             {product.title}
           </h3>
-          
-          <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-slate-500">
+
+          <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-zinc-600">
             {product.description}
           </p>
 
-          {/* 3. Footer Action */}
-          <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-6">
-            <span className="text-xs font-bold text-slate-400">
+          {/* Footer */}
+          <div className="mt-auto flex items-center justify-between border-t border-zinc-100 pt-4">
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
               {product.specs}
             </span>
-            
-            <Button 
-              asChild 
-              variant="ghost" 
-              className="group/btn h-auto p-0 font-bold text-blue-600 hover:bg-transparent hover:text-blue-800"
+            <Link
+              href={`/quote?product=${encodeURIComponent(product.title)}`}
+              className="inline-flex items-center gap-1.5 text-[11px] font-bold text-white bg-[#C4882A] group-hover:bg-[#d89732] px-3 py-1.5 rounded-sm uppercase tracking-wider shadow-sm transition-all"
             >
-              <Link href={`/quote?product=${encodeURIComponent(product.title)}`} className="flex items-center gap-2">
-                Request Quote 
-                <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
-              </Link>
-            </Button>
+              Request Quote <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+            </Link>
           </div>
         </div>
       </div>
