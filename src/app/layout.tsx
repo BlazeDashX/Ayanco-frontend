@@ -33,6 +33,11 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Ayanco Trade Corporation",
   description: "Global Sourcing and Industrial Supply Chain Solutions",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

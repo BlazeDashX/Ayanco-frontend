@@ -44,7 +44,7 @@ export default function FounderHero() {
       <div className="hero-orb hero-orb-2" aria-hidden="true" />
       <div className="hero-orb hero-orb-3" aria-hidden="true" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-20 items-center relative z-10 pt-20 lg:pt-0">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-20 items-center relative z-10 pt-4 lg:pt-0">
 
         {/* ── LEFT COLUMN — Text ── */}
         <motion.div
@@ -178,7 +178,7 @@ export default function FounderHero() {
                 src={portraitSrc}
                 alt={portraitAlt}
                 fill
-                className="object-contain object-bottom scale-[1.1] origin-bottom"
+                className="object-contain object-top"
                 priority
               />
 

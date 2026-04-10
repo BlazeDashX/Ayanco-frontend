@@ -7,10 +7,9 @@ import { useFounderMeta } from "@/hooks/useFounder";
 const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#company", label: "Company" },
-  { href: "#catalog", label: "Catalog" },
   { href: "#milestones", label: "Milestones" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#affiliations", label: "Affiliations" },
+  { href: "#events", label: "Gallery" },
+  { href: "#gallery", label: "Awards" },
   { href: "#contact", label: "Contact" },
 ];
 

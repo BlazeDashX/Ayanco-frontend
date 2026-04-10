@@ -6,7 +6,7 @@ export default function FounderMilestones() {
   const milestones = useMilestones();
 
   return (
-    <section className="py-24 md:py-32 bg-[#fafaf9] scroll-mt-24 relative overflow-hidden">
+    <section id="milestones" className="py-24 md:py-32 bg-[#fafaf9] scroll-mt-24 relative overflow-hidden">
       {/* Subtle background decoration */}
       <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-[color:var(--gold)]/5 to-transparent pointer-events-none" aria-hidden="true" />
       
