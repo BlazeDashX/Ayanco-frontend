@@ -250,7 +250,7 @@ export default function FAQPage() {
                             </span>
                             <h3 className="text-2xl font-black text-zinc-900 tracking-tight mb-2">Talk to our trade desk</h3>
                             <p className="text-zinc-500 text-sm max-w-sm leading-relaxed">
-                                Our team responds to all inquiries within 4 business hours.
+                                Our team responds to all inquiries within 24 hours.
                             </p>
                         </div>
                         <div className="relative flex flex-col sm:flex-row gap-3 shrink-0">

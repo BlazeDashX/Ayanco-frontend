@@ -19,7 +19,7 @@ export const SITE = {
         whatsapp: "https://wa.me/8801711000000",
         address: "Banani Model Town, Dhaka-1213, Bangladesh",
         officeHours: "Saturday – Thursday, 9:00 AM – 6:00 PM (BST)",
-        responseTime: "< 4 Hours",
+        responseTime: "< 24 Hours",
     },
 
     /**

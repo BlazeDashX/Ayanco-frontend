@@ -23,8 +23,8 @@ export default function Testimonials() {
                     viewport={{ once: true, amount: 0.1 }}
                     className="mb-14"
                 >
-                    <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Client Voices</p>
-                    <h2 className="text-3xl md:text-5xl font-black text-zinc-900 tracking-tight">
+                    <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Client Voices</p>
+                    <h2 className="font-display text-3xl md:text-5xl font-black text-zinc-900 tracking-tight">
                         Trusted Globally.
                     </h2>
                 </motion.div>
@@ -53,7 +53,7 @@ export default function Testimonials() {
                         </div>
 
                         {/* Quote text */}
-                        <blockquote className="text-xl md:text-2xl text-zinc-800 font-light leading-relaxed mb-10 max-w-3xl">
+                        <blockquote className="font-lato text-xl md:text-2xl text-zinc-800 font-light leading-relaxed mb-10 max-w-3xl">
                             &ldquo;{t.quote}&rdquo;
                         </blockquote>
 
@@ -64,11 +64,11 @@ export default function Testimonials() {
                                     {t.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <p className="font-bold text-zinc-900 text-sm">{t.name}</p>
-                                    <p className="text-zinc-400 text-xs">{t.role} · {t.company}</p>
+                                    <p className="font-display font-bold text-zinc-900 text-sm">{t.name}</p>
+                                    <p className="font-lato text-zinc-400 text-xs">{t.role} · {t.company}</p>
                                 </div>
                             </div>
-                            <span className="hidden md:flex items-center gap-2 text-[10px] font-bold text-zinc-300 uppercase tracking-[0.2em]">
+                            <span className="hidden md:flex items-center gap-2 font-lato text-[10px] font-bold text-zinc-300 uppercase tracking-[0.2em]">
                                 {t.country}
                             </span>
                         </div>

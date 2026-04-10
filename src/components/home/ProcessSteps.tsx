@@ -20,11 +20,11 @@ export default function ProcessSteps() {
                     viewport={{ once: true, amount: 0.1 }}
                     className="mb-16 max-w-2xl"
                 >
-                    <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Our Process</p>
-                    <h2 className="text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight mb-4">
+                    <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Our Process</p>
+                    <h2 className="font-display text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight mb-4">
                         From Inquiry to Delivery.
                     </h2>
-                    <p className="text-zinc-500 text-base leading-relaxed">
+                    <p className="font-lato text-zinc-500 text-base leading-relaxed">
                         Four structured steps. No guesswork, no surprises.
                     </p>
                 </motion.div>
@@ -50,8 +50,8 @@ export default function ProcessSteps() {
                                         {String(step.step).padStart(2, "0")}
                                     </span>
                                 </div>
-                                <h3 className="text-zinc-900 font-bold text-base mb-2">{step.title}</h3>
-                                <p className="text-zinc-500 text-sm leading-relaxed">{step.description}</p>
+                                <h3 className="font-display text-zinc-900 font-bold text-base mb-2">{step.title}</h3>
+                                <p className="font-lato text-zinc-500 text-sm leading-relaxed">{step.description}</p>
                             </motion.div>
                         );
                     })}

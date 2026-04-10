@@ -26,11 +26,11 @@ export default function StatsStrip() {
               >
                 <Icon size={20} className="text-[#C4882A]" />
                 <div>
-                  <div className="text-4xl md:text-5xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1.5">
+                  <div className="font-display text-4xl md:text-5xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1.5">
                     <CountUp end={stat.value} duration={2.5} decimals={stat.decimals ?? 0} enableScrollSpy scrollSpyOnce />
                     <span className="text-[#C4882A]">{stat.suffix}</span>
                   </div>
-                  <p className="text-xs font-semibold text-zinc-400 uppercase tracking-[0.18em]">
+                  <p className="font-lato text-xs font-semibold text-zinc-400 uppercase tracking-[0.18em]">
                     {stat.label}
                   </p>
                 </div>

@@ -34,8 +34,8 @@ export default function Portfolios() {
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         >
           <div>
-            <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">What We Trade</p>
-            <h2 className="text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
+            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">What We Trade</p>
+            <h2 className="font-display text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
               Three Verticals,<br />
               <span className="text-zinc-400">One Partner.</span>
             </h2>
@@ -61,7 +61,8 @@ export default function Portfolios() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.05 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="group relative overflow-hidden border border-zinc-200 bg-white hover:shadow-xl hover:shadow-zinc-300/40 hover:-translate-y-1 transition-all duration-400"
+                whileHover={{ y: -4, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.1)" }}
+                className="group relative overflow-hidden border border-zinc-200 bg-white transition-all duration-400"
               >
                 {/* Image */}
                 <div className="h-52 relative overflow-hidden">
@@ -80,16 +81,16 @@ export default function Portfolios() {
 
                 {/* Body */}
                 <div className="p-7">
-                  <h3 className="text-zinc-900 font-bold text-lg mb-2 tracking-tight">{item.title}</h3>
-                  <p className="text-zinc-500 text-sm leading-relaxed mb-5">{item.description}</p>
+                  <h3 className="font-display text-zinc-900 font-bold text-lg mb-2 tracking-tight">{item.title}</h3>
+                  <p className="font-lato text-zinc-500 text-sm leading-relaxed mb-5">{item.description}</p>
                   <div className="flex flex-wrap gap-1.5 mb-6">
                     {tags.map((tag) => (
-                      <span key={tag} className="text-[10px] font-bold text-zinc-500 border border-zinc-200 bg-zinc-50 px-2.5 py-1 uppercase tracking-wider">
+                      <span key={tag} className="font-lato text-[10px] font-bold text-zinc-500 border border-zinc-200 bg-zinc-50 px-2.5 py-1 uppercase tracking-wider">
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <Link href="/products" className="inline-flex items-center gap-2 text-xs font-bold text-[#C4882A] hover:text-[#D4952E] transition-colors uppercase tracking-wider">
+                  <Link href="/products" className="inline-flex items-center gap-2 font-lato text-xs font-bold text-[#C4882A] hover:text-[#D4952E] transition-colors uppercase tracking-wider">
                     Explore <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>

@@ -119,10 +119,24 @@ export default function QuotePage() {
       return;
     }
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1600));
-    setRefId(Date.now().toString().slice(-6));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit request");
+      }
+      setRefId(data.refId || Date.now().toString().slice(-6));
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to submit request. Please try again or contact us directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -132,7 +146,7 @@ export default function QuotePage() {
         badge="Procurement Desk"
         title="Request a"
         highlight="Quote."
-        subtitle="Let us source your next big requirement. Our global trade desk will respond with verified pricing within 4 business hours."
+        subtitle="Let us source your next big requirement. Our global trade desk will respond with verified pricing within 24 hours."
       />
 
       <section className="py-24">
@@ -153,9 +167,9 @@ export default function QuotePage() {
                 <div className="px-8 md:px-12 pt-10 pb-8 border-b border-zinc-100">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="w-6 h-px bg-[#C4882A]" />
-                    <h2 className="text-xs font-black text-zinc-900 uppercase tracking-[0.18em]">Quotation Request</h2>
+                    <h2 className="font-display text-xs font-black text-zinc-900 uppercase tracking-[0.18em]">Quotation Request</h2>
                   </div>
-                  <p className="text-zinc-500 text-sm leading-relaxed">
+                  <p className="font-lato text-zinc-500 text-sm leading-relaxed">
                     Provide specific details for an accurate and expedited quotation.
                     Fields marked <span className="text-[#C4882A] font-bold">*</span> are required.
                   </p>
@@ -186,8 +200,8 @@ export default function QuotePage() {
                       </motion.div>
 
                       <div className="max-w-xs">
-                        <h2 className="text-3xl font-black text-zinc-900 mb-3 tracking-tight">Request Received</h2>
-                        <p className="text-zinc-500 text-sm leading-relaxed">
+                        <h2 className="font-display text-3xl font-black text-zinc-900 mb-3 tracking-tight">Request Received</h2>
+                        <p className="font-lato text-zinc-500 text-sm leading-relaxed">
                           Our trade desk will review your specifications and contact you within{" "}
                           <span className="font-semibold text-zinc-700">{SITE.contact.responseTime}</span>.
                         </p>
@@ -215,7 +229,7 @@ export default function QuotePage() {
                         {/* Row 1 */}
                         <div className="grid md:grid-cols-2 gap-6">
                           <div>
-                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                               <User size={10} className="text-zinc-400" /> Full Name <span className="text-[#C4882A]">*</span>
                             </label>
                             <input
@@ -231,7 +245,7 @@ export default function QuotePage() {
                             <FieldError message={touched.name ? errors.name : undefined} />
                           </div>
                           <div>
-                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                               <Building2 size={10} className="text-zinc-400" /> Company <span className="text-[#C4882A]">*</span>
                             </label>
                             <input
@@ -251,7 +265,7 @@ export default function QuotePage() {
                         {/* Row 2 */}
                         <div className="grid md:grid-cols-2 gap-6">
                           <div>
-                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                               <Mail size={10} className="text-zinc-400" /> Work Email <span className="text-[#C4882A]">*</span>
                             </label>
                             <input
@@ -267,7 +281,7 @@ export default function QuotePage() {
                             <FieldError message={touched.email ? errors.email : undefined} />
                           </div>
                           <div>
-                            <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                            <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                               <Phone size={10} className="text-zinc-400" /> Phone Number
                             </label>
                             <input
@@ -286,7 +300,7 @@ export default function QuotePage() {
 
                         {/* Category */}
                         <div>
-                          <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                          <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                             <Layers size={10} className="text-zinc-400" /> Request Category
                           </label>
                           <div className="relative">
@@ -306,7 +320,7 @@ export default function QuotePage() {
 
                         {/* Specs */}
                         <div>
-                          <label className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
+                          <label className="flex items-center gap-1.5 font-lato text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500 mb-2">
                             <FileText size={10} className="text-zinc-400" /> Product Specifications <span className="text-[#C4882A]">*</span>
                           </label>
                           <textarea
@@ -368,25 +382,25 @@ export default function QuotePage() {
               <div className="bg-white border border-zinc-200 overflow-hidden">
                 <div className="h-px bg-[#C4882A]/60" />
                 <div className="p-7">
-                  <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-4">
+                  <span className="inline-flex items-center gap-2 font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-4">
                     <span className="w-3 h-px bg-[#C4882A]" /> Direct Contact
                   </span>
                   <div className="space-y-4 text-sm mt-2">
                     <div>
-                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Email</p>
+                      <p className="font-lato text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Email</p>
                       <a href={`mailto:${SITE.contact.email}`} className="text-zinc-800 font-semibold hover:text-[#C4882A] transition-colors">{SITE.contact.email}</a>
                     </div>
                     <div>
-                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Phone</p>
+                      <p className="font-lato text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Phone</p>
                       <a href={`tel:${SITE.contact.phoneRaw}`} className="text-zinc-800 font-semibold hover:text-[#C4882A] transition-colors">{SITE.contact.phone}</a>
                     </div>
                     <div>
-                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Corporate HQ</p>
-                      <p className="text-zinc-700 leading-relaxed">{SITE.contact.address}</p>
+                      <p className="font-lato text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Corporate HQ</p>
+                      <p className="font-lato text-zinc-700 leading-relaxed">{SITE.contact.address}</p>
                     </div>
                     <div>
-                      <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Hours</p>
-                      <p className="text-zinc-700">{SITE.contact.officeHours}</p>
+                      <p className="font-lato text-zinc-400 text-[10px] font-bold uppercase tracking-widest mb-1">Hours</p>
+                      <p className="font-lato text-zinc-700">{SITE.contact.officeHours}</p>
                     </div>
                   </div>
                 </div>
@@ -396,17 +410,17 @@ export default function QuotePage() {
               <div className="bg-[#09090B] overflow-hidden">
                 <div className="h-px bg-[#C4882A]/60" />
                 <div className="p-7">
-                  <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-5">
+                  <span className="inline-flex items-center gap-2 font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-5">
                     <span className="w-3 h-px bg-[#C4882A]" /> Trade Guarantee
                   </span>
                   <div className="space-y-4">
                     {[
-                      "Response within 4 business hours",
+                      "Response within 24 hours",
                       "ISO 9001:2015 certified operations",
                       "Dedicated trade desk manager",
                       "Phytosanitary & LC documentation",
                     ].map((item) => (
-                      <div key={item} className="flex items-start gap-3 text-sm text-zinc-400">
+                      <div key={item} className="flex items-start gap-3 font-lato text-sm text-zinc-400">
                         <span className="w-4 h-4 mt-0.5 border border-[#C4882A]/30 flex items-center justify-center shrink-0">
                           <span className="w-1.5 h-1.5 bg-[#C4882A]" />
                         </span>
@@ -425,8 +439,8 @@ export default function QuotePage() {
                 className="flex items-center justify-between gap-3 p-5 bg-green-600 hover:bg-green-500 text-white transition-colors group"
               >
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-green-200 mb-0.5">Faster response</p>
-                  <p className="font-bold text-sm">Chat on WhatsApp</p>
+                  <p className="font-lato text-[10px] font-bold uppercase tracking-widest text-green-200 mb-0.5">Faster response</p>
+                  <p className="font-display font-bold text-sm">Chat on WhatsApp</p>
                 </div>
                 <ArrowRight size={16} className="shrink-0 group-hover:translate-x-1 transition-transform" />
               </a>

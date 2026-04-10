@@ -14,33 +14,9 @@ import {
 import { ArrowRight, Globe, ShieldCheck, Truck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { SERVICES } from "@/data/home/services";
 
-const services = [
-  {
-    icon: Globe,
-    title: "Global Sourcing",
-    tag: "15+ Countries",
-    desc: "We identify vetted suppliers across 15+ countries, ensuring raw material quality before a single unit ships.",
-    num: "01",
-    img: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Trade Compliance",
-    tag: "ISO Certified",
-    desc: "Every shipment undergoes rigorous QA checks adhering to international trade standards and certifications.",
-    num: "02",
-    img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
-  },
-  {
-    icon: Truck,
-    title: "End-to-End Logistics",
-    tag: "Door to Door",
-    desc: "From customs clearance to last-mile delivery, we manage the entire supply chain with real-time tracking.",
-    num: "03",
-    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
-  },
-];
+const iconMap: Record<string, React.ElementType> = { Globe, ShieldCheck, Truck };
 
 const ease: Easing = [0.22, 1, 0.36, 1];
 
@@ -57,7 +33,7 @@ const cardVariants: Variants = {
   }),
 };
 
-function ServiceCard({ s, i }: { s: typeof services[0]; i: number }) {
+function ServiceCard({ s, i }: { s: typeof SERVICES[0]; i: number }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotX = useSpring(useTransform(y, [-40, 40], [3, -3]), { stiffness: 200, damping: 20 });
@@ -82,12 +58,12 @@ function ServiceCard({ s, i }: { s: typeof services[0]; i: number }) {
           y.set(e.clientY - rect.top - rect.height / 2);
         }}
         onMouseLeave={() => { x.set(0); y.set(0); }}
-        className="relative border border-zinc-200 bg-white hover:border-[#C4882A]/30 hover:shadow-xl hover:shadow-[#C4882A]/5 transition-all duration-300 overflow-hidden"
+        className="relative border border-zinc-200 bg-white hover:border-[#C4882A]/50 hover:shadow-xl hover:shadow-[#C4882A]/10 transition-all duration-300 overflow-hidden"
       >
         {/* Image top strip */}
         <div className="h-40 relative overflow-hidden">
           <Image
-            src={s.img}
+            src={s.image}
             alt={s.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -106,11 +82,11 @@ function ServiceCard({ s, i }: { s: typeof services[0]; i: number }) {
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 border border-zinc-200 bg-zinc-50 text-[#C4882A] group-hover:bg-[#C4882A] group-hover:text-white group-hover:border-[#C4882A] transition-all duration-300">
-                  <s.icon size={16} />
+                  <s.icon />
                 </div>
-                <h3 className="text-zinc-900 font-bold text-base">{s.title}</h3>
+                <h3 className="font-display text-zinc-900 font-bold text-base">{s.title}</h3>
               </div>
-              <p className="text-zinc-500 text-sm leading-relaxed">{s.desc}</p>
+              <p className="font-lato text-zinc-500 text-sm leading-relaxed">{s.description}</p>
             </div>
           </div>
         </div>
@@ -141,14 +117,14 @@ export default function ServiceParallax() {
             viewport={{ once: true, amount: 0.1 }}
             className="lg:w-[38%] space-y-8 lg:sticky lg:top-32"
           >
-            <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Core Services</p>
+            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Core Services</p>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05] text-zinc-900">
+            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05] text-zinc-900">
               Engineered for{" "}
               <span className="text-[#C4882A]">Scale.</span>
             </h2>
 
-            <p className="text-zinc-500 text-base leading-relaxed max-w-sm">
+            <p className="font-lato text-zinc-500 text-base leading-relaxed max-w-sm">
               We don&apos;t just move goods — we engineer supply chains. From origin compliance to last-mile logistics, Ayanco safeguards your business interests.
             </p>
 
@@ -162,7 +138,11 @@ export default function ServiceParallax() {
 
           {/* RIGHT CARDS */}
           <motion.div style={{ y: rightY }} className="lg:w-[62%] w-full flex flex-col gap-4">
-            {services.map((s, i) => <ServiceCard key={s.title} s={s} i={i} />)}
+            {SERVICES.map((s, i) => {
+              const Icon = iconMap[s.icon] || Globe;
+              const serviceWithIcon = { ...s, icon: Icon as any };
+              return <ServiceCard key={s.title} s={serviceWithIcon} i={i} />;
+            })}
           </motion.div>
         </div>
       </div>

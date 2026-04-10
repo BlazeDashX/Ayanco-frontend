@@ -64,9 +64,11 @@ export default function HeroSlider() {
                         style={{ backgroundImage: `url('${slide.bgImage}')` }}
                     />
                     {/* Multi-layer overlay for crisp contrast */}
-                    <div className="absolute inset-0 bg-[#09090B]/70" />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(110deg, #09090B 42%, rgba(9,9,11,0.4) 100%)" }} />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, #09090B 0%, transparent 50%)" }} />
+                    <div className="absolute inset-0 bg-[#09090B]/60" />
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(110deg, #09090B 35%, rgba(9,9,11,0.5) 100%)" }} />
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, #09090B 0%, transparent 40%)" }} />
+                    {/* Subtle gold accent gradient */}
+                    <div className="absolute inset-0 opacity-20" style={{ background: "radial-gradient(circle at 70% 50%, rgba(196,136,42,0.15), transparent 60%)" }} />
                 </motion.div>
             </AnimatePresence>
 
@@ -93,20 +95,20 @@ export default function HeroSlider() {
                     >
                         {/* Badge */}
                         <div className="flex items-center gap-3 mb-8">
-                            <span className="text-[#C4882A] text-[11px] uppercase tracking-[0.3em] font-bold">
+                            <span className="font-cormorant text-[#C4882A] text-[11px] uppercase tracking-[0.3em] font-bold">
                                 {slide.badge}
                             </span>
                         </div>
 
                         {/* Headline */}
-                        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-black tracking-[-0.03em] leading-[0.95] text-white mb-8">
+                        <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-black tracking-[-0.03em] leading-[0.95] text-white mb-8">
                             {slide.title}
                             <br />
                             <span className="text-[#C4882A]">{slide.highlight}</span>
                         </h1>
 
                         {/* Subtitle */}
-                        <p className="text-slate-300 text-base md:text-lg font-light leading-relaxed max-w-xl mb-10">
+                        <p className="font-lato text-slate-300 text-base md:text-lg font-light leading-relaxed max-w-xl mb-10">
                             {slide.subtitle}
                         </p>
 
