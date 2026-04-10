@@ -5,7 +5,7 @@ export const founderMeta = {
   title: "Visionary Entrepreneur & Industry Leader",
   subtitle:
     "Building empires, fostering innovation, and shaping the future of Ayan International.",
-  portraitSrc: "/images/founder.png",
+  portraitSrc: "/images/founderpic.png",
   portraitAlt: "Professional portrait of Md. Akhtarul Islam Rimon",
   ctaLabel: "Make an Inquiry",
   ctaHref: "#contact",
@@ -87,7 +87,7 @@ export const milestones = [
 
 export const eventSlides = [
   {
-    src: "/images/slideshow1.JPG",
+    src: "/images/slideshow1.jpg",
     alt: "Inauguration ceremony crowd view",
     title: "Grand Inauguration",
     location: "Dhaka",

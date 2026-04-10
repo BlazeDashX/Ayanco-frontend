@@ -2,10 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import { Plus, Minus, ArrowRight, Search, X } from "lucide-react";
+import PageHeader from "@/components/ui/PageHeader";
 import { FAQ_DATA } from "@/data/faq";
-import PageHero from "@/components/ui/PageHero";
+import Link from "next/link";
 
 const ALL = "All";
 const CATEGORIES = [ALL, ...FAQ_DATA.map((s) => s.category)];
@@ -39,14 +39,15 @@ export default function FAQPage() {
     }
 
     return (
-        <main className="bg-white min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
+        <main className="bg-[#FAFAF8] min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
 
-            <PageHero
+            {/* Page Header */}
+            <PageHeader
+                variant="light"
                 badge="Help Center"
                 title="Frequently Asked"
                 highlight="Questions."
-                subtitle="Everything you need to know about Ayanco's trading, sourcing, logistics, and payment processes."
-                primaryCta={{ label: "Contact our trade desk", href: "/contact" }}
+                description="Everything you need to know about Ayanco's trading, sourcing, logistics, and payment processes."
             />
 
             {/* ── STICKY FILTER BAR ── */}
@@ -84,7 +85,7 @@ export default function FAQPage() {
                             placeholder="Search questions…"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="h-9 w-full border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none focus:border-[#C4882A] focus:bg-white transition-colors"
+                            className="h-9 w-full border border-zinc-200 bg-zinc-50 pl-9 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none focus:border-gold focus:bg-white transition-colors"
                         />
                         <AnimatePresence>
                             {search && (
@@ -121,12 +122,12 @@ export default function FAQPage() {
                                         {/* Category header */}
                                         <div className="flex items-center gap-4 mb-8">
                                             <div className="flex items-center gap-3">
-                                                <span className="w-6 h-px bg-[#C4882A]" />
-                                                <p className="text-[10px] font-black text-[#C4882A] uppercase tracking-[0.25em]">
+                                                <span className="w-6 h-px bg-gold" />
+                                                <p className="font-accent text-[10px] font-black text-gold uppercase tracking-[0.25em]">
                                                     {section.category}
                                                 </p>
                                             </div>
-                                            <span className="text-[10px] font-bold text-zinc-300 ml-1">
+                                            <span className="font-lato text-[10px] font-bold text-zinc-300 ml-1">
                                                 {section.items.length} {section.items.length === 1 ? "entry" : "entries"}
                                             </span>
                                         </div>
@@ -150,15 +151,15 @@ export default function FAQPage() {
                                                             aria-expanded={isOpen}
                                                         >
                                                             {/* Question */}
-                                                            <span className={`font-semibold text-base leading-snug transition-colors duration-200 ${isOpen ? "text-[#C4882A]" : "text-zinc-900 group-hover:text-[#C4882A]"}`}>
+                                                            <span className={`font-display font-semibold text-base leading-snug transition-colors duration-200 ${isOpen ? "text-gold" : "text-zinc-900 group-hover:text-gold"}`}>
                                                                 {/* Highlight search match */}
                                                                 {search ? highlightText(item.question, search) : item.question}
                                                             </span>
 
                                                             {/* Icon */}
                                                             <span className={`shrink-0 w-8 h-8 flex items-center justify-center border transition-all duration-300 ${isOpen
-                                                                    ? "bg-[#C4882A] border-[#C4882A] text-white rotate-0"
-                                                                    : "bg-zinc-50 border-zinc-200 text-zinc-400 group-hover:border-[#C4882A] group-hover:text-[#C4882A]"
+                                                                    ? "bg-gold border-gold text-white rotate-0"
+                                                                    : "bg-zinc-50 border-zinc-200 text-zinc-400 group-hover:border-gold group-hover:text-gold"
                                                                 }`}>
                                                                 {isOpen ? <Minus size={14} /> : <Plus size={14} />}
                                                             </span>
@@ -178,8 +179,8 @@ export default function FAQPage() {
                                                                     <div className="pb-6 pr-14">
                                                                         {/* Gold left bar */}
                                                                         <div className="flex gap-4">
-                                                                            <div className="w-px bg-[#C4882A]/40 shrink-0 self-stretch ml-0.5" />
-                                                                            <p className="text-zinc-500 leading-relaxed text-sm md:text-base">
+                                                                            <div className="w-px bg-gold/40 shrink-0 self-stretch ml-0.5" />
+                                                                            <p className="font-lato text-zinc-500 leading-relaxed text-sm md:text-base">
                                                                                 {search ? highlightText(item.answer, search) : item.answer}
                                                                             </p>
                                                                         </div>
@@ -206,13 +207,13 @@ export default function FAQPage() {
                                 <div className="inline-flex items-center justify-center w-16 h-16 bg-zinc-100 mb-6">
                                     <Search size={24} className="text-zinc-400" />
                                 </div>
-                                <h3 className="text-xl font-black text-zinc-800 mb-2">No results found</h3>
-                                <p className="text-zinc-400 text-sm mb-6">
+                                <h3 className="font-display text-xl font-black text-zinc-800 mb-2">No results found</h3>
+                                <p className="font-lato text-zinc-400 text-sm mb-6">
                                     No questions match &ldquo;<span className="font-semibold text-zinc-600">{search}</span>&rdquo;
                                 </p>
                                 <button
                                     onClick={() => { setSearch(""); setActiveCategory(ALL); }}
-                                    className="text-sm font-bold text-[#C4882A] hover:text-[#D4952E] uppercase tracking-widest transition-colors"
+                                    className="font-lato text-sm font-bold text-gold hover:text-gold-dark uppercase tracking-widest transition-colors"
                                 >
                                     Clear search
                                 </button>
@@ -222,7 +223,7 @@ export default function FAQPage() {
 
                     {/* Count strip */}
                     {totalVisible > 0 && (
-                        <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-[0.2em] mt-12 text-center">
+                        <p className="font-lato text-[10px] font-bold text-zinc-300 uppercase tracking-[0.2em] mt-12 text-center">
                             Showing {totalVisible} question{totalVisible !== 1 ? "s" : ""}
                         </p>
                     )}
@@ -245,24 +246,24 @@ export default function FAQPage() {
                             style={{ backgroundImage: "repeating-linear-gradient(45deg, #09090B, #09090B 1px, transparent 1px, transparent 20px)" }}
                         />
                         <div className="relative text-center md:text-left">
-                            <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-3">
-                                <span className="w-4 h-px bg-[#C4882A]" /> Still have questions?
+                            <span className="inline-flex items-center gap-2 font-accent text-[10px] font-bold text-gold uppercase tracking-[0.2em] mb-3">
+                                <span className="w-4 h-px bg-gold" /> Still have questions?
                             </span>
-                            <h3 className="text-2xl font-black text-zinc-900 tracking-tight mb-2">Talk to our trade desk</h3>
-                            <p className="text-zinc-500 text-sm max-w-sm leading-relaxed">
+                            <h3 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-2">Talk to our trade desk</h3>
+                            <p className="font-lato text-zinc-500 text-sm max-w-sm leading-relaxed">
                                 Our team responds to all inquiries within 24 hours.
                             </p>
                         </div>
                         <div className="relative flex flex-col sm:flex-row gap-3 shrink-0">
                             <Link
                                 href="/contact"
-                                className="inline-flex items-center justify-center gap-2 h-12 px-8 bg-[#09090B] hover:bg-zinc-800 text-white font-bold transition-colors text-sm"
+                                className="inline-flex items-center justify-center gap-2 h-12 px-8 bg-[#09090B] hover:bg-zinc-800 text-white font-lato font-bold transition-colors text-sm"
                             >
                                 Contact Support <ArrowRight size={15} />
                             </Link>
                             <Link
                                 href="/quote"
-                                className="inline-flex items-center justify-center h-12 px-8 border border-zinc-200 bg-white text-zinc-600 hover:text-zinc-900 hover:border-zinc-300 font-bold transition-colors text-sm"
+                                className="inline-flex items-center justify-center h-12 px-8 border border-zinc-200 bg-white text-zinc-600 hover:text-zinc-900 hover:border-zinc-300 font-lato font-bold transition-colors text-sm"
                             >
                                 Request Quote
                             </Link>
@@ -284,7 +285,7 @@ function highlightText(text: string, query: string) {
         <>
             {parts.map((part, i) =>
                 regex.test(part) ? (
-                    <mark key={i} className="bg-[#C4882A]/20 text-[#C4882A] rounded-sm px-0.5 not-italic font-semibold">
+                    <mark key={i} className="bg-gold/20 text-gold-dark rounded-sm px-0.5 not-italic font-semibold">
                         {part}
                     </mark>
                 ) : (

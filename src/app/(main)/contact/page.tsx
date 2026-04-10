@@ -1,13 +1,9 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock, ArrowRight, ExternalLink, Building2 } from "lucide-react";
 import { SITE } from "@/data/site";
-import PageHero from "@/components/ui/PageHero";
-
-export const metadata: Metadata = {
-    title: "Contact Us | Ayanco Trade Corporation",
-    description: "Reach out to Ayanco Trade Corporation for trade inquiries, supplier coordination, logistics support, and partnership proposals.",
-};
+import { motion } from "framer-motion";
 
 const contactMethods = [
     { icon: Mail, label: "Trade Inquiries", value: SITE.contact.email, href: `mailto:${SITE.contact.email}` },
@@ -18,16 +14,26 @@ const contactMethods = [
 
 export default function ContactPage() {
     return (
-        <main className="bg-white min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
+        <main className="bg-[#FAFAF8] min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
 
-            <PageHero
-                badge="Global Trade Desk"
-                title="Let's build your"
-                highlight="supply chain."
-                subtitle={`Our team responds within ${SITE.contact.responseTime}. Whether it's procurement, logistics, or an industry partnership, we're here.`}
-                primaryCta={{ label: "Chat on WhatsApp", href: SITE.contact.whatsapp }}
-                secondaryCta={{ label: "Request a Quote", href: "/quote" }}
-            />
+            {/* Page Header */}
+            <div className="bg-white border-b border-zinc-200 py-16 md:py-20">
+                <div className="max-w-7xl mx-auto px-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Global Trade Desk</p>
+                        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-zinc-900 tracking-tight leading-tight mb-4">
+                            Let's build your <span className="text-[#C4882A]">supply chain.</span>
+                        </h1>
+                        <p className="font-lato text-zinc-500 text-base md:text-lg leading-relaxed max-w-2xl">
+                            Our team responds within {SITE.contact.responseTime}. Whether it's procurement, logistics, or an industry partnership, we're here.
+                        </p>
+                    </motion.div>
+                </div>
+            </div>
 
             {/* ── CONTACT METHODS GRID ── */}
             <section className="py-20">
@@ -44,8 +50,8 @@ export default function ContactPage() {
                                     <div className="w-10 h-10 bg-[#09090B] flex items-center justify-center mb-6 group-hover:bg-[#C4882A] transition-colors">
                                         <Icon size={16} className="text-[#C4882A] group-hover:text-white transition-colors" />
                                     </div>
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">{m.label}</p>
-                                    <p className="text-zinc-900 font-bold text-base leading-snug">{m.value}</p>
+                                    <p className="font-lato text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">{m.label}</p>
+                                    <p className="font-display text-zinc-900 font-bold text-base leading-snug">{m.value}</p>
                                 </a>
                             );
                         })}
@@ -60,14 +66,14 @@ export default function ContactPage() {
                     {/* Section header */}
                     <div className="flex items-center gap-3 mb-10">
                         <span className="w-8 h-px bg-[#C4882A]" />
-                        <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Our Offices</p>
+                        <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Our Offices</p>
                     </div>
                     <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
-                        <h2 className="text-3xl md:text-4xl font-black text-zinc-900 tracking-tight leading-tight">
+                        <h2 className="font-display text-3xl md:text-4xl font-black text-zinc-900 tracking-tight leading-tight">
                             Nationwide presence,<br />
                             <span className="text-[#C4882A]">global reach.</span>
                         </h2>
-                        <p className="text-zinc-500 text-sm max-w-sm leading-relaxed">
+                        <p className="font-lato text-zinc-500 text-sm max-w-sm leading-relaxed">
                             With offices across Bangladesh's key trade hubs — from the capital to the port city and beyond — our teams are always close to your operations.
                         </p>
                     </div>
@@ -92,24 +98,24 @@ export default function ContactPage() {
                                             <div className={`w-7 h-7 flex items-center justify-center ${office.isHQ ? "bg-[#C4882A]" : "bg-zinc-100 group-hover:bg-[#C4882A]/10 transition-colors"}`}>
                                                 <Building2 size={13} className={office.isHQ ? "text-white" : "text-zinc-500"} />
                                             </div>
-                                            <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${office.isHQ ? "text-[#C4882A]" : "text-zinc-400"}`}>
+                                            <span className={`font-lato text-[10px] font-black uppercase tracking-[0.2em] ${office.isHQ ? "text-[#C4882A]" : "text-zinc-400"}`}>
                                                 {office.label}
                                             </span>
                                         </div>
                                         {office.isHQ && (
-                                            <span className="inline-flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-[#C4882A] border border-[#C4882A]/30 px-2 py-0.5">
+                                            <span className="inline-flex items-center gap-1 font-lato text-[9px] font-bold uppercase tracking-widest text-[#C4882A] border border-[#C4882A]/30 px-2 py-0.5">
                                                 HQ
                                             </span>
                                         )}
                                     </div>
 
                                     {/* City */}
-                                    <h3 className={`text-2xl font-black tracking-tight mb-1 ${office.isHQ ? "text-white" : "text-zinc-900"}`}>
+                                    <h3 className={`font-display text-2xl font-black tracking-tight mb-1 ${office.isHQ ? "text-white" : "text-zinc-900"}`}>
                                         {office.city}
                                     </h3>
 
                                     {/* Address */}
-                                    <p className={`text-sm leading-relaxed mb-6 ${office.isHQ ? "text-zinc-400" : "text-zinc-500"}`}>
+                                    <p className={`font-lato text-sm leading-relaxed mb-6 ${office.isHQ ? "text-zinc-400" : "text-zinc-500"}`}>
                                         {office.address}
                                     </p>
 
@@ -137,7 +143,7 @@ export default function ContactPage() {
                                             href={office.mapUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className={`inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider transition-colors ${office.isHQ
+                                            className={`inline-flex items-center gap-2 font-lato text-[11px] font-bold uppercase tracking-wider transition-colors ${office.isHQ
                                                     ? "text-[#C4882A] hover:text-[#D4952E]"
                                                     : "text-zinc-400 hover:text-[#C4882A]"
                                                 }`}
@@ -160,16 +166,16 @@ export default function ContactPage() {
                         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 10px, #e5e5e5 10px, #e5e5e5 11px)" }} />
 
                         <div className="relative z-10 text-center md:text-left">
-                            <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-4">
+                            <span className="inline-flex items-center gap-2 font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.2em] mb-4">
                                 <span className="w-4 h-px bg-[#C4882A]" /> Specific Requirements
                             </span>
-                            <h3 className="text-2xl font-black text-zinc-900 tracking-tight mb-2">Submit a detailed RFQ</h3>
-                            <p className="text-zinc-500 text-sm">Our sourcing team will return verified pricing rapidly.</p>
+                            <h3 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-2">Submit a detailed RFQ</h3>
+                            <p className="font-lato text-zinc-500 text-sm">Our sourcing team will return verified pricing rapidly.</p>
                         </div>
                         <div className="relative z-10 shrink-0">
                             <Link
                                 href="/quote"
-                                className="inline-flex items-center gap-2 h-12 px-8 bg-[#09090B] hover:bg-zinc-800 text-white font-bold text-sm transition-colors"
+                                className="inline-flex items-center gap-2 h-12 px-8 bg-[#09090B] hover:bg-zinc-800 text-white font-lato font-bold text-sm transition-colors"
                             >
                                 Get a Quote <ArrowRight size={16} />
                             </Link>

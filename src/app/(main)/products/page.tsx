@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Filter, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
-import PageHero from "@/components/ui/PageHero";
 import ProductCard from "@/components/products/ProductCard";
 import FilterBar from "@/components/products/FilterBar";
 import { PRODUCTS, PRODUCT_CATEGORIES, PRODUCTS_PER_PAGE } from "@/data/products";
@@ -15,7 +14,7 @@ const ITEMS_PER_PAGE = PRODUCTS_PER_PAGE;
 
 
 export default function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("Machinery");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -68,15 +67,24 @@ export default function ProductsPage() {
 
   return (
     <main className="min-h-screen bg-[#FAFAF8]">
-      <PageHero
-        badge="Product Catalog"
-        title="Verified."
-        highlight="Sourced."
-        subtitle="Browse our diverse portfolio of commodities and machinery."
-        bgImage="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop"
-        primaryCta={{ label: "Request Custom Sourcing", href: "/contact" }}
-        secondaryCta={{ label: "Contact Our Trade Desk", href: "/contact" }}
-      />
+      {/* Page Header */}
+      <div className="bg-white border-b border-zinc-200 py-16 md:py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Product Catalog</p>
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-zinc-900 tracking-tight leading-tight mb-4">
+              Verified. <span className="text-[#C4882A]">Sourced.</span>
+            </h1>
+            <p className="font-lato text-zinc-500 text-base md:text-lg leading-relaxed max-w-2xl">
+              Browse our diverse portfolio of commodities and machinery sourced from verified suppliers worldwide.
+            </p>
+          </motion.div>
+        </div>
+      </div>
 
       <div ref={gridRef} className="relative z-30">
         <FilterBar
@@ -145,11 +153,11 @@ export default function ProductsPage() {
       <section className="bg-[#09090B] py-20 border-t border-white/6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
-            <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-3">Custom Sourcing</p>
-            <h2 className="text-2xl md:text-3xl font-black text-[#FAFAF9] tracking-tight">
+            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-3">Custom Sourcing</p>
+            <h2 className="font-display text-2xl md:text-3xl font-black text-[#FAFAF9] tracking-tight">
               Don&apos;t see what you need?
             </h2>
-            <p className="text-[#78716C] text-sm mt-2 max-w-md">Our trade desk sources globally on request — tell us exactly what you&apos;re looking for.</p>
+            <p className="font-lato text-[#78716C] text-sm mt-2 max-w-md">Our trade desk sources globally on request — tell us exactly what you&apos;re looking for.</p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link href="/quote" className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors">

@@ -58,7 +58,7 @@ function ServiceCard({ s, i }: { s: typeof SERVICES[0]; i: number }) {
           y.set(e.clientY - rect.top - rect.height / 2);
         }}
         onMouseLeave={() => { x.set(0); y.set(0); }}
-        className="relative border border-zinc-200 bg-white hover:border-[#C4882A]/50 hover:shadow-xl hover:shadow-[#C4882A]/10 transition-all duration-300 overflow-hidden"
+        className="relative border border-zinc-200 bg-white hover:border-gold/50 hover:shadow-xl hover:shadow-gold/8 transition-all duration-300 overflow-hidden"
       >
         {/* Image top strip */}
         <div className="h-40 relative overflow-hidden">
@@ -78,10 +78,10 @@ function ServiceCard({ s, i }: { s: typeof SERVICES[0]; i: number }) {
         {/* Content */}
         <div className="p-6 md:p-7">
           <div className="flex items-start gap-4">
-            <span className="text-[10px] font-bold text-[#C4882A]/60 tracking-[0.25em] pt-1 shrink-0">{s.num}</span>
+            <span className="text-[10px] font-bold text-gold/60 tracking-[0.25em] pt-1 shrink-0">{s.num}</span>
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 border border-zinc-200 bg-zinc-50 text-[#C4882A] group-hover:bg-[#C4882A] group-hover:text-white group-hover:border-[#C4882A] transition-all duration-300">
+                <div className="p-2 border border-zinc-200 bg-zinc-50 text-gold group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all duration-300">
                   <s.icon />
                 </div>
                 <h3 className="font-display text-zinc-900 font-bold text-base">{s.title}</h3>
@@ -117,23 +117,25 @@ export default function ServiceParallax() {
             viewport={{ once: true, amount: 0.1 }}
             className="lg:w-[38%] space-y-8 lg:sticky lg:top-32"
           >
-            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">Core Services</p>
+            <p className="font-accent text-[10px] font-bold text-gold uppercase tracking-[0.25em]">Core Services</p>
 
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05] text-zinc-900">
               Engineered for{" "}
-              <span className="text-[#C4882A]">Scale.</span>
+              <span className="text-gold">Scale.</span>
             </h2>
 
             <p className="font-lato text-zinc-500 text-base leading-relaxed max-w-sm">
               We don&apos;t just move goods — we engineer supply chains. From origin compliance to last-mile logistics, Ayanco safeguards your business interests.
             </p>
 
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-white font-bold text-sm transition-colors"
-            >
-              All Services <ArrowRight size={17} />
-            </Link>
+            <motion.div whileTap={{ scale: 0.96 }} whileHover={{ scale: 1.02 }}>
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 h-11 px-7 bg-gold hover:bg-gold-dark text-white font-bold text-sm transition-colors"
+              >
+                All Services <ArrowRight size={17} />
+              </Link>
+            </motion.div>
           </motion.div>
 
           {/* RIGHT CARDS */}

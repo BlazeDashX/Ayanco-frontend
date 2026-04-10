@@ -16,7 +16,7 @@ export default function MarqueeTicker() {
                 {items.map((item, i) => (
                     <div key={i} className="flex items-center gap-4 px-8 whitespace-nowrap">
                         <span className="font-lato text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em]">{item}</span>
-                        <span className="w-1 h-1 bg-[#C4882A]/70 shrink-0" />
+                        <span className="w-1 h-1 bg-gold/70 shrink-0" />
                     </div>
                 ))}
             </div>

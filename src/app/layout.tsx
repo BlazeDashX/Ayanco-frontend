@@ -4,22 +4,30 @@ import "./globals.css";
 
 import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
 import MouseGlow from "@/components/ui/MouseGlow";
+import { Analytics } from "@vercel/analytics/next";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+const playfair = Playfair_Display({
+  subsets: ["latin"],
   variable: "--font-playfair",
-  weight: ["400", "500", "600", "700", "800", "900"]
+  weight: ["700", "900"],  // Only weights actually used (font-bold + font-black)
+  display: "swap",
 });
-const lato = Lato({ 
-  subsets: ["latin"], 
+const lato = Lato({
+  subsets: ["latin"],
   variable: "--font-lato",
-  weight: ["100", "300", "400", "700", "900"]
+  weight: ["300", "400", "700"],  // font-light, normal, font-bold
+  display: "swap",
 });
-const cormorant = Cormorant_Garamond({ 
-  subsets: ["latin"], 
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
   variable: "--font-cormorant",
-  weight: ["300", "400", "500", "600", "700"]
+  weight: ["700"],  // Only used for 10px bold labels
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -40,6 +48,7 @@ export default function RootLayout({
         <ScrollProgressBar />
 
         {children}
+        <Analytics />
       </body>
     </html>
   );

@@ -73,7 +73,7 @@ export default function HeroSlider() {
             </AnimatePresence>
 
             {/* Cyan top accent line */}
-            <div className="absolute top-0 inset-x-0 h-px bg-[#C4882A]/60 z-20" />
+            <div className="absolute top-0 inset-x-0 h-px bg-gold/60 z-20" />
 
             {/* ── Floating side label ── */}
             <div className="absolute right-8 top-1/2 -translate-y-1/2 z-20 hidden xl:flex flex-col items-center gap-3">
@@ -104,7 +104,7 @@ export default function HeroSlider() {
                         <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-[90px] font-black tracking-[-0.03em] leading-[0.95] text-white mb-8">
                             {slide.title}
                             <br />
-                            <span className="text-[#C4882A]">{slide.highlight}</span>
+                            <span className="text-gold">{slide.highlight}</span>
                         </h1>
 
                         {/* Subtitle */}
@@ -114,18 +114,22 @@ export default function HeroSlider() {
 
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <Link
+                            <motion.div whileTap={{ scale: 0.96 }} whileHover={{ scale: 1.02 }}>
+                              <Link
                                 href={slide.primaryCta.href}
-                                className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors"
-                            >
+                                className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-gold hover:bg-gold-dark text-zinc-950 font-bold text-sm transition-colors"
+                              >
                                 {slide.primaryCta.label} <ArrowRight size={17} />
-                            </Link>
-                            <Link
+                              </Link>
+                            </motion.div>
+                            <motion.div whileTap={{ scale: 0.96 }}>
+                              <Link
                                 href={slide.secondaryCta.href}
-                                className="inline-flex items-center justify-center gap-2 h-14 px-8 rounded-full border border-white/20 hover:border-white/40 text-white hover:bg-white/10 font-medium text-[15px] transition-all"
-                            >
-                                {slide.secondaryCta.label}
-                            </Link>
+                                className="inline-flex items-center justify-center gap-2 h-11 px-7 border border-white/20 hover:border-white/50 text-white font-semibold text-sm transition-colors backdrop-blur-sm"
+                              >
+                                {slide.secondaryCta.label} <ArrowRight size={15} className="opacity-60" />
+                              </Link>
+                            </motion.div>
                         </div>
                     </motion.div>
                 </AnimatePresence>
@@ -140,7 +144,7 @@ export default function HeroSlider() {
                             key={s.id}
                             onClick={() => go(i, i > current ? 1 : -1)}
                             aria-label={`Slide ${i + 1}`}
-                            className={`transition-all duration-300 ${i === current ? "w-7 h-0.5 bg-[#C4882A]" : "w-5 h-0.5 bg-white/20 hover:bg-white/40"}`}
+                            className={`transition-all duration-300 ${i === current ? "w-7 h-0.5 bg-gold" : "w-5 h-0.5 bg-white/20 hover:bg-white/40"}`}
                         />
                     ))}
                 </div>

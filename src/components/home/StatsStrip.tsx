@@ -1,44 +1,78 @@
 "use client";
 
-import React from "react";
-import CountUp from "react-countup";
 import { motion } from "framer-motion";
-import { Award, Handshake, CheckCircle2, TrendingUp } from "lucide-react";
+import CountUp from "react-countup";
 import { HOME_STATS } from "@/data/home";
+import { Award, Handshake, CheckCircle2, TrendingUp } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const iconMap: Record<string, React.ElementType> = { Award, Handshake, CheckCircle2, TrendingUp };
+// Safe icon map — avoids dynamic import issues with lucide tree-shaking
+const ICON_MAP: Record<string, LucideIcon> = {
+  Award,
+  Handshake,
+  CheckCircle2,
+  TrendingUp,
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 28, scale: 0.93 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring" as const,
+      stiffness: 250,
+      damping: 22,
+    },
+  },
+};
 
 export default function StatsStrip() {
   return (
-    <section className="bg-white border-t border-zinc-200 py-20 md:py-24">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-zinc-200">
-          {HOME_STATS.map((stat, i) => {
-            const Icon = iconMap[stat.icon] ?? Award;
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.1 }}
-                transition={{ duration: 0.5, delay: i * 0.07 }}
-                className="bg-white hover:bg-[#F5F4F0] transition-colors p-8 md:p-10 flex flex-col gap-5"
-              >
-                <Icon size={20} className="text-[#C4882A]" />
-                <div>
-                  <div className="font-display text-4xl md:text-5xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1.5">
-                    <CountUp end={stat.value} duration={2.5} decimals={stat.decimals ?? 0} enableScrollSpy scrollSpyOnce />
-                    <span className="text-[#C4882A]">{stat.suffix}</span>
-                  </div>
-                  <p className="font-lato text-xs font-semibold text-zinc-400 uppercase tracking-[0.18em]">
-                    {stat.label}
-                  </p>
+    <section className="bg-white border-b border-zinc-100">
+      <motion.div
+        className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-zinc-100"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.3 }}
+      >
+        {HOME_STATS.map((stat) => {
+          const Icon = ICON_MAP[stat.icon] ?? Award;
+          return (
+            <motion.div
+              key={stat.label}
+              variants={cardVariants}
+              className="bg-white hover:bg-stone-50 transition-colors p-8 md:p-10 flex flex-col gap-5"
+            >
+              <Icon size={20} className="text-gold" />
+              <div>
+                <div suppressHydrationWarning className="font-display text-4xl md:text-5xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1.5">
+                  <CountUp
+                    end={stat.value}
+                    duration={2.5}
+                    decimals={stat.decimals ?? 0}
+                    enableScrollSpy
+                    scrollSpyOnce
+                  />
+                  <span className="text-gold">{stat.suffix}</span>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
+                <p className="font-lato text-xs font-semibold text-zinc-400 uppercase tracking-[0.18em]">
+                  {stat.label}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
     </section>
   );
 }

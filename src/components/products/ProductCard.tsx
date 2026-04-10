@@ -58,7 +58,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
-        className="group relative flex h-full flex-col overflow-hidden border border-zinc-200 bg-white hover:border-[#C4882A]/50 hover:shadow-xl hover:shadow-[#C4882A]/10 transition-all duration-300"
+        className="group relative flex h-full flex-col overflow-hidden border border-zinc-200 bg-white hover:border-gold/50 hover:shadow-xl hover:shadow-gold/8 transition-all duration-300"
       >
         {/* Glow Effect (Adapted for Light Mode) */}
         <div
@@ -71,7 +71,7 @@ export default function ProductCard({ product }: { product: ProductProps }) {
         {/* Image Area */}
         <div className={`relative h-44 overflow-hidden ${topBg} z-10 border-b border-zinc-100`}>
           <div className="absolute top-3 left-3 z-20">
-            <span className={`inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${badgeTextColor} shadow-sm rounded-sm`}>
+            <span className={`inline-flex items-center gap-1.5 font-lato bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${badgeTextColor} shadow-sm rounded-sm`}>
               {product.category}
             </span>
           </div>
@@ -85,29 +85,29 @@ export default function ProductCard({ product }: { product: ProductProps }) {
         <div className="flex grow flex-col p-6 z-10 bg-white">
 
           {/* Market badge */}
-          <div className="mb-3 inline-flex w-fit items-center gap-1.5 border border-zinc-200 bg-zinc-50 rounded-sm px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-zinc-600 shadow-xs">
+          <div className="mb-3 inline-flex w-fit items-center gap-1.5 border border-zinc-200 bg-zinc-50 rounded-sm px-2.5 py-1 font-lato text-[10px] font-bold uppercase tracking-wider text-zinc-600 shadow-xs">
             <MarketIcon size={12} className="text-zinc-500" />
             {product.market}
           </div>
 
-          <h3 className="mb-3 text-lg font-bold text-zinc-900 group-hover:text-[#C4882A] transition-colors leading-tight">
+          <h3 className="font-display mb-3 text-lg font-bold text-zinc-900 group-hover:text-gold transition-colors leading-tight">
             {product.title}
           </h3>
 
-          <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-zinc-600">
+          <p className="font-lato mb-6 line-clamp-3 text-sm leading-relaxed text-zinc-600">
             {product.description}
           </p>
 
           {/* Footer */}
           <div className="mt-auto flex items-center justify-between border-t border-zinc-100 pt-4">
-            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
+            <span className="font-lato text-xs font-bold text-zinc-400 uppercase tracking-wider">
               {product.specs}
             </span>
             <Link
-              href={`/quote?product=${encodeURIComponent(product.title)}`}
-              className="inline-flex items-center gap-1.5 text-[11px] font-bold text-white bg-[#C4882A] group-hover:bg-[#d89732] px-3 py-1.5 rounded-sm uppercase tracking-wider shadow-sm transition-all"
+              href={`/products/${product.id}`}
+              className="inline-flex items-center gap-1.5 font-lato text-[11px] font-bold text-white bg-gold group-hover:bg-gold-dark px-3 py-1.5 rounded-sm uppercase tracking-wider shadow-sm transition-all"
             >
-              Request Quote <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+              View Details <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
             </Link>
           </div>
         </div>

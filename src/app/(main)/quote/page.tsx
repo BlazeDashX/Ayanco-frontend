@@ -2,8 +2,9 @@
 
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, AlertCircle, User, Building2, Mail, Phone, Layers, FileText } from "lucide-react";
-import PageHero from "@/components/ui/PageHero";
+import { ArrowRight, CheckCircle2, AlertCircle, User, Building2, Mail, Phone, Layers, FileText, Download } from "lucide-react";
+import PageHeader from "@/components/ui/PageHeader";
+import { generateRFQPdf } from "@/lib/generateRFQPdf";
 import { SITE } from "@/data/site";
 
 /* ─── Validation helpers ─────────────────────────────────────── */
@@ -80,6 +81,7 @@ export default function QuotePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [refId, setRefId] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const [fields, setFields] = useState<Fields>({
     name: "", company: "", email: "", phone: "", category: CATEGORIES[0], specs: "",
@@ -92,7 +94,8 @@ export default function QuotePage() {
   function set(key: keyof Fields, value: string) {
     const next = { ...fields, [key]: value };
     setFields(next);
-    // Clear error as user types (real-time feedback)
+    // Clear field error + submit error as user types
+    setSubmitError(null);
     if (errors[key]) {
       const nextErrors = { ...errors };
       delete nextErrors[key];
@@ -131,9 +134,14 @@ export default function QuotePage() {
       }
       setRefId(data.refId || Date.now().toString().slice(-6));
       setIsSubmitted(true);
+      setSubmitError(null);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Failed to submit request. Please try again or contact us directly.");
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Failed to submit request. Please try again or contact us directly."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -142,7 +150,7 @@ export default function QuotePage() {
   return (
     <main className="bg-[#fafaf9] min-h-screen selection:bg-[#C4882A]/20 selection:text-[#C4882A]">
 
-      <PageHero
+      <PageHeader
         badge="Procurement Desk"
         title="Request a"
         highlight="Quote."
@@ -171,8 +179,27 @@ export default function QuotePage() {
                   </div>
                   <p className="font-lato text-zinc-500 text-sm leading-relaxed">
                     Provide specific details for an accurate and expedited quotation.
-                    Fields marked <span className="text-[#C4882A] font-bold">*</span> are required.
+                    Fields marked <span className="text-gold font-bold">*</span> are required.
                   </p>
+
+                  {/* WhatsApp escape hatch — for users not ready for the full form */}
+                  <div className="mt-5 flex items-center gap-3 p-4 bg-green-50 border border-green-200">
+                    <div className="w-8 h-8 bg-green-600 flex items-center justify-center shrink-0">
+                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.465 2 2 6.465 2 11.99c0 1.763.458 3.419 1.258 4.861L2 22l5.29-1.232A9.925 9.925 0 0 0 11.99 22C17.515 22 22 17.535 22 12.01 22 6.485 17.515 2 11.99 2z" fillOpacity=".3"/></svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-green-800">Not ready to fill the form?</p>
+                      <p className="text-xs text-green-700 mt-0.5">Chat directly with our trade desk for instant guidance.</p>
+                    </div>
+                    <a
+                      href={`https://wa.me/8801711000000?text=${encodeURIComponent("Hello, I'd like sourcing guidance.")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 text-xs font-bold text-green-700 hover:text-green-900 underline transition-colors"
+                    >
+                      Chat Now →
+                    </a>
+                  </div>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -212,6 +239,14 @@ export default function QuotePage() {
                         <p className="text-zinc-900 font-mono font-black text-xl tracking-widest">ATC-{refId}</p>
                         <p className="text-[10px] text-zinc-400 mt-1">Save this for follow-up queries</p>
                       </div>
+
+                      <button
+                        onClick={() => generateRFQPdf({ refId, fields })}
+                        className="flex items-center gap-2 h-11 px-6 border border-zinc-200 hover:border-gold text-zinc-600 hover:text-gold text-xs font-bold uppercase tracking-[0.15em] transition-all"
+                      >
+                        <Download size={13} />
+                        Download Confirmation
+                      </button>
 
                       <button
                         onClick={() => { setIsSubmitted(false); setFields({ name: "", company: "", email: "", phone: "", category: CATEGORIES[0], specs: "" }); setTouched({}); setErrors({}); }}
@@ -326,12 +361,21 @@ export default function QuotePage() {
                           <textarea
                             data-field="specs"
                             name="specs"
-                            placeholder="Please describe: product/material name, quantity, grade or specification, target destination, and required timeline."
+                            placeholder={`Describe your requirement with as much detail as possible. For example:
+
+• Product: Long-grain basmati rice
+• Quantity: 500 MT
+• Grade: Premium / Grade A
+• Packaging: 25kg PP bags
+• Destination: Jeddah, Saudi Arabia
+• Delivery window: Within 45 days
+
+More detail = faster, more accurate quote.`}
                             value={fields.specs}
                             onChange={(e) => set("specs", e.target.value)}
                             onBlur={() => blur("specs")}
-                            rows={6}
-                            className={`${fieldClass(errors.specs, touched.specs).replace("h-12", "")} resize-none min-h-[150px] py-3`}
+                            rows={8}
+                            className={`${fieldClass(errors.specs, touched.specs).replace("h-12", "")} resize-none min-h-[200px] py-3`}
                           />
                           <div className="flex items-start justify-between mt-1">
                             <FieldError message={touched.specs ? errors.specs : undefined} />
@@ -341,12 +385,30 @@ export default function QuotePage() {
                           </div>
                         </div>
 
-                        {/* Submit */}
+                        {/* Submit error — inline, animated */}
+                        <AnimatePresence>
+                          {submitError && (
+                            <motion.div
+                              key="submit-error"
+                              initial={{ opacity: 0, y: -6, height: 0 }}
+                              animate={{ opacity: 1, y: 0, height: "auto" }}
+                              exit={{ opacity: 0, y: -6, height: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="flex items-start gap-3 p-4 border border-red-200 bg-red-50 text-red-600 text-sm overflow-hidden"
+                            >
+                              <AlertCircle size={15} className="shrink-0 mt-0.5" />
+                              <span>{submitError}</span>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {/* Submit button */}
                         <div className="pt-2">
-                          <button
+                          <motion.button
                             type="submit"
                             disabled={isSubmitting}
-                            className="relative w-full h-14 bg-[#09090B] hover:bg-zinc-800 disabled:bg-zinc-100 disabled:text-zinc-400 text-white font-bold text-sm transition-all flex items-center justify-center gap-3 group overflow-hidden"
+                            whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+                            className="relative w-full h-14 bg-zinc-950 hover:bg-zinc-800 disabled:bg-zinc-100 disabled:text-zinc-400 text-white font-bold text-sm transition-all flex items-center justify-center gap-3 group overflow-hidden"
                           >
                             {/* Shimmer on hover */}
                             <span className="absolute inset-0 bg-linear-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out" />
@@ -355,7 +417,7 @@ export default function QuotePage() {
                             ) : (
                               <><span className="relative">Submit RFQ</span><ArrowRight size={16} className="relative group-hover:translate-x-1 transition-transform" /></>
                             )}
-                          </button>
+                          </motion.button>
                           <p className="text-[10px] text-zinc-400 text-center mt-3 leading-relaxed">
                             By submitting, you agree to our{" "}
                             <a href="/terms" className="underline hover:text-[#C4882A] transition-colors">Terms of Trade</a>{" "}

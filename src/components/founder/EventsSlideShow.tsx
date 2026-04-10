@@ -95,7 +95,9 @@ export default function EventsSlideshow() {
                     alt={slide.alt}
                     fill
                     className="object-cover"
-                    loading={i === 0 ? "eager" : "lazy"}
+                    priority={i === 0}
+                    loading={i === 0 ? undefined : "lazy"}
+                    unoptimized={true}
                     sizes="(max-width:1024px) 100vw, 900px"
                   />
                   {/* Caption gradient overlay */}

@@ -20,7 +20,7 @@ export default function ProcessSteps() {
                     viewport={{ once: true, amount: 0.1 }}
                     className="mb-16 max-w-2xl"
                 >
-                    <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">Our Process</p>
+                    <p className="font-accent text-[10px] font-bold text-gold uppercase tracking-[0.25em] mb-4">Our Process</p>
                     <h2 className="font-display text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight mb-4">
                         From Inquiry to Delivery.
                     </h2>
@@ -40,10 +40,10 @@ export default function ProcessSteps() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, amount: 0.1 }}
                                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                                className="group bg-white hover:bg-[#F5F4F0] transition-colors p-8"
+                                className="group bg-white hover:bg-beige-light transition-colors p-8"
                             >
                                 <div className="flex items-start justify-between mb-7">
-                                    <div className="w-10 h-10 border border-zinc-200 bg-zinc-50 flex items-center justify-center text-[#C4882A] group-hover:bg-[#C4882A] group-hover:text-white group-hover:border-[#C4882A] transition-all duration-300">
+                                    <div className="w-10 h-10 border border-zinc-200 bg-zinc-50 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white group-hover:border-gold transition-all duration-300">
                                         <Icon size={18} />
                                     </div>
                                     <span className="text-[10px] font-bold text-zinc-300 tracking-[0.25em]">
@@ -64,12 +64,14 @@ export default function ProcessSteps() {
                     viewport={{ once: true, amount: 0.1 }}
                     className="flex justify-start mt-12"
                 >
-                    <Link
-                        href="/quote"
-                        className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-white font-bold text-sm transition-colors"
-                    >
-                        Start Your Inquiry <ArrowRight size={15} />
-                    </Link>
+                    <motion.div whileTap={{ scale: 0.96 }} whileHover={{ scale: 1.02 }}>
+                        <Link
+                            href="/quote"
+                            className="inline-flex items-center gap-2 h-11 px-7 bg-gold hover:bg-gold-dark text-white font-bold text-sm transition-colors"
+                        >
+                            Start Your Inquiry <ArrowRight size={15} />
+                        </Link>
+                    </motion.div>
                 </motion.div>
             </div>
         </section>

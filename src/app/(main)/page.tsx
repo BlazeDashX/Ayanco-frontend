@@ -5,6 +5,7 @@ import Portfolios from "@/components/home/Portfolios";
 import ProcessSteps from "@/components/home/ProcessSteps";
 import Testimonials from "@/components/home/Testimonials";
 import ServiceParallax from "@/components/home/ServiceParallax";
+import TrustStrip from "@/components/ui/TrustStrip";
 
 export default function HomePage() {
   return (
@@ -12,10 +13,14 @@ export default function HomePage() {
       <HeroSlider />
       <MarqueeTicker />
       <StatsStrip />
-      <Portfolios />
+      {/* ProcessSteps before Portfolios — user must understand HOW before WHAT */}
       <ProcessSteps />
+      <Portfolios />
       <Testimonials />
       <ServiceParallax />
+      {/* TrustStrip: final credibility layer before footer */}
+      <TrustStrip />
     </main>
   );
 }
+

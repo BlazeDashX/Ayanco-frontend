@@ -17,16 +17,25 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // On non-homepage routes, always show the solid white navbar (text would be
+  // invisible on light backgrounds in the transparent state).
+  // On the homepage, start transparent and switch to solid after 40px scroll.
+  const [isScrolled, setIsScrolled] = useState(!isHomePage);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true);
+      return;
+    }
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setIsMobileMenuOpen(false); }, [pathname]);
@@ -48,7 +57,7 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <div className="w-8 h-8 bg-[#C4882A] flex items-center justify-center">
+            <div className="w-8 h-8 bg-gold flex items-center justify-center">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <rect x="1" y="1" width="6" height="6" fill="white" />
                 <rect x="9" y="1" width="6" height="6" fill="white" opacity="0.5" />
@@ -60,7 +69,7 @@ export default function Navbar() {
               <span className={cn("font-black text-base tracking-tight transition-colors", isScrolled ? "text-zinc-900" : "text-white")}>
                 AYANCO
               </span>
-              <span className="font-black text-base tracking-tight text-[#C4882A]">TRADE</span>
+              <span className="font-black text-base tracking-tight text-gold">TRADE</span>
             </div>
           </Link>
 
@@ -73,7 +82,7 @@ export default function Navbar() {
                 className={cn(
                   "px-3.5 py-2 text-sm font-semibold transition-colors",
                   isActive(link.href)
-                    ? "text-[#C4882A]"
+                    ? "text-gold"
                     : isScrolled
                       ? "text-zinc-600 hover:text-zinc-900"
                       : "text-white/80 hover:text-white"
@@ -85,22 +94,23 @@ export default function Navbar() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-2">
             <Link
               href="/contact"
-              className={cn(
-                "text-sm font-semibold transition-colors",
+              className={cn("px-3.5 py-2 text-sm font-semibold transition-colors",
                 isScrolled ? "text-zinc-600 hover:text-zinc-900" : "text-white/80 hover:text-white"
               )}
             >
               Contact
             </Link>
-            <Link
-              href="/quote"
-              className="inline-flex items-center gap-2 h-9 px-5 bg-[#C4882A] hover:bg-[#D4952E] text-white font-bold text-sm transition-colors"
-            >
-              Request Quote <ArrowRight size={14} />
-            </Link>
+            <motion.div whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.03 }}>
+              <Link
+                href="/quote"
+                className="inline-flex items-center gap-2 h-9 px-5 bg-gold hover:bg-gold-dark text-white font-bold text-sm transition-colors"
+              >
+                Request Quote <ArrowRight size={14} />
+              </Link>
+            </motion.div>
           </div>
 
           {/* Mobile menu button */}
@@ -131,7 +141,7 @@ export default function Navbar() {
                   href={link.href}
                   className={cn(
                     "py-2.5 text-sm font-semibold border-b border-zinc-100 last:border-0 transition-colors",
-                    isActive(link.href) ? "text-[#C4882A]" : "text-zinc-700 hover:text-zinc-900"
+                    isActive(link.href) ? "text-gold" : "text-zinc-700 hover:text-zinc-900"
                   )}
                 >
                   {link.name}
@@ -143,12 +153,14 @@ export default function Navbar() {
               >
                 Contact
               </Link>
-              <Link
-                href="/quote"
-                className="mt-3 inline-flex items-center justify-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-white font-bold text-sm transition-colors"
-              >
-                Request Quote <ArrowRight size={15} />
-              </Link>
+              <motion.div whileTap={{ scale: 0.96 }} className="mt-3">
+                <Link
+                  href="/quote"
+                  className="inline-flex items-center justify-center gap-2 h-11 px-7 bg-gold hover:bg-gold-dark text-white font-bold text-sm transition-colors w-full"
+                >
+                  Request Quote <ArrowRight size={15} />
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

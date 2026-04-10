@@ -2,10 +2,12 @@
 
 /* ─── Token Layer ───────────────────────────────────────────── */
 :root {
-  --gold:       #d4af37;
-  --gold-light: #f4d03f;
-  --gold-dark:  #b68920;
-  --gold-glow:  rgba(212,175,55,.25);
+  /* NOTE: --gold intentionally uses the brand value #C4882A (oklch 0.62 0.13 60).
+     The former #d4af37 was a different gold — now unified with the site palette. */
+  --gold:       #C4882A;  /* Unified with brand gold */
+  --gold-light: #D4952E;  /* hover / active state    */
+  --gold-dark:  #A8721E;  /* depth / shadow use      */
+  --gold-glow:  rgba(196,136,42,.25);
   --bg:         #0a0a0f;
   --card:       #ffffff;
   --text:       #111827;
@@ -34,10 +36,7 @@
   -webkit-text-fill-color: transparent;
   animation: shimmer 4s ease-in-out infinite;
 }
-@keyframes shimmer {
-  0% { background-position: 200% 0 }
-  100% { background-position: -200% 0 }
-}
+/* shimmer removed from founder.css — canonical definition is in globals.css */
 
 /* ─── Animated Gradient Background ──────────────────────────── */
 @keyframes gradient-shift {
@@ -49,12 +48,15 @@
   }
 }
 
-@keyframes float {
+/* float removed from founder.css — canonical definition is in globals.css */
+
+/* float-rotate is the founder-specific variant that adds rotation — kept here */
+@keyframes float-rotate {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(2deg); }
 }
 
-@keyframes float-reverse {
+@keyframes float-rotate-reverse {
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(20px) rotate(-2deg); }
 }
@@ -98,28 +100,28 @@
 .hero-orb-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(196,136,42,0.3) 0%, transparent 70%);
   top: -10%;
   right: 10%;
-  animation: float 8s ease-in-out infinite, pulse-glow 6s ease-in-out infinite;
+  animation: float-rotate 8s ease-in-out infinite, pulse-glow 6s ease-in-out infinite;
 }
 
 .hero-orb-2 {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(180,140,50,0.25) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(196,136,42,0.25) 0%, transparent 70%);
   bottom: 10%;
   left: -5%;
-  animation: float-reverse 10s ease-in-out infinite, pulse-glow 8s ease-in-out infinite;
+  animation: float-rotate-reverse 10s ease-in-out infinite, pulse-glow 8s ease-in-out infinite;
 }
 
 .hero-orb-3 {
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(196,136,42,0.2) 0%, transparent 70%);
   top: 40%;
   left: 30%;
-  animation: float 12s ease-in-out infinite;
+  animation: float-rotate 12s ease-in-out infinite;
 }
 
 /* ─── Portrait Frame for PNG ─────────────────────────────────── */

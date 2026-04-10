@@ -51,7 +51,7 @@ export default function FilterBar({
             placeholder="Search inventory..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-9 w-full border border-zinc-200 bg-white pl-9 pr-4 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none focus:border-[#C4882A] transition-colors"
+            className="h-9 w-full border border-zinc-200 bg-white pl-9 pr-4 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none focus:border-gold transition-colors"
           />
         </div>
 

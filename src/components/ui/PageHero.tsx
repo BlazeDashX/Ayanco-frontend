@@ -32,9 +32,9 @@ export default function PageHero({
   const hasSecondary = Boolean(secondaryCta?.label?.trim() && secondaryCta?.href);
 
   return (
-    <section className={cn("relative w-full overflow-hidden bg-[#09090B] flex items-center", minHeightClassName)}>
+    <section className={cn("relative w-full overflow-hidden bg-zinc-950 flex items-center", minHeightClassName)}>
       {/* Top brass accent line */}
-      <div className="absolute top-0 inset-x-0 h-px bg-[#C4882A]/60 z-20" />
+      <div className="absolute top-0 inset-x-0 h-px bg-gold/60 z-20" />
 
       {/* Background Image */}
       {bgImage && (
@@ -55,12 +55,12 @@ export default function PageHero({
 
           {badge && (
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-              <p className="text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em]">{badge}</p>
+              <p className="font-accent text-[10px] font-bold text-gold uppercase tracking-[0.25em]">{badge}</p>
             </motion.div>
           )}
 
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-none text-[#FAFAF9]"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-none text-zinc-50"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.05 }}
@@ -69,7 +69,7 @@ export default function PageHero({
             {highlight && (
               <>
                 <br className="hidden md:block" />{" "}
-                <span className="text-[#C4882A]">{highlight}</span>
+                <span className="text-gold">{highlight}</span>
               </>
             )}
           </motion.h1>
@@ -93,20 +93,24 @@ export default function PageHero({
               transition={{ duration: 0.65, delay: 0.18 }}
             >
               {hasPrimary && (
-                <Link
-                  href={primaryCta!.href}
-                  className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors"
-                >
-                  {primaryCta!.label} <ArrowRight size={15} />
-                </Link>
+                <motion.div whileTap={{ scale: 0.96 }} whileHover={{ scale: 1.02 }}>
+                  <Link
+                    href={primaryCta!.href}
+                    className="inline-flex items-center gap-2 h-11 px-7 bg-gold hover:bg-gold-dark text-zinc-950 font-bold text-sm transition-colors"
+                  >
+                    {primaryCta!.label} <ArrowRight size={15} />
+                  </Link>
+                </motion.div>
               )}
               {hasSecondary && (
-                <Link
-                  href={secondaryCta!.href}
-                  className="inline-flex items-center gap-2 h-11 px-7 border border-white/12 text-[#A8A29E] hover:text-[#FAFAF9] hover:border-white/20 font-medium text-sm transition-colors"
-                >
-                  {secondaryCta!.label}
-                </Link>
+                <motion.div whileTap={{ scale: 0.96 }}>
+                  <Link
+                    href={secondaryCta!.href}
+                    className="inline-flex items-center gap-2 h-11 px-7 border border-white/12 text-stone-400 hover:text-zinc-50 hover:border-white/20 font-medium text-sm transition-colors"
+                  >
+                    {secondaryCta!.label}
+                  </Link>
+                </motion.div>
               )}
             </motion.div>
           )}

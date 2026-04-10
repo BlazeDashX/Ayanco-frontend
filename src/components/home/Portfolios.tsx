@@ -34,7 +34,7 @@ export default function Portfolios() {
           className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
         >
           <div>
-            <p className="font-cormorant text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.25em] mb-4">What We Trade</p>
+            <p className="font-accent text-[10px] font-bold text-gold uppercase tracking-[0.25em] mb-4">What We Trade</p>
             <h2 className="font-display text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
               Three Verticals,<br />
               <span className="text-zinc-400">One Partner.</span>
@@ -74,7 +74,7 @@ export default function Portfolios() {
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-white via-white/10 to-transparent" />
                   {/* Category icon overlay */}
-                  <div className="absolute top-4 left-4 w-9 h-9 bg-white/90 backdrop-blur-sm border border-zinc-200 flex items-center justify-center text-[#C4882A]">
+                  <div className="absolute top-4 left-4 w-9 h-9 bg-white/90 backdrop-blur-sm border border-zinc-200 flex items-center justify-center text-gold">
                     <Icon size={16} />
                   </div>
                 </div>
@@ -90,7 +90,7 @@ export default function Portfolios() {
                       </span>
                     ))}
                   </div>
-                  <Link href="/products" className="inline-flex items-center gap-2 font-lato text-xs font-bold text-[#C4882A] hover:text-[#D4952E] transition-colors uppercase tracking-wider">
+                  <Link href="/products" className="inline-flex items-center gap-2 font-lato text-xs font-bold text-gold hover:text-gold-dark transition-colors uppercase tracking-wider">
                     Explore <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                   </Link>
                 </div>
