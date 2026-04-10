@@ -1,24 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { missionVision } from "@/data/about";
 
 export default function MissionVision() {
+  const items = [missionVision.mission, missionVision.vision];
+
   return (
     <section className="py-20 bg-[#F5F4F0] border-t border-zinc-200">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-px bg-zinc-200">
-          {[
-            {
-              label: "Mission",
-              heading: "Deliver reliable sourcing and trade execution.",
-              body: "We simplify global trade through quality control, compliance, and predictable logistics — so clients operate with confidence.",
-            },
-            {
-              label: "Vision",
-              heading: "Become the most trusted trade partner in the region.",
-              body: "We aim to set a standard for transparency and operational excellence across sourcing, trading, and logistics.",
-            },
-          ].map((item, i) => (
+          {items.map((item, i) => (
             <motion.div
               key={item.label}
               initial={{ opacity: 0, y: 16 }}
