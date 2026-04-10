@@ -44,7 +44,7 @@ export default function FounderHero() {
       <div className="hero-orb hero-orb-2" aria-hidden="true" />
       <div className="hero-orb hero-orb-3" aria-hidden="true" />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-20 items-center relative z-10 pt-20 lg:pt-0">
 
         {/* ── LEFT COLUMN — Text ── */}
         <motion.div
@@ -118,30 +118,6 @@ export default function FounderHero() {
               <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">Founded</p>
             </div>
           </div>
-
-          {/* Social Links — mobile only */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex lg:hidden items-center gap-4 mt-4"
-          >
-            <span className="text-xs text-gray-400 uppercase tracking-wider">Connect:</span>
-            <div className="flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.id}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/70 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)]/50 hover:bg-[color:var(--gold)]/10 transition-all duration-300"
-                  aria-label={`Follow on ${social.name}`}
-                >
-                  <SocialIcon name={social.icon} />
-                </a>
-              ))}
-            </div>
-          </motion.div>
         </motion.div>
 
         {/* ── RIGHT COLUMN — Portrait + Social ── */}
@@ -149,7 +125,7 @@ export default function FounderHero() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          className="flex justify-center lg:justify-end items-center gap-6 order-1 lg:order-2"
+          className="flex flex-col lg:flex-row justify-center lg:justify-end items-center gap-4 lg:gap-6 order-1 lg:order-2"
         >
           {/* Desktop: Vertical Social Links */}
           <motion.div
@@ -197,12 +173,12 @@ export default function FounderHero() {
             <div className="absolute -top-4 -left-4 -right-4 -bottom-4 rounded-2xl border border-[color:var(--gold)]/10 pointer-events-none" aria-hidden="true" />
 
             {/* Image frame */}
-            <div className="relative w-[300px] h-[380px] sm:w-[360px] sm:h-[440px] lg:w-[440px] lg:h-[560px] rounded-2xl overflow-hidden border border-[color:var(--gold)]/25 shadow-2xl bg-zinc-900/50">
+            <div className="relative w-[290px] h-[370px] sm:w-[360px] sm:h-[460px] lg:w-[420px] lg:h-[600px] xl:w-[480px] xl:h-[640px] rounded-2xl overflow-hidden border border-[color:var(--gold)]/25 shadow-2xl bg-zinc-900/50">
               <Image
                 src={portraitSrc}
                 alt={portraitAlt}
                 fill
-                className="object-contain object-bottom scale-[1.35] lg:scale-[1.25] translate-y-6"
+                className="object-contain object-bottom scale-[1.1] origin-bottom"
                 priority
               />
 
@@ -229,6 +205,26 @@ export default function FounderHero() {
             <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[color:var(--gold)]/60 rounded-bl-2xl pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[color:var(--gold)]/60 rounded-br-2xl pointer-events-none" />
           </div>
+
+          {/* Mobile-only: Connect + social icons below portrait */}
+          <div className="flex lg:hidden flex-col items-center gap-3 w-full mt-2">
+            <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em]">Connect</span>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/70 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)]/50 hover:bg-[color:var(--gold)]/10 transition-all duration-300"
+                  aria-label={`Follow on ${social.name}`}
+                >
+                  <SocialIcon name={social.icon} />
+                </a>
+              ))}
+            </div>
+          </div>
+
         </motion.div>
 
       </div>

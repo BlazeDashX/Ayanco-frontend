@@ -210,4 +210,4 @@ export const socialLinks = [
 ];
 
 export const footerText =
-  " 2025 Md. Akhtarul Islam Rimon. All Rights Reserved. | Website designed with distinction.";
+  " 2025 Md. Akhtarul Islam Rimon. All Rights Reserved";

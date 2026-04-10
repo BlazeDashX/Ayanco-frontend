@@ -31,7 +31,7 @@ export default function FounderNav() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-      scrolled 
+      scrolled || menuOpen
         ? "bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-[color:var(--gold)]/10 shadow-lg shadow-black/20" 
         : "bg-transparent"
     }`}>
