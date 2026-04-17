@@ -33,11 +33,16 @@ export default function FounderPage() {
       <ReadProgressBar />
       <FounderNav />
 
-      <main className="flex flex-col w-full overflow-x-hidden bg-[color:var(--bg)]">
+      <main className="flex flex-col w-full overflow-x-hidden bg-(--bg)">
         <FounderHero />
         <FounderAbout />
-        <CompanyStats />
-        <CompanyCatalog />
+        
+        {/* Combine Stats and Catalog to share 1 screen (50vh each) */}
+        <div className="w-full flex flex-col shrink-0">
+          <CompanyStats />
+          <CompanyCatalog />
+        </div>
+
         <FounderMilestones />
         <EventsSlideShow />
         <AwardsGallery />

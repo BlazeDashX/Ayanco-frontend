@@ -1,24 +1,71 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Globe, MapPin, Package, CheckCircle2, ArrowLeft } from "lucide-react";
-import { PRODUCTS } from "@/data/products/products";
 import Image from "next/image";
 
-export async function generateStaticParams() {
-  return PRODUCTS.map((product) => ({
-    id: product.id,
-  }));
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  market: string;
+  specs: string;
+  image_url: string;
+  video_url: string;
+  how_it_works: string;
+  features: { text: string }[];
+  applications: { text: string }[];
+  operate_steps: { text: string }[];
+  tech_specs: { label: string; value: string }[];
+  gallery_images: { url: string; alt: string }[];
 }
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = PRODUCTS.find((p) => p.id === params.id);
+export default function ProductDetailPage() {
+  const params = useParams();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!product) {
-    notFound();
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        // Use the admin API with the product ID to get full relations
+        const res = await fetch(`/api/public/products/${params.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+        }
+      } catch (err) {
+        console.error("Failed to load product:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProduct();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#C4882A] border-t-transparent rounded-full animate-spin" />
+      </main>
+    );
   }
 
-  const isGlobal = product.market.includes("Export") || product.market.includes("Global");
+  if (!product) {
+    return (
+      <main className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-zinc-900 mb-2">Product Not Found</h1>
+          <Link href="/products" className="text-[#C4882A] hover:underline">Back to Products</Link>
+        </div>
+      </main>
+    );
+  }
+
+  const isGlobal = product.market?.includes("Export") || product.market?.includes("Global");
   const MarketIcon = isGlobal ? Globe : MapPin;
 
   return (
@@ -41,15 +88,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative aspect-square bg-zinc-100 rounded-lg overflow-hidden border border-zinc-200"
-            >
-              {product.image ? (
+            <div className="relative aspect-square bg-zinc-100 rounded-lg overflow-hidden border border-zinc-200">
+              {product.image_url ? (
                 <Image
-                  src={product.image}
+                  src={product.image_url}
                   alt={product.title}
                   fill
                   className="object-cover"
@@ -60,15 +102,10 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   <Package size={128} strokeWidth={1} />
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Details */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="space-y-8"
-            >
+            <div className="space-y-8">
               {/* Category Badge */}
               <div>
                 <span className="inline-flex items-center gap-1.5 font-lato bg-[#C4882A]/10 text-[#C4882A] px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-sm">
@@ -113,18 +150,18 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                   Contact Trade Desk
                 </Link>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Features & Applications */}
-      {(product.features || product.applications) && (
+      {(product.features?.length > 0 || product.applications?.length > 0) && (
         <div className="py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-6">
             <div className="grid md:grid-cols-2 gap-12">
               {/* Features */}
-              {product.features && product.features.length > 0 && (
+              {product.features?.length > 0 && (
                 <div>
                   <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                     Key Features
@@ -133,7 +170,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     {product.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <CheckCircle2 size={20} className="text-[#C4882A] shrink-0 mt-0.5" />
-                        <span className="font-lato text-zinc-600">{feature}</span>
+                        <span className="font-lato text-zinc-600">{feature.text}</span>
                       </li>
                     ))}
                   </ul>
@@ -141,7 +178,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               )}
 
               {/* Applications */}
-              {product.applications && product.applications.length > 0 && (
+              {product.applications?.length > 0 && (
                 <div>
                   <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                     Applications
@@ -150,7 +187,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
                     {product.applications.map((application, index) => (
                       <li key={index} className="flex items-start gap-3">
                         <CheckCircle2 size={20} className="text-[#C4882A] shrink-0 mt-0.5" />
-                        <span className="font-lato text-zinc-600">{application}</span>
+                        <span className="font-lato text-zinc-600">{application.text}</span>
                       </li>
                     ))}
                   </ul>
@@ -162,34 +199,34 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
       )}
 
       {/* Machinery-Specific Sections */}
-      {(product.howItWorks || product.howToOperate || product.technicalSpecs) && (
+      {(product.how_it_works || product.operate_steps?.length > 0 || product.tech_specs?.length > 0) && (
         <div className="bg-white border-t border-zinc-200 py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-6 space-y-16">
             {/* How It Works */}
-            {product.howItWorks && (
+            {product.how_it_works && (
               <div>
                 <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                   How It Works
                 </h2>
                 <p className="font-lato text-zinc-600 text-lg leading-relaxed max-w-3xl">
-                  {product.howItWorks}
+                  {product.how_it_works}
                 </p>
               </div>
             )}
 
             {/* How to Operate */}
-            {product.howToOperate && product.howToOperate.length > 0 && (
+            {product.operate_steps?.length > 0 && (
               <div>
                 <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                   How to Operate
                 </h2>
                 <ol className="space-y-4 max-w-3xl">
-                  {product.howToOperate.map((step, index) => (
+                  {product.operate_steps.map((step, index) => (
                     <li key={index} className="flex items-start gap-4">
-                      <span className="flex-shrink-0 w-8 h-8 bg-[#C4882A] text-white font-bold flex items-center justify-center rounded-sm">
+                      <span className="shrink-0 w-8 h-8 bg-[#C4882A] text-white font-bold flex items-center justify-center rounded-sm">
                         {index + 1}
                       </span>
-                      <span className="font-lato text-zinc-600 pt-1">{step}</span>
+                      <span className="font-lato text-zinc-600 pt-1">{step.text}</span>
                     </li>
                   ))}
                 </ol>
@@ -197,13 +234,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             )}
 
             {/* Technical Specifications */}
-            {product.technicalSpecs && product.technicalSpecs.length > 0 && (
+            {product.tech_specs?.length > 0 && (
               <div>
                 <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                   Technical Specifications
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl">
-                  {product.technicalSpecs.map((spec, index) => (
+                  {product.tech_specs.map((spec, index) => (
                     <div key={index} className="bg-zinc-50 border border-zinc-200 p-4 rounded-sm">
                       <p className="font-lato text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">
                         {spec.label}
@@ -216,14 +253,14 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             )}
 
             {/* Video */}
-            {product.videoUrl && (
+            {product.video_url && (
               <div>
                 <h2 className="font-display text-2xl font-black text-zinc-900 tracking-tight mb-6">
                   Product Video
                 </h2>
                 <div className="aspect-video max-w-4xl bg-zinc-900 rounded-lg overflow-hidden">
                   <iframe
-                    src={product.videoUrl}
+                    src={product.video_url}
                     title={`${product.title} Video`}
                     className="w-full h-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -30,10 +30,10 @@
   --color-popover-fg:    var(--popover-foreground);
 
   /* ── Typography ─────────────────────────────────────── */
-  --font-sans:    var(--font-inter);       /* Base — Inter            */
-  --font-display: var(--font-playfair);    /* Headings — Playfair     */
-  --font-body:    var(--font-lato);        /* Support — Lato          */
-  --font-accent:  var(--font-cormorant);   /* Labels — Cormorant      */
+  --font-sans:    var(--font-inter);       /* Base — Inter              */
+  --font-display: var(--font-jakarta);     /* Headings — Jakarta        */
+  --font-body:    var(--font-inter);       /* Body — Inter (Standard)   */
+  --font-accent:  var(--font-space);       /* Labels — Space Grotesk    */
   --font-mono:    ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
 
   /* ── Border Radius ───────────────────────────────────── */

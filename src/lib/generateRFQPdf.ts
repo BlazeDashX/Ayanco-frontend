@@ -216,7 +216,7 @@ export function generateRFQPdf({
   doc.setFontSize(7.5);
   setTxt(ZINC);
   doc.text("Ayanco Trade Corporation  ·  Dhaka, Bangladesh", PW / 2, FY + 16, { align: "center" });
-  doc.text("trade@ayanco.com  ·  www.ayanco.com", PW / 2, FY + 28, { align: "center" });
+  doc.text("trade@ayancotrade.com  ·  www.ayancotrade.com", PW / 2, FY + 28, { align: "center" });
 
   doc.setFont("helvetica", "italic");
   doc.setFontSize(7);

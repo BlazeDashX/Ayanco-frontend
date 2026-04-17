@@ -1,12 +1,20 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import { HOME_STATS } from "@/data/home";
 import { Award, Handshake, CheckCircle2, TrendingUp } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { PREMIUM_EASE, BLUR_REVEAL } from "@/lib/animations";
 
-// Safe icon map — avoids dynamic import issues with lucide tree-shaking
+interface Stat {
+  label: string;
+  value: number;
+  suffix: string;
+  icon: string;
+  decimals?: number;
+}
+
 const ICON_MAP: Record<string, LucideIcon> = {
   Award,
   Handshake,
@@ -16,56 +24,68 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 28, scale: 0.93 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      type: "spring" as const,
-      stiffness: 250,
-      damping: 22,
-    },
+  show: {
+    transition: { staggerChildren: 0.12 },
   },
 };
 
 export default function StatsStrip() {
+  const [stats, setStats] = useState<Stat[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await fetch("/api/public/home/stats");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setStats(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch stats:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchStats();
+  }, []);
+
+  if (!loading && stats.length === 0) return null;
+
   return (
-    <section className="bg-white border-b border-zinc-100">
+    <section className="bg-white border-b border-zinc-100 min-h-[140px]">
       <motion.div
         className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-zinc-100"
         variants={containerVariants}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
       >
-        {HOME_STATS.map((stat) => {
+        {stats.map((stat, i) => {
           const Icon = ICON_MAP[stat.icon] ?? Award;
           return (
             <motion.div
               key={stat.label}
-              variants={cardVariants}
-              className="bg-white hover:bg-stone-50 transition-colors p-8 md:p-10 flex flex-col gap-5"
+              variants={BLUR_REVEAL}
+              custom={i}
+              className="bg-white hover:bg-zinc-50 transition-colors p-6 md:p-8 flex flex-col gap-4"
             >
-              <Icon size={20} className="text-gold" />
+              <Icon size={18} className="text-gold" />
               <div>
-                <div suppressHydrationWarning className="font-display text-4xl md:text-5xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1.5">
+                <div suppressHydrationWarning className="font-display text-3xl md:text-3xl lg:text-4xl font-black tracking-tight text-zinc-900 tabular-nums leading-none mb-1">
                   <CountUp
                     end={stat.value}
-                    duration={2.5}
+                    duration={2.8}
                     decimals={stat.decimals ?? 0}
                     enableScrollSpy
                     scrollSpyOnce
+                    easingFn={(t, b, c, d) => {
+                        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+                    }}
                   />
                   <span className="text-gold">{stat.suffix}</span>
                 </div>
-                <p className="font-lato text-xs font-semibold text-zinc-400 uppercase tracking-[0.18em]">
+                <p className="font-accent text-[10px] font-bold text-zinc-400 uppercase tracking-[0.2em]">
                   {stat.label}
                 </p>
               </div>

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const RESEND_TO_EMAIL = process.env.RESEND_TO_EMAIL || "refat00021@gmail.com";
+const RESEND_TO_EMAIL = process.env.RESEND_TO_EMAIL || "bsreborn002@gmail.com";
 
 /* ─── Security: HTML escape ─────────────────────────────────────── */
 function escapeHtml(unsafe: string): string {
@@ -211,7 +211,7 @@ function buildClientEmail(params: {
             <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:6px;padding:18px 20px;margin-bottom:8px;">
               <p style="margin:0 0 4px;font-size:12px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Need immediate assistance?</p>
               <p style="margin:0;font-size:13px;color:#374151;line-height:1.6;">
-                Email: <a href="mailto:corporate@ayanco.com" style="color:#C4882A;font-weight:600;text-decoration:none;">corporate@ayanco.com</a><br>
+                Email: <a href="mailto:corporate@ayancotrade.com" style="color:#C4882A;font-weight:600;text-decoration:none;">corporate@ayancotrade.com</a><br>
                 Phone: <a href="tel:+8801711000000" style="color:#C4882A;font-weight:600;text-decoration:none;">+880 1711-000000</a>
               </p>
             </div>
@@ -230,7 +230,7 @@ function buildClientEmail(params: {
             </p>
             <p style="margin:16px 0 0;font-size:10px;color:#3F3F46;line-height:1.5;">
               This is an automated acknowledgment. Please do not reply to this email.<br>
-              For enquiries, contact <a href="mailto:corporate@ayanco.com" style="color:#6B7280;">corporate@ayanco.com</a>
+              For enquiries, contact <a href="mailto:corporate@ayancotrade.com" style="color:#6B7280;">corporate@ayancotrade.com</a>
             </p>
           </td>
         </tr>
@@ -295,32 +295,28 @@ export async function POST(request: NextRequest) {
 
     const emailParams = { refId, safeName, safeCompany, safeEmail, safePhone, safeCategory, safeSpecs, submittedAt };
 
-    /* 1. Internal notification → Ayanco trade desk (fire-and-forget) */
-    resend.emails.send({
-      from: "Ayanco Trade <onboarding@resend.dev>",
+    /* 1. Internal notification → Ayanco trade desk */
+    const internalRes = await resend.emails.send({
+      from: "Ayanco Trade <corporate@ayancotrade.com>",
       to: [RESEND_TO_EMAIL],
       replyTo: email,
       subject: `New RFQ — ${safeCompany} [ATC-${refId}]`,
       html: buildInternalEmail(emailParams),
-    }).catch(err => console.error("[Resend] Internal email error:", err));
+    });
 
-    /* 2. Client auto-acknowledgment
-     * NOTE: Resend's onboarding@resend.dev test domain can only send to the
-     * account owner's verified email. For production, add a verified domain
-     * (e.g. noreply@ayanco.com) to send to arbitrary recipients.
-     *
-     * Current workaround: we send the client ACK to your verified inbox too,
-     * clearly labelled, so you can forward it manually until the domain is verified.
-     * When a verified domain is added, change `to: [RESEND_TO_EMAIL]` → `to: [email]`.
-     */
-    resend.emails.send({
-      from: "Ayanco Trade <onboarding@resend.dev>",
-      to: [RESEND_TO_EMAIL],            // ← change to `to: [email]` after verifying domain
-      subject: `[CLIENT ACK — FORWARD TO ${email}] RFQ Received — ATC-${refId}`,
+    /* 2. Client auto-acknowledgment */
+    const clientRes = await resend.emails.send({
+      from: "Ayanco Trade <corporate@ayancotrade.com>",
+      to: [email],
+      subject: `RFQ Received — ATC-${refId}`,
       html: buildClientEmail(emailParams),
-    }).catch(err => console.error("[Resend] Client ACK email error:", err));
+    });
 
-    return NextResponse.json({ success: true, data: null, refId });
+    if (internalRes.error || clientRes.error) {
+      console.error("[API] quote partial failure:", { internal: internalRes.error, client: clientRes.error });
+    }
+
+    return NextResponse.json({ success: true, refId });
   } catch (error) {
     console.error("[API] quote error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

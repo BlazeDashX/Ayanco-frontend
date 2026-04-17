@@ -26,14 +26,14 @@ export const companyStats = [
   {
     id: "stat-1",
     icon: "currency",
-    value: 50,
+    value: 100,
     suffix: " Crore",
     label: "Annual Sales Turnover",
   },
   {
     id: "stat-2",
     icon: "users",
-    value: 20,
+    value: 30,
     suffix: "+",
     label: "Dedicated Employees",
   },
@@ -41,7 +41,7 @@ export const companyStats = [
     id: "stat-3",
     icon: "map",
     value: null, // null = no countup, show static text
-    staticText: "Nationwide",
+    staticText: "Worldwide",
     label: "Market Presence",
   },
 ];
@@ -192,7 +192,7 @@ export const socialLinks = [
   {
     id: "facebook",
     name: "Facebook",
-    url: "https://facebook.com/mdakhtarulislamrimon",
+    url: "https://www.facebook.com/share/1CGpgXqjpA/",
     icon: "facebook",
   },
   {
@@ -202,10 +202,10 @@ export const socialLinks = [
     icon: "twitter",
   },
   {
-    id: "instagram",
-    name: "Instagram",
-    url: "https://instagram.com/md.akhtarul.islam.rimon",
-    icon: "instagram",
+    id: "wechat",
+    name: "WeChat",
+    url: "https://u.wechat.com/kJqTVzDoWMgN_NUpatoOYGc?s=2",
+    icon: "wechat",
   },
 ];
 

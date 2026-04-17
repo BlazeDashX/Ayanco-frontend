@@ -7,13 +7,25 @@ import Link from "next/link";
 
 import ProductCard from "@/components/products/ProductCard";
 import FilterBar from "@/components/products/FilterBar";
-import { PRODUCTS, PRODUCT_CATEGORIES, PRODUCTS_PER_PAGE } from "@/data/products";
+
+const PRODUCT_CATEGORIES = ["Food Essentials", "Agro & Industrial", "Machinery"];
+const PRODUCTS_PER_PAGE = 9;
+
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  market: string;
+  specs: string;
+  image_url: string;
+}
 
 const categories = ["All", ...PRODUCT_CATEGORIES];
-const ITEMS_PER_PAGE = PRODUCTS_PER_PAGE;
-
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("Machinery");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,28 +33,45 @@ export default function ProductsPage() {
   // Ref for scrolling
   const gridRef = useRef<HTMLDivElement>(null);
 
+  // Fetch products from API
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch("/api/public/products");
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setProducts(data);
+        }
+      } catch (err) {
+        console.error("Failed to load products:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
+
   // --- FILTER LOGIC ---
-  const filteredProducts = PRODUCTS.filter((product) => {
+  const filteredProducts = products.filter((product) => {
     const matchesCategory = activeCategory === "All" || product.category === activeCategory;
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   // --- PAGINATION LOGIC ---
-  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredProducts.length / PRODUCTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const currentProducts = filteredProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
 
   // Reset page when filter changes
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCurrentPage(1);
   }, [activeCategory, searchQuery]);
 
   // Scroll Handler
   const scrollToGridTop = () => {
     if (gridRef.current) {
-      const headerOffset = 140; // Height of header + filter bar
+      const headerOffset = 140;
       const elementPosition = gridRef.current.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - headerOffset;
 
@@ -98,32 +127,38 @@ export default function ProductsPage() {
 
       <section className="pb-20 pt-16">
         <div className="container mx-auto px-6 max-w-7xl">
-          <motion.div
-            layout
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 min-h-[600px]" // Min height prevents jumpy layout
-          >
-            <AnimatePresence mode="popLayout">
-              {currentProducts.length > 0 ? (
-                currentProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))
-              ) : (
-                <div className="col-span-full py-24 text-center">
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center bg-zinc-100 text-zinc-400">
-                    <Filter size={32} />
+          {loading ? (
+            <div className="flex items-center justify-center min-h-[600px]">
+              <div className="w-8 h-8 border-2 border-[#C4882A] border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (
+            <motion.div
+              layout
+              className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 min-h-[600px]"
+            >
+              <AnimatePresence mode="popLayout">
+                {currentProducts.length > 0 ? (
+                  currentProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))
+                ) : (
+                  <div className="col-span-full py-24 text-center">
+                    <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center bg-zinc-100 text-zinc-400">
+                      <Filter size={32} />
+                    </div>
+                    <h3 className="text-xl font-bold text-zinc-900">No products found</h3>
+                    <p className="mt-2 text-zinc-500 text-sm">Try adjusting your filters.</p>
+                    <button
+                      className="mt-8 h-10 px-6 border border-zinc-300 text-zinc-600 text-sm font-bold hover:border-[#C4882A] hover:bg-[#C4882A] hover:text-white transition-colors"
+                      onClick={() => { setActiveCategory("All"); setSearchQuery(""); }}
+                    >
+                      Clear All Filters
+                    </button>
                   </div>
-                  <h3 className="text-xl font-bold text-zinc-900">No products found</h3>
-                  <p className="mt-2 text-zinc-500 text-sm">Try adjusting your filters.</p>
-                  <button
-                    className="mt-8 h-10 px-6 border border-zinc-300 text-zinc-600 text-sm font-bold hover:border-[#C4882A] hover:bg-[#C4882A] hover:text-white transition-colors"
-                    onClick={() => { setActiveCategory("All"); setSearchQuery(""); }}
-                  >
-                    Clear All Filters
-                  </button>
-                </div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
 
           {/* --- PAGINATION CONTROLS --- */}
           {totalPages > 1 && (

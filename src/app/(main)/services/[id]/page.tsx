@@ -1,9 +1,15 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, ArrowLeft } from "lucide-react";
-import { SERVICES } from "@/data/services/services";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  ArrowRight, CheckCircle2, ArrowLeft,
+  Globe, ShieldCheck, Truck, BarChart3, PackageSearch, Landmark,
+} from "lucide-react";
 
 const serviceIcons: Record<string, any> = {
   "global-sourcing": Globe,
@@ -14,29 +20,68 @@ const serviceIcons: Record<string, any> = {
   "compliance-documentation": Landmark,
 };
 
-import {
-  Globe,
-  ShieldCheck,
-  Truck,
-  BarChart3,
-  PackageSearch,
-  Landmark,
-} from "lucide-react";
-
-export async function generateStaticParams() {
-  return SERVICES.map((service) => ({
-    id: service.id,
-  }));
+interface Service {
+  id: string;
+  num: string;
+  title: string;
+  description: string;
+  detailed_description?: string;
+  image: string;
+  image_url: string;
+  features: string[];
+  benefits: string[];
+  process: string[];
+  case_study?: string;
 }
 
-export default function ServiceDetailPage({ params }: { params: { id: string } }) {
-  const service = SERVICES.find((s) => s.id === params.id);
+export default function ServiceDetailPage() {
+  const params = useParams();
+  const [service, setService] = useState<Service | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFoundState, setNotFoundState] = useState(false);
 
-  if (!service) {
-    notFound();
+  useEffect(() => {
+    async function fetchService() {
+      try {
+        const res = await fetch(`/api/public/services/${params.id}`);
+        if (res.status === 404) {
+          setNotFoundState(true);
+          return;
+        }
+        if (res.ok) {
+          const data = await res.json();
+          setService(data);
+        }
+      } catch (err) {
+        console.error("Failed to load service:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchService();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-[#C4882A] border-t-transparent rounded-full animate-spin" />
+      </main>
+    );
   }
 
-  const Icon = serviceIcons[service.id];
+  if (notFoundState || !service) {
+    return (
+      <main className="min-h-screen bg-[#FAFAF8] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-zinc-900 mb-2">Service Not Found</h1>
+          <Link href="/services" className="text-[#C4882A] hover:underline">Back to Services</Link>
+        </div>
+      </main>
+    );
+  }
+
+  const Icon = serviceIcons[service.id] || Globe;
+  const imageSrc = service.image || service.image_url;
 
   return (
     <main className="min-h-screen bg-[#FAFAF8]">
@@ -62,15 +107,15 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="relative aspect-[16/9] bg-zinc-100 rounded-lg overflow-hidden border border-zinc-200"
+              className="relative aspect-video bg-zinc-100 overflow-hidden border border-zinc-200"
             >
-              <Image
-                src={service.image}
-                alt={service.title}
-                fill
-                className="object-cover"
-                priority
-              />
+              {imageSrc ? (
+                <Image src={imageSrc} alt={service.title} fill className="object-cover" priority />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center text-zinc-300">
+                  <Globe size={64} strokeWidth={1} />
+                </div>
+              )}
             </motion.div>
 
             {/* Details */}
@@ -80,7 +125,6 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-8"
             >
-              {/* Service Number & Icon */}
               <div className="flex items-center gap-4">
                 <span className="font-display text-[11px] font-black text-[#C4882A] tracking-[0.25em]">
                   {service.num}
@@ -90,17 +134,14 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
                 </div>
               </div>
 
-              {/* Title */}
               <h1 className="font-display text-4xl md:text-5xl font-black text-zinc-900 tracking-tight leading-tight">
                 {service.title}
               </h1>
 
-              {/* Description */}
               <p className="font-lato text-zinc-600 text-lg leading-relaxed">
                 {service.description}
               </p>
 
-              {/* Features */}
               {service.features && service.features.length > 0 && (
                 <div>
                   <h3 className="font-display text-sm font-bold text-zinc-900 uppercase tracking-wider mb-4">Key Features</h3>
@@ -118,7 +159,6 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
                 </div>
               )}
 
-              {/* CTA */}
               <div className="flex flex-wrap gap-4 pt-4">
                 <Link
                   href="/quote"
@@ -139,15 +179,11 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       </div>
 
       {/* Detailed Description */}
-      {service.detailedDescription && (
+      {service.detailed_description && (
         <div className="py-16 md:py-20 bg-white border-b border-zinc-200">
           <div className="max-w-4xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-6">
-              Overview
-            </h2>
-            <p className="font-lato text-zinc-600 text-lg leading-relaxed">
-              {service.detailedDescription}
-            </p>
+            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-6">Overview</h2>
+            <p className="font-lato text-zinc-600 text-lg leading-relaxed">{service.detailed_description}</p>
           </div>
         </div>
       )}
@@ -156,9 +192,7 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       {service.benefits && service.benefits.length > 0 && (
         <div className="py-16 md:py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-8">
-              Benefits
-            </h2>
+            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-8">Benefits</h2>
             <ul className="grid md:grid-cols-2 gap-4 max-w-4xl">
               {service.benefits.map((benefit, index) => (
                 <li key={index} className="flex items-start gap-3">
@@ -175,13 +209,11 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       {service.process && service.process.length > 0 && (
         <div className="py-16 md:py-20 bg-white border-y border-zinc-200">
           <div className="max-w-4xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-8">
-              Our Process
-            </h2>
+            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-8">Our Process</h2>
             <ol className="space-y-6">
               {service.process.map((step, index) => (
                 <li key={index} className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-8 h-8 bg-[#C4882A] text-white font-bold flex items-center justify-center rounded-sm">
+                  <span className="shrink-0 w-8 h-8 bg-[#C4882A] text-white font-bold flex items-center justify-center rounded-sm">
                     {index + 1}
                   </span>
                   <span className="font-lato text-zinc-600 pt-1">{step}</span>
@@ -193,22 +225,20 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
       )}
 
       {/* Case Study */}
-      {service.caseStudy && (
+      {service.case_study && (
         <div className="py-16 md:py-20">
           <div className="max-w-4xl mx-auto px-6">
-            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-6">
-              Case Study
-            </h2>
-            <div className="bg-zinc-50 border border-zinc-200 p-8 rounded-lg">
+            <h2 className="font-display text-3xl font-black text-zinc-900 tracking-tight mb-6">Case Study</h2>
+            <div className="bg-zinc-50 border border-zinc-200 p-8">
               <p className="font-lato text-zinc-600 text-lg leading-relaxed italic">
-                "{service.caseStudy}"
+                "{service.case_study}"
               </p>
             </div>
           </div>
         </div>
       )}
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="bg-[#09090B] py-16 border-t border-white/6">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
@@ -221,16 +251,10 @@ export default function ServiceDetailPage({ params }: { params: { id: string } }
             </p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
-            <Link
-              href="/quote"
-              className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors"
-            >
+            <Link href="/quote" className="inline-flex items-center gap-2 h-11 px-7 bg-[#C4882A] hover:bg-[#D4952E] text-[#09090B] font-bold text-sm transition-colors">
               Request Quote <ArrowRight size={15} />
             </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 h-11 px-7 border border-white/12 text-[#A8A29E] hover:text-[#FAFAF9] hover:border-white/20 font-medium text-sm transition-colors"
-            >
+            <Link href="/contact" className="inline-flex items-center gap-2 h-11 px-7 border border-white/12 text-[#A8A29E] hover:text-[#FAFAF9] hover:border-white/20 font-medium text-sm transition-colors">
               Contact Us
             </Link>
           </div>

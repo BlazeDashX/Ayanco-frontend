@@ -1,0 +1,12 @@
+name = "ayanco"
+compatibility_date = "2024-01-01"
+account_id = "5b26c005386d92e4c90cf38e8c898832"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ayanco-cms-db"
+database_id = "9cc03b88-49f8-4a0d-a7b0-efccab06e1f9"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "ayanco-media"

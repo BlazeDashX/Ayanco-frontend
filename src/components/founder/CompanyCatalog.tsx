@@ -8,11 +8,11 @@ export default function CompanyCatalog() {
   return (
     <section
       id="catalog"
-      className="py-20 md:py-28 bg-white scroll-mt-24"
+      className="min-h-[50dvh] py-16 flex flex-col justify-center relative bg-white"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="reveal max-w-3xl mx-auto text-center" data-reveal="up">
-          <p className="text-xs font-bold tracking-[.2em] text-[color:var(--gold)] uppercase mb-2">
+          <p className="text-xs font-bold tracking-[.2em] text-(--gold) uppercase mb-2">
             Resources
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-gray-900 mb-4">
@@ -48,7 +48,7 @@ export default function CompanyCatalog() {
           </div>
         </div>
       </div>
-      <div className="section-sep mt-20" />
+      <div className="section-sep absolute bottom-0 left-0 w-full" />
     </section>
   );
 }

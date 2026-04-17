@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: "/",
             disallow: ["/api/"],
         },
-        sitemap: "https://ayanco.com/sitemap.xml",
+        sitemap: "https://ayancotrade.com/sitemap.xml",
     };
 }

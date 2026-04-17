@@ -12,8 +12,8 @@ export const SITE = {
     foundedYear: 2012,
 
     contact: {
-        email: "corporate@ayanco.com",
-        infoEmail: "info@ayanco.com",
+        email: "corporate@ayancotrade.com",
+        infoEmail: "info@ayancotrade.com",
         phone: "+880 1711-000000",
         phoneRaw: "+8801711000000",
         whatsapp: "https://wa.me/8801711000000",
@@ -32,7 +32,7 @@ export const SITE = {
             city: "Dhaka",
             address: "Banani Model Town, Dhaka-1213",
             phone: "+880 1711-000000",
-            email: "corporate@ayanco.com",
+            email: "corporate@ayancotrade.com",
             mapUrl: "https://maps.google.com/?q=Banani,Dhaka",
             isHQ: true,
         },
@@ -41,7 +41,7 @@ export const SITE = {
             city: "Chittagong",
             address: "Agrabad C/A, Chattogram-4100",
             phone: "+880 1711-000001",
-            email: "ctg@ayanco.com",
+            email: "ctg@ayancotrade.com",
             mapUrl: "https://maps.google.com/?q=Agrabad,Chattogram",
             isHQ: false,
         },
@@ -50,7 +50,7 @@ export const SITE = {
             city: "Sylhet",
             address: "Zindabazar, Sylhet-3100",
             phone: "+880 1711-000002",
-            email: "sylhet@ayanco.com",
+            email: "sylhet@ayancotrade.com",
             mapUrl: "https://maps.google.com/?q=Zindabazar,Sylhet",
             isHQ: false,
         },
@@ -59,7 +59,7 @@ export const SITE = {
             city: "Khulna",
             address: "KDA Avenue, Khulna-9000",
             phone: "+880 1711-000003",
-            email: "khulna@ayanco.com",
+            email: "khulna@ayancotrade.com",
             mapUrl: "https://maps.google.com/?q=KDA+Avenue,Khulna",
             isHQ: false,
         },
@@ -68,7 +68,7 @@ export const SITE = {
             city: "Narayanganj",
             address: "B.B. Road, Narayanganj-1400",
             phone: "+880 1711-000004",
-            email: "nganj@ayanco.com",
+            email: "nganj@ayancotrade.com",
             mapUrl: "https://maps.google.com/?q=BB+Road,Narayanganj",
             isHQ: false,
         },
@@ -76,7 +76,7 @@ export const SITE = {
 
     social: {
         linkedin: "https://linkedin.com/company/ayanco",
-        website: "https://ayanco.com",
+        website: "https://ayancotrade.com",
     },
 
     certifications: [

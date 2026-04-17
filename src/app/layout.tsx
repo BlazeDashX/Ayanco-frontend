@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Lato, Cormorant_Garamond } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
 import ScrollProgressBar from "@/components/ui/ScrollProgressBar";
@@ -11,22 +11,18 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
-const playfair = Playfair_Display({
+
+const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["700", "900"],  // Only weights actually used (font-bold + font-black)
+  variable: "--font-jakarta",
+  weight: ["700", "800"],
   display: "swap",
 });
-const lato = Lato({
+
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-lato",
-  weight: ["300", "400", "700"],  // font-light, normal, font-bold
-  display: "swap",
-});
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  weight: ["700"],  // Only used for 10px bold labels
+  variable: "--font-space",
+  weight: ["600", "700"],
   display: "swap",
 });
 
@@ -47,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${playfair.variable} ${lato.variable} ${cormorant.variable} font-sans`}>
+      <body className={`${inter.variable} ${jakarta.variable} ${spaceGrotesk.variable} font-sans`}>
         {/* Global UI only */}
         <MouseGlow />
         <ScrollProgressBar />

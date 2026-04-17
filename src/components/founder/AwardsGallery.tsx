@@ -42,10 +42,10 @@ export default function AwardsGallery() {
   const active = lightboxIndex !== null ? items[lightboxIndex] : null;
 
   return (
-    <section id="gallery" className="py-20 md:py-28 bg-[#f8f9fa] scroll-mt-24">
+    <section id="gallery" className="min-h-dvh py-20 md:py-28 flex flex-col justify-center bg-[#f8f9fa] relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 reveal" data-reveal="up">
-          <p className="text-xs font-bold tracking-[.2em] text-[color:var(--gold)] uppercase mb-2">
+          <p className="text-xs font-bold tracking-[.2em] text-(--gold) uppercase mb-2">
             Recognition
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-gray-900">
@@ -61,7 +61,7 @@ export default function AwardsGallery() {
               data-reveal="up"
             >
               <button
-                className="block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--gold)]"
+                className="block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-(--gold)"
                 onClick={() => open(i)}
                 aria-label={`View: ${item.title}`}
               >
@@ -149,7 +149,7 @@ export default function AwardsGallery() {
         </div>
       )}
 
-      <div className="section-sep mt-20" />
+      <div className="section-sep-light absolute bottom-0 left-0 w-full" />
     </section>
   );
 }

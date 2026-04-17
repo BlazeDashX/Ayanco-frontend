@@ -26,11 +26,11 @@ export default function FounderAffiliations() {
   return (
     <section
       id="affiliations"
-      className="py-20 md:py-28 bg-white scroll-mt-24"
+      className="min-h-dvh py-20 md:py-28 flex flex-col justify-center bg-white relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 reveal" data-reveal="up">
-          <p className="text-xs font-bold tracking-[.2em] text-[color:var(--gold)] uppercase mb-2">
+          <p className="text-xs font-bold tracking-[.2em] text-(--gold) uppercase mb-2">
             Leadership
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-gray-900">
@@ -45,7 +45,7 @@ export default function FounderAffiliations() {
               className="card-premium bg-gray-50 rounded-2xl p-6 flex items-center gap-6 hover:-translate-y-0.5 hover:shadow-md transition-all duration-300 reveal"
               data-reveal="up"
             >
-              <div className="shrink-0 text-[color:var(--gold)]">
+              <div className="shrink-0 text-(--gold)">
                 {iconPaths[a.icon]}
               </div>
               <div>
@@ -56,7 +56,7 @@ export default function FounderAffiliations() {
           ))}
         </div>
       </div>
-      <div className="section-sep mt-20" />
+      <div className="section-sep absolute bottom-0 left-0 w-full" />
     </section>
   );
 }

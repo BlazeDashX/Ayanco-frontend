@@ -43,7 +43,7 @@ export default function TermsPage() {
         },
         {
             title: "Contact",
-            content: `For terms-related queries, contact: Ayanco Trade Corporation, Banani Model Town, Dhaka-1213. Email: corporate@ayanco.com`,
+            content: `For terms-related queries, contact: Ayanco Trade Corporation, Banani Model Town, Dhaka-1213. Email: corporate@ayancotrade.com`,
         },
     ];
 

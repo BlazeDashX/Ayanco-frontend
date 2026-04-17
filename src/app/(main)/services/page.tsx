@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Globe,
   ShieldCheck,
@@ -16,8 +17,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-import { SERVICES, PROCESS_STEPS } from "@/data/services/services";
-
 const serviceIcons: Record<string, any> = {
   "global-sourcing": Globe,
   "quality-assurance": ShieldCheck,
@@ -27,8 +26,44 @@ const serviceIcons: Record<string, any> = {
   "compliance-documentation": Landmark,
 };
 
-/* ─── component ─────────────────────────────────────────────── */
+const PROCESS_STEPS = [
+  { label: "Requirement", desc: "You share your exact product specs, quantity and destination." },
+  { label: "Scouting", desc: "We identify and vet suppliers from our 500+ global network." },
+  { label: "QA Check", desc: "Pre-shipment inspection and compliance verification." },
+  { label: "Logistics", desc: "Route-optimised freight, customs docs and real-time tracking." },
+  { label: "Delivery", desc: "Goods arrive on time, fully documented." },
+];
+
+interface Service {
+  id: string;
+  num: string;
+  title: string;
+  description: string;
+  features: { text: string }[];
+  image: string;
+  image_url: string;
+  size: string;
+}
+
 export default function ServicesPage() {
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch("/api/public/services");
+        const data = await res.json();
+        if (Array.isArray(data)) setServices(data);
+      } catch (err) {
+        console.error("Failed to load services:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchServices();
+  }, []);
+
   return (
     <main className="bg-[#FAFAF8] min-h-screen">
 
@@ -54,7 +89,6 @@ export default function ServicesPage() {
       {/* ════ BENTO SERVICES GRID ════ */}
       <section className="py-28 bg-[#F5F4F0]">
         <div className="max-w-7xl mx-auto px-6">
-          {/* section header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <div>
               <span className="inline-flex items-center gap-2 text-[10px] font-bold text-[#C4882A] uppercase tracking-[0.28em] mb-4">
@@ -69,63 +103,67 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* bento grid */}
-          <div className="grid md:grid-cols-3 gap-4">
-            {SERVICES.map((s, i) => {
-              const Icon = serviceIcons[s.id];
-              const isLarge = s.size === "lg";
-              return (
-                <motion.div
-                  key={s.num}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ duration: 0.5, delay: i * 0.07 }}
-                  className={`group relative overflow-hidden bg-white border border-zinc-200 hover:border-[#C4882A]/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${isLarge ? "md:col-span-2" : ""}`}
-                >
-                  {/* image strip */}
-                  <div className={`relative w-full overflow-hidden ${isLarge ? "h-52" : "h-40"}`}>
-                    <Image
-                      src={s.image}
-                      alt={s.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-[#09090B]/50" />
-                    {/* number */}
-                    <span className="absolute top-4 left-4 text-[11px] font-black text-white/30 tracking-[0.25em]">
-                      {s.num}
-                    </span>
-                    {/* icon */}
-                    <div className="absolute bottom-4 right-4 w-9 h-9 bg-[#C4882A] flex items-center justify-center text-white">
-                      <Icon size={16} />
+          {loading ? (
+            <div className="flex items-center justify-center min-h-[400px]">
+              <div className="w-8 h-8 border-2 border-[#C4882A] border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-3 gap-4">
+              {services.map((s, i) => {
+                const Icon = serviceIcons[s.id] || Globe;
+                const isLarge = s.size === "lg";
+                return (
+                  <motion.div
+                    key={s.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.1 }}
+                    transition={{ duration: 0.5, delay: i * 0.07 }}
+                    className={`group relative overflow-hidden bg-white border border-zinc-200 hover:border-[#C4882A]/30 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${isLarge ? "md:col-span-2" : ""}`}
+                  >
+                    <div className={`relative w-full overflow-hidden ${isLarge ? "h-52" : "h-40"}`}>
+                      <Image
+                        src={s.image || s.image_url}
+                        alt={s.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-[#09090B]/50" />
+                      <span className="absolute top-4 left-4 text-[11px] font-black text-white/30 tracking-[0.25em]">
+                        {s.num}
+                      </span>
+                      <div className="absolute bottom-4 right-4 w-9 h-9 bg-[#C4882A] flex items-center justify-center text-white">
+                        <Icon size={16} />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* card body */}
-                  <div className="p-7">
-                    <Link href={`/services/${s.id}`}>
-                      <h3 className="font-display text-lg font-black text-zinc-900 tracking-tight mb-3 group-hover:text-[#C4882A] transition-colors">
-                        {s.title}
-                      </h3>
-                    </Link>
-                    <p className="font-lato text-zinc-500 text-sm leading-relaxed mb-5">{s.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {s.features.map((f) => (
-                        <span
-                          key={f}
-                          className="inline-flex items-center gap-1.5 font-lato text-[11px] font-medium text-zinc-600 bg-zinc-50 border border-zinc-200 px-2.5 py-1"
-                        >
-                          <CheckCircle2 size={10} className="text-[#C4882A]" />
-                          {f}
-                        </span>
-                      ))}
+                    <div className="p-7">
+                      <Link href={`/services/${s.id}`}>
+                        <h3 className="font-display text-lg font-black text-zinc-900 tracking-tight mb-3 group-hover:text-[#C4882A] transition-colors">
+                          {s.title}
+                        </h3>
+                      </Link>
+                      <p className="font-lato text-zinc-500 text-sm leading-relaxed mb-5">{s.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {(s.features || []).map((f: any) => {
+                          const text = typeof f === "string" ? f : f.text;
+                          return (
+                            <span
+                              key={text}
+                              className="inline-flex items-center gap-1.5 font-lato text-[11px] font-medium text-zinc-600 bg-zinc-50 border border-zinc-200 px-2.5 py-1"
+                            >
+                              <CheckCircle2 size={10} className="text-[#C4882A]" />
+                              {text}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -146,9 +184,7 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* timeline row */}
           <div className="relative">
-            {/* connector line */}
             <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-zinc-200" />
             <div className="grid md:grid-cols-5 gap-6 md:gap-0">
               {PROCESS_STEPS.map((step, i) => (
@@ -160,7 +196,6 @@ export default function ServicesPage() {
                   transition={{ duration: 0.45, delay: i * 0.1 }}
                   className="group relative md:pr-6"
                 >
-                  {/* step dot */}
                   <div className="relative z-10 mb-6">
                     <div className="w-16 h-16 bg-[#09090B] border-4 border-white ring-1 ring-zinc-200 flex items-center justify-center group-hover:ring-[#C4882A] transition-all duration-300">
                       <span className="text-[10px] font-black text-[#C4882A] tracking-widest">
@@ -230,7 +265,6 @@ export default function ServicesPage() {
                   </Link>
                 );
               })}
-
               <div className="flex flex-wrap gap-5 mt-2">
                 {["Bangladesh Registered", "ISO-Compliant", "Phytosanitary Certified"].map((t) => (
                   <span key={t} className="flex items-center gap-2 font-lato text-[10px] font-bold uppercase tracking-[0.18em] text-white/30">

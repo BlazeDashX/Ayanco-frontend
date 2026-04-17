@@ -5,6 +5,8 @@ import { motion, Variants } from "framer-motion";
 import { ArrowRight, Globe, MapPin, Package } from "lucide-react";
 import Link from "next/link";
 
+import Image from "next/image";
+
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4 } }
@@ -17,6 +19,7 @@ interface ProductProps {
   description: string;
   market: string;
   specs: string;
+  image_url: string;
 }
 
 export default function ProductCard({ product }: { product: ProductProps }) {
@@ -33,12 +36,6 @@ export default function ProductCard({ product }: { product: ProductProps }) {
     : isMachinery
       ? "bg-blue-100"
       : "bg-emerald-100";
-
-  const iconColor = isFood
-    ? "text-amber-500"
-    : isMachinery
-      ? "text-blue-500"
-      : "text-emerald-500";
 
   const badgeTextColor = isFood ? "text-amber-700" : isMachinery ? "text-blue-700" : "text-emerald-700";
 
@@ -75,9 +72,22 @@ export default function ProductCard({ product }: { product: ProductProps }) {
               {product.category}
             </span>
           </div>
-          <div className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:scale-105 ${iconColor} opacity-70`}>
-            <Package size={64} strokeWidth={1} />
+          
+          <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
+            {product.image_url ? (
+              <Image 
+                src={product.image_url} 
+                alt={product.title}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-zinc-300 bg-zinc-50">
+                <Package size={48} strokeWidth={1} />
+              </div>
+            )}
           </div>
+
           <div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-t from-white/80 to-transparent z-10" />
         </div>
 

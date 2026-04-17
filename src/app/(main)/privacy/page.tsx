@@ -23,7 +23,7 @@ export default function PrivacyPage() {
         },
         {
             title: "Data Retention",
-            content: `We retain your inquiry data for up to 3 years for business continuity and legal compliance purposes. You may request deletion of your data by contacting us at corporate@ayanco.com.`,
+            content: `We retain your inquiry data for up to 3 years for business continuity and legal compliance purposes. You may request deletion of your data by contacting us at corporate@ayancotrade.com.`,
         },
         {
             title: "Cookies",
@@ -35,11 +35,11 @@ export default function PrivacyPage() {
         },
         {
             title: "Your Rights",
-            content: `You have the right to access, correct, or delete the personal data we hold about you. To exercise these rights, contact us at corporate@ayanco.com. We will respond within 30 days.`,
+            content: `You have the right to access, correct, or delete the personal data we hold about you. To exercise these rights, contact us at corporate@ayancotrade.com. We will respond within 30 days.`,
         },
         {
             title: "Contact",
-            content: `For any privacy-related questions, contact: Ayanco Trade Corporation, Banani Model Town, Dhaka-1213, Bangladesh. Email: corporate@ayanco.com`,
+            content: `For any privacy-related questions, contact: Ayanco Trade Corporation, Banani Model Town, Dhaka-1213, Bangladesh. Email: corporate@ayancotrade.com`,
         },
     ];
 

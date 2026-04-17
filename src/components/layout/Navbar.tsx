@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -37,7 +38,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHomePage]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+  const router = useRouter();
+
+  // Handle Home link click specially for smooth scroll
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (isHomePage) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   useEffect(() => { setIsMobileMenuOpen(false); }, [pathname]);
 
   const isActive = (href: string) =>
@@ -79,6 +89,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
+                onClick={link.href === "/" ? handleHomeClick : undefined}
                 className={cn(
                   "px-3.5 py-2 text-sm font-semibold transition-colors",
                   isActive(link.href)
@@ -139,6 +150,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  onClick={link.href === "/" ? handleHomeClick : undefined}
                   className={cn(
                     "py-2.5 text-sm font-semibold border-b border-zinc-100 last:border-0 transition-colors",
                     isActive(link.href) ? "text-gold" : "text-zinc-700 hover:text-zinc-900"

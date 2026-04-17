@@ -9,10 +9,10 @@ export default function FounderAbout() {
   return (
     <section
       id="about"
-      className="py-24 md:py-32 bg-[#fafaf9] scroll-mt-24 relative overflow-hidden"
+      className="min-h-dvh py-24 md:py-32 flex flex-col justify-center bg-[#fafaf9] relative overflow-hidden"
     >
       {/* Subtle background decoration */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-[color:var(--gold)]/5 to-transparent pointer-events-none" aria-hidden="true" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-(--gold)/5 to-transparent pointer-events-none" aria-hidden="true" />
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section label */}
@@ -23,9 +23,9 @@ export default function FounderAbout() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[color:var(--gold)]/10 border border-[color:var(--gold)]/20 mb-4">
-            <span className="w-2 h-2 rounded-full bg-[color:var(--gold)] animate-pulse" />
-            <span className="text-xs font-bold tracking-[0.2em] text-[color:var(--gold)] uppercase">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-(--gold)/10 border border-(--gold)/20 mb-4">
+            <span className="w-2 h-2 rounded-full bg-(--gold) animate-pulse" />
+            <span className="text-xs font-bold tracking-[0.2em] text-(--gold) uppercase">
               The Founder
             </span>
           </span>
@@ -46,7 +46,7 @@ export default function FounderAbout() {
             <h3 className="font-display text-3xl sm:text-4xl text-gray-800 font-semibold leading-tight">
               {heading}
             </h3>
-            <div className="h-1 w-20 bg-gradient-to-r from-[color:var(--gold)] to-[color:var(--gold)]/30 rounded-full" />
+            <div className="h-1 w-20 bg-linear-to-r from-(--gold) to-(--gold)/30 rounded-full" />
             {paragraphs.map((p, i) => (
               <motion.p 
                 key={i} 
@@ -69,13 +69,13 @@ export default function FounderAbout() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="lg:col-span-2"
           >
-            <div className="sticky top-28 card-light rounded-2xl bg-gradient-to-br from-white to-[#faf8f3] p-8 border border-[color:var(--gold)]/10 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 group">
+            <div className="sticky top-28 card-light rounded-2xl bg-linear-to-br from-white to-[#faf8f3] p-8 border border-(--gold)/10 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-black/10 transition-all duration-500 group">
               {/* Decorative corner */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-[color:var(--gold)]/10 to-transparent rounded-tr-2xl" aria-hidden="true" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-bl from-(--gold)/10 to-transparent rounded-tr-2xl" aria-hidden="true" />
               
               {/* gold quote mark */}
               <div
-                className="font-display text-7xl text-[color:var(--gold)] leading-none mb-4 select-none group-hover:scale-110 transition-transform duration-300"
+                className="font-display text-7xl text-(--gold) leading-none mb-4 select-none group-hover:scale-110 transition-transform duration-300"
                 aria-hidden="true"
               >
                 "
@@ -83,12 +83,12 @@ export default function FounderAbout() {
               <p className="italic text-gray-700 text-base leading-[1.9] relative z-10">
                 {quote}
               </p>
-              <div className="mt-6 h-px bg-gradient-to-r from-[color:var(--gold)] via-[color:var(--gold)]/50 to-transparent" />
+              <div className="mt-6 h-px bg-linear-to-r from-(--gold) via-(--gold)/50 to-transparent" />
               <div className="mt-5 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[color:var(--gold)] to-[color:var(--gold-dark)] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-10 h-10 rounded-full bg-linear-to-br from-(--gold) to-(--gold-dark) flex items-center justify-center text-white font-bold text-sm">
                   MR
                 </div>
-                <p className="text-xs font-bold tracking-widest text-[color:var(--gold)] uppercase">
+                <p className="text-xs font-bold tracking-widest text-(--gold) uppercase">
                   Leadership Philosophy
                 </p>
               </div>
@@ -96,7 +96,7 @@ export default function FounderAbout() {
           </motion.div>
         </div>
       </div>
-      <div className="section-sep-light mt-24" />
+      <div className="section-sep-light absolute bottom-0 left-0 w-full" />
     </section>
   );
 }

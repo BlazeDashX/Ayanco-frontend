@@ -54,10 +54,10 @@ export default function EventsSlideshow() {
   };
 
   return (
-    <section id="events" className="py-20 md:py-28 bg-white scroll-mt-24">
+    <section id="events" className="min-h-dvh py-20 md:py-28 flex flex-col justify-center bg-white relative overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 reveal" data-reveal="up">
-          <p className="text-xs font-bold tracking-[.2em] text-[color:var(--gold)] uppercase mb-2">
+          <p className="text-xs font-bold tracking-[.2em] text-(--gold) uppercase mb-2">
             Highlights
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-gray-900">
@@ -88,7 +88,7 @@ export default function EventsSlideshow() {
             aria-live="polite"
           >
             {slides.map((slide, i) => (
-              <div key={i} className="w-full flex-shrink-0 relative">
+              <div key={i} className="w-full shrink-0 relative">
                 <div className="relative w-full pt-[56.25%]">
                   <Image
                     src={slide.src}
@@ -101,7 +101,7 @@ export default function EventsSlideshow() {
                     sizes="(max-width:1024px) 100vw, 900px"
                   />
                   {/* Caption gradient overlay */}
-                  <div className="absolute inset-x-0 bottom-0 p-5 md:p-8 bg-gradient-to-t from-black/65 via-black/20 to-transparent text-white">
+                  <div className="absolute inset-x-0 bottom-0 p-5 md:p-8 bg-linear-to-t from-black/65 via-black/20 to-transparent text-white">
                     <h3 className="font-display font-semibold text-lg md:text-2xl">
                       {slide.title}
                     </h3>
@@ -143,7 +143,7 @@ export default function EventsSlideshow() {
           </div>
         </div>
       </div>
-      <div className="section-sep mt-20" />
+      <div className="section-sep absolute bottom-0 left-0 w-full" />
     </section>
   );
 }

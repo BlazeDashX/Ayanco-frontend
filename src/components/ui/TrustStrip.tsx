@@ -23,7 +23,7 @@ const TRUST_ITEMS = [
   {
     icon: Clock,
     label: `Since ${SITE.foundedYear}`,
-    sublabel: `${new Date().getFullYear() - SITE.foundedYear}+ Years Operating`,
+    sublabel: "Trade Legacy",
   },
 ] as const;
 
@@ -31,7 +31,7 @@ export default function TrustStrip() {
   return (
     <section className="bg-zinc-950 border-t border-white/6 py-12 sm:py-14">
       {/* Gold gradient accent */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mb-12" />
+      <div className="h-px bg-linear-to-r from-transparent via-gold/50 to-transparent mb-12" />
 
       <div className="max-w-7xl mx-auto px-6">
         {/* Label */}
@@ -50,12 +50,9 @@ export default function TrustStrip() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.45, delay: i * 0.08 }}
-                className="bg-zinc-950 p-8 flex flex-col items-center text-center gap-4
-                           hover:bg-white/4 transition-colors group"
+                className="bg-zinc-950 p-8 flex flex-col items-center text-center gap-4 hover:bg-white/4 transition-colors group"
               >
-                <div className="w-12 h-12 border border-gold/20 bg-gold/8
-                                group-hover:border-gold/40 group-hover:bg-gold/12
-                                flex items-center justify-center transition-all duration-300">
+                <div className="w-12 h-12 border border-gold/20 bg-gold/8 group-hover:border-gold/40 group-hover:bg-gold/12 flex items-center justify-center transition-all duration-300">
                   <Icon size={20} className="text-gold" />
                 </div>
                 <div>
@@ -76,7 +73,7 @@ export default function TrustStrip() {
           {SITE.certifications.map((cert) => (
             <span
               key={cert}
-              className="font-body text-[11px] text-stone-500 uppercase tracking-[0.15em] flex items-center gap-2"
+              className="font-accent text-[11px] text-stone-500 uppercase tracking-[0.15em] flex items-center gap-2"
             >
               <span className="w-1 h-1 bg-gold/50 shrink-0" />
               {cert}

@@ -23,9 +23,9 @@ const SocialIcon = ({ name }: { name: string }) => {
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
       </svg>
     ),
-    instagram: (
+    wechat: (
       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z" />
+        <path d="M8.7 13.6c-4.8 0-8.7-3.2-8.7-7.2s3.9-7.2 8.7-7.2c4.8 0 8.7 3.2 8.7 7.2-1.2-.2-2.5-.3-3.8-.3-5.2 0-9.4 3.5-9.4 7.9 0 1.2.3 2.3.9 3.3l-1.9 1.1c-.2.1-.5 0-.6-.2-.1-.1-.1-.3-.1-.4l.6-1.8c-1.8-1.1-2.9-2.7-2.9-4.5zM24 14.1c0-4.1-3.9-7.4-8.7-7.4s-8.7 3.3-8.7 7.4 3.9 7.4 8.7 7.4c1.3 0 2.5-.2 3.6-.7l1.7.9c.2.1.5 0 .6-.2.1-.1.1-.3.1-.4l-.5-1.5c1.9-1.2 3.2-3 3.2-5.1zm-11.6-1c-.6 0-1.1-.5-1.1-1.1s.5-1.1 1.1-1.1c.6 0 1.1.5 1.1 1.1s-.5 1.1-1.1 1.1zm5.2 0c-.6 0-1.1-.5-1.1-1.1s.5-1.1 1.1-1.1c.6 0 1.1.5 1.1 1.1s-.5 1.1-1.1 1.1z" />
       </svg>
     ),
   };
@@ -38,7 +38,7 @@ export default function FounderHero() {
   const socialLinks = useSocialLinks();
 
   return (
-    <section className="hero-premium text-white relative">
+    <section className="hero-premium min-h-dvh overflow-hidden py-24 flex flex-col text-white relative">
       {/* Animated Background Orbs */}
       <div className="hero-orb hero-orb-1" aria-hidden="true" />
       <div className="hero-orb hero-orb-2" aria-hidden="true" />
@@ -60,7 +60,7 @@ export default function FounderHero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="inline-flex"
           >
-            <span className="px-4 py-2 rounded-full border border-[color:var(--gold)]/30 bg-[color:var(--gold)]/10 text-[color:var(--gold)] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-sm">
+            <span className="px-4 py-2 rounded-full border border-(--gold)/30 bg-(--gold)/10 text-(--gold) text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-sm">
               Executive E-Portfolio
             </span>
           </motion.div>
@@ -76,7 +76,7 @@ export default function FounderHero() {
           </p>
 
           {/* Name */}
-          <p className="font-name text-2xl sm:text-3xl text-[color:var(--gold)] italic">
+          <p className="font-name text-2xl sm:text-3xl text-(--gold) italic">
             {name}
           </p>
 
@@ -106,15 +106,15 @@ export default function FounderHero() {
           {/* Quick Stats */}
           <div className="flex gap-8 mt-6 pt-6 border-t border-white/10">
             <div>
-              <p className="text-3xl font-bold text-[color:var(--gold)]">14+</p>
+              <p className="text-3xl font-bold text-(--gold)">17+</p>
               <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">Years Experience</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-[color:var(--gold)]">5</p>
+              <p className="text-3xl font-bold text-(--gold)">5</p>
               <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">Business Sectors</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-[color:var(--gold)]">2016</p>
+              <p className="text-3xl font-bold text-(--gold)">2016</p>
               <p className="text-xs text-gray-400 uppercase tracking-wider mt-1">Founded</p>
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function FounderHero() {
             transition={{ duration: 0.6, delay: 0.7 }}
             className="hidden lg:flex flex-col items-center gap-4"
           >
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-[color:var(--gold)]/50 to-transparent" />
+            <div className="w-px h-12 bg-linear-to-b from-transparent via-(--gold)/50 to-transparent" />
             <div className="flex flex-col gap-3">
               {socialLinks.map((social) => (
                 <a
@@ -142,14 +142,14 @@ export default function FounderHero() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group w-11 h-11 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/60 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)] hover:bg-[color:var(--gold)]/10 transition-all duration-300 hover:scale-110"
+                  className="group w-11 h-11 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/60 hover:text-(--gold) hover:border-(--gold) hover:bg-(--gold)/10 transition-all duration-300 hover:scale-110"
                   aria-label={`Follow on ${social.name}`}
                 >
                   <SocialIcon name={social.icon} />
                 </a>
               ))}
             </div>
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-[color:var(--gold)]/50 to-transparent" />
+            <div className="w-px h-12 bg-linear-to-b from-transparent via-(--gold)/50 to-transparent" />
             <span
               className="text-[10px] text-gray-400 uppercase tracking-widest"
               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
@@ -170,10 +170,10 @@ export default function FounderHero() {
             />
 
             {/* Decorative ring */}
-            <div className="absolute -top-4 -left-4 -right-4 -bottom-4 rounded-2xl border border-[color:var(--gold)]/10 pointer-events-none" aria-hidden="true" />
+            <div className="absolute -top-4 -left-4 -right-4 -bottom-4 rounded-2xl border border-(--gold)/10 pointer-events-none" aria-hidden="true" />
 
             {/* Image frame */}
-            <div className="relative w-[290px] h-[370px] sm:w-[360px] sm:h-[460px] lg:w-[420px] lg:h-[600px] xl:w-[480px] xl:h-[640px] rounded-2xl overflow-hidden border border-[color:var(--gold)]/25 shadow-2xl bg-zinc-900/50">
+            <div className="relative w-[290px] h-[370px] sm:w-[360px] sm:h-[460px] lg:w-[420px] lg:h-[600px] xl:w-[480px] xl:h-[640px] rounded-2xl overflow-hidden border border-(--gold)/25 shadow-2xl bg-zinc-900/50">
               <Image
                 src={portraitSrc}
                 alt={portraitAlt}
@@ -186,11 +186,11 @@ export default function FounderHero() {
               <div className="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.4)] rounded-2xl pointer-events-none" />
 
               {/* Bottom fade into page background */}
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/80 to-transparent pointer-events-none" />
 
               {/* Name plate overlay at bottom */}
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-[color:var(--gold)] text-xs font-bold uppercase tracking-[0.2em]">
+                <p className="text-(--gold) text-xs font-bold uppercase tracking-[0.2em]">
                   {name}
                 </p>
                 <p className="text-white/60 text-[10px] tracking-wider mt-0.5">
@@ -200,10 +200,10 @@ export default function FounderHero() {
             </div>
 
             {/* Gold corner accents */}
-            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[color:var(--gold)]/60 rounded-tl-2xl pointer-events-none" />
-            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[color:var(--gold)]/60 rounded-tr-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[color:var(--gold)]/60 rounded-bl-2xl pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[color:var(--gold)]/60 rounded-br-2xl pointer-events-none" />
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-(--gold)/60 rounded-tl-2xl pointer-events-none" />
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-(--gold)/60 rounded-tr-2xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-(--gold)/60 rounded-bl-2xl pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-(--gold)/60 rounded-br-2xl pointer-events-none" />
           </div>
 
           {/* Mobile-only: Connect + social icons below portrait */}
@@ -216,7 +216,7 @@ export default function FounderHero() {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/70 hover:text-[color:var(--gold)] hover:border-[color:var(--gold)]/50 hover:bg-[color:var(--gold)]/10 transition-all duration-300"
+                  className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white/70 hover:text-(--gold) hover:border-(--gold)/50 hover:bg-(--gold)/10 transition-all duration-300"
                   aria-label={`Follow on ${social.name}`}
                 >
                   <SocialIcon name={social.icon} />
@@ -230,7 +230,7 @@ export default function FounderHero() {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[color:var(--bg)] to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-(--bg) to-transparent pointer-events-none" />
     </section>
   );
 }

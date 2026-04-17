@@ -45,7 +45,7 @@ function useCountUp(target: number | null, ref: React.RefObject<HTMLSpanElement>
         };
         requestAnimationFrame(tick);
       },
-      { threshold: 0.3 }
+      { root: document.querySelector('main'), threshold: 0.3 }
     );
 
     observed.observe(el);
@@ -72,7 +72,7 @@ function StatCard({
 
   return (
     <div className="card-premium bg-white rounded-2xl p-8 flex flex-col items-center text-center gap-4 group hover:-translate-y-1 transition-transform duration-300">
-      <div className="text-[color:var(--gold)] group-hover:scale-110 transition-transform duration-300">
+      <div className="text-(--gold) group-hover:scale-110 transition-transform duration-300">
         {icons[icon]}
       </div>
       <div className="font-display text-3xl sm:text-4xl font-bold text-gray-900">
@@ -95,10 +95,10 @@ export default function CompanyStats() {
   const stats = useCompanyStats();
 
   return (
-    <section id="company" className="py-20 md:py-28 scroll-mt-24 bg-[#f8f9fa]">
+    <section id="company" className="min-h-[50dvh] py-16 flex flex-col justify-center relative bg-[#f8f9fa]">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 reveal" data-reveal="up">
-          <p className="text-xs font-bold tracking-[.2em] text-[color:var(--gold)] uppercase mb-2">
+          <p className="text-xs font-bold tracking-[.2em] text-(--gold) uppercase mb-2">
             At a Glance
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-gray-900">
@@ -112,7 +112,7 @@ export default function CompanyStats() {
           ))}
         </div>
       </div>
-      <div className="section-sep mt-20" />
+      <div className="section-sep absolute bottom-0 left-0 w-full" />
     </section>
   );
 }
